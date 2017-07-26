@@ -38,3 +38,11 @@ var vm = new Vue({
 ## 后记
 
 注意，不要在实例属性或者回调函数中（如 vm.$watch('a', newVal => this.myMethod())）使用箭头函数。因为箭头函数绑定父级上下文，所以 this 不会像预想的一样是 Vue 实例，而是 this.myMethod 未被定义。
+
+#### 模板
+  ★  browserify - A full-featured Browserify + vueify setup with hot-reload, linting & unit testing.
+  ★  browserify-simple - A simple Browserify + vueify setup for quick prototyping.
+  ★  pwa - PWA template for vue-cli based on the webpack template
+  ★  simple - The simplest possible Vue setup in a single HTML file
+  ★  webpack - A full-featured Webpack + vue-loader setup with hot reload, linting, testing & css extraction.
+  ★  webpack-simple - A simple Webpack + vue-loader setup for quick prototyping.
