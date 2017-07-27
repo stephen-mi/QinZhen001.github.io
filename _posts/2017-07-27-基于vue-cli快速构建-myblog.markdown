@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "基于vue-cli快速构建"
-date:       2017-07-26 17:51:00
+date:       2017-07-27 17:51:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
