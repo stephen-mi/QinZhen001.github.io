@@ -14,6 +14,7 @@ tags:
 
 ## 正文
 [网页链接](http://www.zhangxinxu.com/jq/stylus/)
+[官网](http://stylus-lang.com/try.html#)
 
 <strong>富有表现力的、动态的、健壮的CSS</strong>
 
