@@ -34,7 +34,7 @@ tags:
 
 
 容器的盒子模型如下：
-![enter description here][1]
+<image src="https://segmentfault.com/img/bVrU1u"></image>
 
 
 从盒子模型可以看出，虽然容器的内容高度为0，但由于有了跟内容宽度一致的padding，因此整体视觉效果上像是被撑开了。此方案浏览器兼容性很不错，唯一的缺陷是无法给容器设置max-height属性了，因为max-height只能限制内容高度，而不能限制padding（我原以为设置box-sizing: border-box;可以让max-height限制padding，不过亲测无效，明白的朋友麻烦告知一下原因）。
@@ -86,7 +86,8 @@ img {
 </div>
 ```
 效果如下：
-![enter description here][3]
+
+
 
 ## 后记
 宽高不一致的自适应怎么做？
