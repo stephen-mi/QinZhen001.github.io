@@ -34,7 +34,7 @@ tags:
 
 
 容器的盒子模型如下：
-<image src="https://segmentfault.com/img/bVrU1u"></image>
+![enter description here][1]
 
 
 从盒子模型可以看出，虽然容器的内容高度为0，但由于有了跟内容宽度一致的padding，因此整体视觉效果上像是被撑开了。此方案浏览器兼容性很不错，唯一的缺陷是无法给容器设置max-height属性了，因为max-height只能限制内容高度，而不能限制padding（我原以为设置box-sizing: border-box;可以让max-height限制padding，不过亲测无效，明白的朋友麻烦告知一下原因）。
@@ -56,8 +56,7 @@ tags:
 <div id="container" class="placeholder"></div>
 ```
 此时视觉效果上与上一方案无异，重点来看看此时容器的盒子模型：
-<image src="https://segmentfault.com/img/bVrU2j"></image>
-
+![enter description here][2]
 
 可以看出，此时容器的内容高度与内容宽度一致，妈妈再也不用担心我无法通过max-height来限制容器高度了。
 另外，使用margin的话需要考虑margin折叠的问题（参考），padding则无此烦恼。
@@ -87,13 +86,13 @@ img {
 </div>
 ```
 效果如下：
-<image src="https://segmentfault.com/img/bVrU4H"></image>
-
+![enter description here][3]
 
 ## 后记
 宽高不一致的自适应怎么做？
 有朋友可能会问，上面提到的都是宽度与高度一致的情况，如果不一致那怎么办呢？其实自适应的重点在于，元素的宽高必须维持一个固定的比例，比如说宽高一致比例就是1:1，宽是高的两倍那就是2:1，只要这个比例是明确而且固定的，那么只需要相应地修改margin/padding的百分比值即可适应不同的宽高比例。
 
 
-
-
+  [1]: https://segmentfault.com/img/bVrU1u
+  [2]: https://segmentfault.com/img/bVrU2j
+  [3]: https://segmentfault.com/img/bVrU4H
