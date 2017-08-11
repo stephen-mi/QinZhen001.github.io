@@ -19,11 +19,11 @@ tags:
 例如：
 ```
 let arr = ["a","b"];
-for (a in arr) {
+for (let a in arr) {
     console.log(a);//0,1
 }
 
-for (a of arr) {
+for (let a of arr) {
     console.log(a);//a,b
 }
 ```
