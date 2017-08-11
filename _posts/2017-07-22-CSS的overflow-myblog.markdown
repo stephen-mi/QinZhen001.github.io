@@ -6,7 +6,7 @@ author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - css
+    - CSS
 ---
 
 > “Yeah It's on. ”
@@ -60,9 +60,11 @@ overflow:hidden这个CSS样式是大家常用到的CSS样式，但是大多数�
 
 overflow:hidden属性相当于是让父级紧贴内容，这样即可紧贴其对象内内容（包括使用float的div盒子），从而实现了清除浮动。而clear:both则是采用的是在子级清除浮动。你看看使用的位置就清楚了。
 
-<code>
+
+``` html
 <div style="overflow:hidden">
    <div style="float:left"></div>
 </div>
-</code>
+```
+
 
