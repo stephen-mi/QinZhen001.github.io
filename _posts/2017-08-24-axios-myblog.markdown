@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "transition-group"
+title:      "axios"
 date:       2017-08-24 18:19:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -120,6 +120,7 @@ var instance = axios.create({
 ```
 ### 请求配置
 这些是用于发出请求的可用配置选项。 只有url是必需的。 如果未指定方法，请求将默认为GET。
+
 ```
 {
   // `url`是将用于请求的服务器URL
@@ -227,7 +228,9 @@ var instance = axios.create({
   })
 }
 ```
+
 使用 then 时，您将收到如下响应：
+
 ```
 axios.get('/user/12345')
   .then(function(response) {
