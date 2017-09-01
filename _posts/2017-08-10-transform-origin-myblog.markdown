@@ -38,22 +38,37 @@ z-axis
 length
 
 ## 后记
+```
 /*只设置一个值的语法*/
 transform-origin: x-offset
 transform-origin: offset-keyword
+```
+
+
+----------
+
+
+```
 /*设置两个值的语法*/
 transform-origin：x-offset  y-offset
 transform-origin：y-offset  x-offset-keyword
 transform-origin：x-offset-keyword  y-offset
 transform-origin：x-offset-keyword  y-offset-keyword
 transform-origin：y-offset-keyword  x-offset-keyword
+```
+
+
+----------
+
+
+```
 /*设置三个值的语法*/
 transform-origin：x-offset  y-offset  z-offset
 transform-origin：y-offset  x-offset-keyword  z-offset
 transform-origin：x-offset-keyword  y-offset  z-offset
 transform-origin：x-offset-keyword  y-offset-keyword  z-offset
 transform-origin：y-offset-keyword  x-offset-keyword  z-offset
-
+```
 
 * x-offset：用来设置transform-origin水平方向Ｘ轴的偏移量，可以使用和值，同时也可以是正值（从中心点沿水平方向Ｘ轴向右偏移量），也可以是负值（从中心点沿水平方向Ｘ轴向左偏移量）。
 * y-offset：用来设置transform-origin属性在垂直方向Ｙ轴的偏移量，可以使用和值，同时可以是正值（从中心点沿垂直方向Ｙ轴向下的偏移量），也可以是负值（从中心点沿垂直方向Ｙ轴向上的偏移量）。
@@ -63,9 +78,9 @@ transform-origin：y-offset-keyword  x-offset-keyword  z-offset
 ----------
 
 
-offset-keyword：是top、right、bottom、left或center中的一个关键词，可以用来设置transform-origin的偏移量。
-x-offset-keyword：是left、right或center中的一个关键词，可以用来设置transform-origin属性值在水平Ｘ轴的偏移量。
-y-offset-keyword：是top、bottom或center中的一个关键词，可以用来设置transform-origin属性值在垂直方向Ｙ轴的偏移量。
+* offset-keyword：是top、right、bottom、left或center中的一个关键词，可以用来设置transform-origin的偏移量。
+* x-offset-keyword：是left、right或center中的一个关键词，可以用来设置transform-origin属性值在水平Ｘ轴的偏移量。
+* y-offset-keyword：是top、bottom或center中的一个关键词，可以用来设置transform-origin属性值在垂直方向Ｙ轴的偏移量。
 
 
 ----------

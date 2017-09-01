@@ -20,9 +20,12 @@ a标签本来就是内联
 这样写，他出来效果就是--------标签1标签2标签3
 
 但如果你想要定义宽度,不加块状是起不来作用的，都是单单加块状（display:block），他又换行了，所以这时加display:inline-block 就起到很大作用，内联块状，宽度既能实现，又能不换行...
-
-a{width:100px; display:inline-block}
-
+```
+a{
+    width:100px; 
+    display:inline-block
+}
+```
 
 ## 后记
 但是对所有的块元素都没有意义，块元素的dispaly属性默认值为block，没必要再显式定义——除非你之前对块元素的display属性重新定义过。
