@@ -38,5 +38,16 @@ responsive（响应）
 1. 在`<form>`元素是使用类名“form-horizontal”。
 2. 配合Bootstrap框架的网格系统。
 
+### 其他
+* 大写变为小写 text-lowercase  
+* 小写变为大写 text-uppercase 
+* 首字母大写 text-capitalize
+
+aria-haspopup :true表示点击的时候会出现菜单或是浮动元素； false表示没有pop-up效果。
+
+aria-expanded:表示展开状态。默认为undefined, 表示当前展开状态未知。其它可选值：true表示元素是展开的；false表示元素不是展开的。
+
+class="sr-only"
+全称是 screen reader only，意为：（仅供）屏幕阅读器，这个 class 主要用于增强 accessbility（可访问性）。加上 sr-only的意义就在于能保证屏幕阅读器正确读取且不会影响 UI 的视觉呈现。
 
  
