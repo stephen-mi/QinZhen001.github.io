@@ -50,4 +50,14 @@ aria-expanded:表示展开状态。默认为undefined, 表示当前展开状态�
 class="sr-only"
 全称是 screen reader only，意为：（仅供）屏幕阅读器，这个 class 主要用于增强 accessbility（可访问性）。加上 sr-only的意义就在于能保证屏幕阅读器正确读取且不会影响 UI 的视觉呈现。
 
+
+
+.col-xs- 超小屏幕 手机 (<768px)
+
+.col-sm- 小屏幕 平板 (≥768px)
+
+.col-md- 中等屏幕 桌面显示器 (≥992px)
+
+.col-lg- 大屏幕 大桌面显示器 (≥1200px)
+
  
