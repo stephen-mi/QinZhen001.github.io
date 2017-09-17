@@ -25,8 +25,8 @@ tags:
 5. 使用场景：v-if适合运营条件不大可能改变；v-show适合频繁切换。
 
 
-###才Tips：
-如果v-show作用的元素，css文件中display:none，通过v-show进行设置不能显示该元素；
+### Tips：
+如果v-show作用的元素，相当于css文件中display:none
 
 
 原因：v-show控制显隐，是通过js代码去修改元素的element style，如果value为false，设置display:none;如果value为true，设置display: ''；于是value为true时，只能将element style中的display效果清除，并不能覆盖css中的display效果；
