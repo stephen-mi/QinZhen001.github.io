@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "vue中滚动行为"
+title:      "vue中页面滚动行为"
 date:       2017-09-15 18:33:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
