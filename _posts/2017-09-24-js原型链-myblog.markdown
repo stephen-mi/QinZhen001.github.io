@@ -1,0 +1,20 @@
+---
+layout:     post
+title:      "js原型链"
+date:       2017-09-24 20:36:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+
+![enter description here][1]
+
+
+  [1]: ./images/prototype-%20chain.png "prototype- chain.png"
