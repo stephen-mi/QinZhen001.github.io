@@ -17,4 +17,4 @@ tags:
 ![enter description here][1]
 
 
-  [1]: ./images/prototype-%20chain.png "prototype- chain.png"
+  [1]: img/prototype-chain.png "prototype- chain.png"
