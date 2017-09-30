@@ -18,5 +18,6 @@ tags:
  - ctrl + shift + up: 行移动 
  -  ctrl + d: 行复制  
  -  ctrl + shift + u 切换大小写
+ -  crtl + r 变量名替换
 
 
