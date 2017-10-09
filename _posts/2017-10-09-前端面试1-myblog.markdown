@@ -1,0 +1,43 @@
+---
+layout:     post
+title:      "前端面试相关"
+date:       2017-10-09 22:06:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - 面试
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+ 
+### typeof 运算符
+
+ - typeof undefined   结果  "undefined" 
+ - typeof 'abc'  结果  "string"
+ - typeof 123   结果  "number" 
+ - typeof true  结果  "boolean" 
+ - typeof {}  结果  "object" 
+ - typeof []   结果  "object"
+ - <strong>typeof null  结果 "object"</strong>
+ -  typeof console.log   结果  "function"
+
+
+
+![enter description here][1]
+
+
+
+
+
+
+### 其他
+
+obj.a == null
+相当于 obj.a === null || obj.a === undefined
+
+
+  [1]: ./images/1507558398169.jpg "1507558398169.jpg"
