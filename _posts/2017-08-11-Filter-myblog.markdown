@@ -27,16 +27,16 @@ Filters主要是运用在图片上，以实现一些特效。
 
 其默认值是none，他不具备继承性，其中filter-function一个具有以下值可选：
 
-grayscale灰度
-sepia褐色（求专业指点翻译）
-saturate饱和度
-hue-rotate色相旋转
-invert反色
-opacity透明度
-brightness亮度
-contrast对比度
-blur模糊
-drop-shadow阴影
+* grayscale灰度
+* sepia褐色（求专业指点翻译）
+* saturate饱和度
+* hue-rotate色相旋转
+* invert反色
+* opacity透明度
+* brightness亮度
+* contrast对比度
+* blur模糊
+* drop-shadow阴影
 
 ![enter description here][1]
 
