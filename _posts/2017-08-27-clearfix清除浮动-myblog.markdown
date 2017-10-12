@@ -31,6 +31,21 @@ tags:
 上述代码通过伪类 :after 在container后添加内容（content），来实现清除浮动。
 
 
+```
+.clearfix::before,
+.clearfix::after {
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+.clearfix:after {clear: both;}
+.clearfix {zoom: 1;}
+```
+
+
+
+
 
 
 作者：Wenliang
