@@ -16,7 +16,6 @@ tags:
  
 [网页链接](https://www.ycjcl.cc/2017/02/10/module-exportshe-exportsde-qu-bie/)
 
-
 ### Module.exports
 module.exports对象是由模块系统创建的。
 有时这是难以接受的；许多人希望他们的模块成为某个类的实例。 为了实现这个，需要将期望导出的对象赋值给module.exports。 注意，将期望的对象赋值给exports会简单地重新绑定到本地exports变量上，这可能不是你想要的。
