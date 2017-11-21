@@ -29,19 +29,126 @@ tags:
 
 ### 原型和原型链
 
-所有的引用类型（数组、对象、函数），都有一个__proto__属性，属性值是一个普通的对象
+**所有的引用类型（数组、对象、函数），都有一个__proto__属性，属性值是一个普通的对象**
 
-所有的函数，都有一个 prototype 属性，属性值也是一个普通的对象
+**所有的函数，都有一个 prototype 属性，属性值也是一个普通的对象**
 
-所有的引用类型（数组、对象、函数），__proto__属性值指向它的构造函数的 ”prototype“ 属性值
+所有的引用类型（数组、对象、函数），`__proto__`属性值指向它的构造函数的 ”prototype“ 属性值
 
- 当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的 __proto__（即它的构造函数的prototype）中寻找。
+ 当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的 `__proto__`（即它的构造函数的prototype）中寻找。
  
-#### instanceof
+ ![enter description here][1]
+ 
+#### 事例一
+```
+    var obj = {};
+    obj.a = 100;
+    var arr = [];
+    arr.a = 100;
+    function fn() {
+    }
+    fn.a = 100;
+
+    console.log(obj.__proto__);
+    console.log(arr.__proto__);
+    console.log(fn.__proto__);
+
+    console.log(fn.prototype);
+
+    console.log(obj.__proto__ === Object.prototype)
+```
+
+* Object
+* Array(0)
+* ƒ () { [native code] }
+* Object {
+        constructor: ƒ fn()
+        `__proto__`: Object
+}
+* true
+
+#### 示例二
+```
+    // 构造函数
+    function Foo(name, age) {
+        this.name = name
+    }
+
+    Foo.prototype.alertName = function () {
+        alert(this.name)
+    };
+    //创建事例
+    var f = new Foo('zhangsan')
+    f.printName = function () {
+        console.log(this.name)
+    };
+    // 测试
+    f.printName();
+    f.alertName();
+```
+#### 事例三 写一个原型链继承的例子
+```
+    //动物
+    function Animal() {
+        this.eat = function () {
+            console.log('animal eat');
+        }
+    }
+    // 狗
+    function Dog() {
+        this.bark = function () {
+            console.log('dog bark')
+        }
+    }
+    Dog.prototype = new Animal();
+    // 哈士奇
+    var hashiqi = new Dog()
+```
+
+
+![enter description here][2]
+
+
+### 字符串拼接
+var b = 100 + '10' // '10010'
+
+### == 运算符
+100 = '100'  //true
+0 == ''  //true
+null == undefined   //true
+
+if(obj.a == null){
+    // 这里相当于obj.a === null || obj.a === undefined 的简写形式
+    // 这是jquery源码中的推荐写法
+}
+
+### 如何理解JSON
+JSON只不过是一个JS对象而已
+
+JSON.stringify({a:10,b:20})
+JSON.parse('{"a":10,"b":20}')
+
+### 判断一个变量会被当作 true 还是 false
+var a = 100
+console.log(!!a)
+
+### 描述new一个对象的过程
+1. 创建一个新对象
+2. this指向这个新对象
+3. 执行代码，即对this赋值
+4. 返回this
+
+### instanceof
 f instanceof Foo 的判断逻辑是：
-f 的 __proto__ 一层一层往上，能否对应到 Foo.prototype
+f 的 `__proto__` 一层一层往上，能否对应到 Foo.prototype
 再试着判断 f instanceof Object
 
+#### 如何准确判断一个变量是数组类型
+```
+    var arr = [];
+    console.log(arr instanceof Array); //true
+    console.log(typeof arr);//object,typeof是无法判断是否是数组的
+```
 
 ### 构造函数
 
@@ -55,15 +162,290 @@ f 的 __proto__ 一层一层往上，能否对应到 Foo.prototype
 ### 作用域和闭包
 
 this 要在执行时才能确认值，定义时无法确认
+```
+var a = {
+    name:'A'
+    fn:function(){
+        console.log(this.name)
+    }
+}
+a.fn() //this === a
+a.fn.call({name:'B'}) //this === {name:'B'}
+var fn1 = a.fn
+fn1() //this === window
+```
+#### 实际开发中闭包的应用
 
+```
+// 闭包在实际应用中主要用于封装变量，收敛权限
+    function isFirstLoad() {
+        var _list = [];
+        return function (id) {
+            if (_list.indexOf(id) >= 0) {
+                return false;
+            } else {
+                _list.push(id);
+                return true;
+            }
+        }
+    }
+//  使用
+    var firstLoad = isFirstLoad();
+    console.log(firstLoad(10));  //true
+    console.log(firstLoad(10));  //false
+    console.log(firstLoad(20));  //true
+```    
+    
+### 日期
+Date.now() // 获取当前时间的毫秒数
+var dt = new Date()
+dt.getTime() // 获取毫秒数
+dt.getFullYear() // 年
+dt.getMonth()   **// 月 (0-11) 特别注意这里 实际应用的时候记得+1**
+dt.getDate() //日 (0 - 31 )
+dt.getHours() //小时(0 - 23)
+dt.getMinutes() //分钟(0 - 59)
+dt.getSeconds() //秒(0 - 59)
+   
+### 数组API
+* forEach 遍历所有元素
+* every 判断所有元素是否都符合条件
+* some 判断是否有至少一个元素符合条件
+* sort 排序
+* map 对元素重新组装，生成新数组
+* filter 过滤符合条件的元素
+
+#### 数组 sort
+```
+    var arr = [1, 2, 3, 4, 5];
+    var arr2 = arr.sort(function (a, b) {
+        //从小到大
+        // return a - b
+
+
+        //从大到小
+        return b - a;
+    });
+```   
+
+#### 数组 map
+```
+    var arr = [1, 2, 3, 4];
+    var arr2 = arr.map(function (item, index, array) {
+        //将元素重新组装，并返回
+        return '<b>' + item + '</b>'
+    });
+```
+
+#### 数组 filter
+```
+    var arr = [1,2,3]
+    var arr2 = arr.filter(function (item,index) {
+        // 通过某个条件过滤数组
+           if(item >= 2){
+             return true
+           }
+        
+    })
+```
+
+#### 写一个能遍历对象和数组的forEach函数
+```
+function forEach(obj,fn) {
+    var key
+    if(obj instanceof Array){
+        //准确判断是不是数组
+        obj.forEach(function(item,index){
+            fn(index,item)
+        })
+    } else {
+        //不是数组对象    
+        for(key in obj){
+            fn(key, obj[key])
+        }
+    }   
+}
+```
+
+
+### DOM节点的Attribute和property有何区别
+
+* property 只是一个JS对象的属性的修改
+* Attribute 是对html标签属性的修改
+
+
+### navigator & screen
+```
+// navigator
+    var ua = navigator.userAgent;
+    var isChrome = ua.indexOf('Chrome');
+    console.log(isChrome);
+
+// screen
+    console.log(screen.width);
+    console.log(screen.height);
+```
+
+### location & history
+```
+// location
+    console.log(location.href);
+    console.log(location.protocol);
+    console.log(location.pathname);
+    console.log(location.search);
+    console.log(location.hash);
+```  
+
+
+
+1. http://localhost:63342/untitled2/test.html?_ijt=qgpv4jmr3aio5urdkukkjtts47
+2. http:
+3. ?_ijt=qgpv4jmr3aio5urdkukkjtts47
+
+**hash 属性是一个可读可写的字符串，该字符串是 URL 的锚部分（从 # 号开始的部分）。**
+
+```    
+// history
+    history.back();
+    history.forward();    
+```
+
+### 通用事件绑定
+```
+ function bindEvent(elem, type, fn) {
+        elem.addEventListener(type, fn);
+    }
+
+    var a = document.getElementById('link1');
+    bindEvent(a, 'click', function (e) {
+        e.preventDefault();
+        alert('clicked-self');
+    })
+```
+
+
+### Ajax
+```
+  var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api", false);
+    xhr.onreadystatechange = function () {
+        // 这里的函数异步执行
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+```
+
+#### readyState
+* 0 (未初始化) 还没有调用send()方法
+* 1 (载入) 已调用send()方法，正在发送请求
+* 2 (载入完成) send()方法执行完成，已经接收到全部响应内容
+* 3 (交互) 正在解析响应内容
+* 4 (完成) 响应内容解析完成，可以在客户端调用了
+
+#### status
+* 2xx 表示成功处理请求
+* 3xx 需要重定向，浏览器直接跳转
+* 4xx 客户端请求错误
+* 5xx 服务器端错误
+
+### cookie
+* 本身用于客户端和服务器端通信、
+* 但是它有本地存储的功能，于是就被“借用”
+* 使用document.cookie = ... 获取和修改即可
+
+>缺点
+* 存储量太小，只有4KB
+* 所有的http请求都带着，会影响获取资源的效率
+* API简单，需要封装
+
+### locationStorage 和 sessionStorage
+* HTML5专门为存储而设计，最大容量5M
+* API简洁易用
+* localStorage.setItem(key,value);localStorage.getItem(key)
+
+
+### 浏览器渲染页面的过程
+1. 根据HTML结构生成DOM Tree
+2. 根据CSS生成CSSOM
+3. 将DOM和CSSOM整合形成RenderTree
+4. 根据RenderTree开始渲染和展示
+5. 遇到`<script>`时，会执行并阻塞渲染
+
+
+
+>要把 css 放在 head 中
+>要把js放在body最下面
+
+
+### 从输入url到得到html的详细过程
+* 浏览器根据DNS服务器得到域名的IP地址
+* 向这个IP的机器发送http请求
+* 服务器收到，处理并返回http请求
+* 浏览器得到返回内容
+
+### 性能优化
+* 多使用内存，缓存或者其他方法
+* 减少CPU计算，较少网络
+
+#### 加载资源优化
+* 静态资源的压缩合并
+* 静态资源的缓存
+* 使用CND让资源加载更快
+* 使用**SSR**后端渲染，数据直接突入到HTML中
+
+#### SSR
+SSR，服务器渲染。简单来说就是，服务器将每个要展示的页面都运行完成后，将整个相应流传送给浏览器，所有的运算在服务器端都已经完成，浏览器只需要解析 HTML 就行。
+
+#### 渲染优化
+* CSS放前面，JS放后面
+* 懒加载
+* 减少DOM查询，对DOM查询做缓存
+* 减少DOM操作，多个操作尽量合并在一起执行
+* 事件节流
+* 尽早执行操作(如DOMContentLoaded)
+
+#### 合并DOM插入
+```
+    var listNode = document.getElementById('list');
+    var frag = document.createDocumentFragment();
+    var x, li;
+    for (x = 0; x < 10; x++) {
+        li = document.createElement('li');
+        li.innerHTML = "List item" + x;
+        frag.appendChild(li);
+    }
+    listNode.appendChild(frag);
+```
+
+#### 事件节流
+```
+    var textarea = document.getElementById('text');
+    var timeoutId;
+    textarea.addEventListener('keyup', function () {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(function () {
+            //触发 change 事件
+        }, 1000);
+    })
+```
+
+#### 尽早操作
+```
+    window.addEventListener('load', function () {
+        // 页面的全部资源加载完才会执行，包括图片，视频等
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // DOM 渲染完成即可，此时图片，视频还可能没有加载完
+    });
+```
 
 ### 其他
-
-obj.a == null
-相当于 obj.a === null || obj.a === undefined
-
-问题：如何理解JSON
-JSON 是一个JS对象
 
 ```
 var item
@@ -76,10 +458,6 @@ for(item in f){
 }
 ```
 
-问题：如何准确判断一个变量是数组类型
-```
-var arr = []
-arr instanceof Array //true
-typeof arr // Object  typeof是无法判断是否为数组的
-```
 
+  [1]: http://ww1.sinaimg.cn/large/0060lm7Tly1fjuz4jz285j30s90lmgo7.jpg
+  [2]: ./images/1510905026710.jpg "1510905026710.jpg"
