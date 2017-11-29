@@ -13,6 +13,22 @@ tags:
 
 
 ## 正文
+
+###  JavaScript中有几种基本类型？
+
+* Undefined
+* Null
+* Boolean
+* Number
+* String
+* Symbol （ESMAScript6新加的一种基本类型， 表示独一无二的值）
+
+**Function和Object是引用类型。**
+
+### ECMAScript 和 JavaScript的关系
+
+JavaScript是在浏览器执行的语言， 是因为它有BOM和DOM，前者提供了一些诸如window.open的函数， 后者提供了一些如document.querySelector的函数。 如果想让它在其他非浏览器平台运行的话， 肯定是不能有这两个的， 而JavaScript - BOM - DOM = ECMAScript。 比如Node平台， 内部的语言就是ECMAScript。 当然因为习惯， 即使我们在用Node的时候， 很多时候也是直接叫JavaScript而不是ES。
+
  
 ### typeof 运算符
 
@@ -457,6 +473,22 @@ for(item in f){
   }
 }
 ```
+
+
+----------
+
+var a = new A()
+
+显而易见， 对象a是继承于A.prototype的， 那么A.prototype这个自动生成的对象，又是从哪出来的呢？
+
+答案是： A.prototype 这个对象是Object和Object.prototype的产物， 当我们
+```
+function A() {
+    
+}
+```
+的时候， 系统后台调用new Object()这样生成了对象A.prototype， 另外A.prototype这个函数会自带一个属性construcor，这个属性的值是函数A
+
 
 
   [1]: http://ww1.sinaimg.cn/large/0060lm7Tly1fjuz4jz285j30s90lmgo7.jpg

@@ -52,6 +52,7 @@ console.log(module);
 1. 每个js文件一创建，都有一个var exports = module.exports = {};，使exports和module.exports都指向一个空对象。
 2. module是全局内置对象，exports是被var创建的局部对象。
 3. module.exports和exports所指向的内存地址相同
+ **(exports 是指向的 module.exports 的引用)**
 
 
 ----------
@@ -128,4 +129,4 @@ module.exports = Person;
 // module.exports = new Person('kylin',20);
 ```
 
-说了这么多，其实建议就是，如果只是单一属性或方法的话，就使用exports.属性/方法。要是导出多个属性或方法或使用对象构造方法，结合prototype等，就建议使用module.exports = {}
+**说了这么多，其实建议就是，如果只是单一属性或方法的话，就使用exports.属性/方法。要是导出多个属性或方法或使用对象构造方法，结合prototype等，就建议使用module.exports = {}**
