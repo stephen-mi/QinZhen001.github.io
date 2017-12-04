@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "CSS书写顺序规范"
+title:      "CSS书写顺序及命名规范"
 date:       2017-08-13 22:52:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
