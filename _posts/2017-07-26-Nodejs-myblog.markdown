@@ -29,9 +29,14 @@ Node.js 使用事件驱动模型，当web server接收到请求，就把它关�
 这个模型非常高效可扩展性非常强，因为webserver一直接受请求而不等待任何读写操作。（这也被称之为非阻塞式IO或者事件驱动IO）
 在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数。
 <image src="http://www.runoob.com/wp-content/uploads/2015/09/event_loop.jpg"></image>
+
+
 整个事件驱动的流程就是这么实现的，非常简洁。有点类似于观察者模式，事件相当于一个主题(Subject)，而所有注册到这个事件上的处理函数相当于观察者(Observer)。
 
 ## 后记
+
+Node.js的应用是通过javascript开发的，然后直接在Google的变态V8引擎上跑。用了Node.js，你就不用担心用户端的请求会在服务器里跑了一段能够造成阻塞的代码了。因为javascript本身就是事件驱动的脚本语言。你回想一下，在给前端写javascript的时候，更多时候你都是在搞事件处理和回调函数。javascript本身就是给事件处理量身定制的语言。
+
 
 
 
