@@ -15,7 +15,6 @@ tags:
 ## 正文
 
 ###  JavaScript中有几种基本类型？
-
 * Undefined
 * Null
 * Boolean
@@ -56,6 +55,7 @@ JavaScript是在浏览器执行的语言， 是因为它有BOM和DOM，前者提
  ![enter description here][1]
  
 #### 事例一
+
 ```
     var obj = {};
     obj.a = 100;
