@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Vue.js"
+title:      "Vue生命周期"
 date:       2017-07-24 10:44:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -30,19 +30,20 @@ var vm = new Vue({
 ---
 
 ## 生命周期
-下图说明了实例的生命周期。你不需要立马弄明白所有的东西，不过以后它会有帮助。
+Vue实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模板、挂载Dom、渲染→更新→渲染、卸载等一系列过程，我们称这是Vue的生命周期。通俗说就是Vue实例从创建到销毁的过程，就是生命周期。
+
 <image src="https://cn.vuejs.org/images/lifecycle.png"></image>
 
----
 
-## 后记
 
-注意，不要在实例属性或者回调函数中（如 vm.$watch('a', newVal => this.myMethod())）使用箭头函数。因为箭头函数绑定父级上下文，所以 this 不会像预想的一样是 Vue 实例，而是 this.myMethod 未被定义。
+![生命周期][1]
 
-#### 模板
-  ★  browserify - A full-featured Browserify + vueify setup with hot-reload, linting & unit testing.
-  ★  browserify-simple - A simple Browserify + vueify setup for quick prototyping.
-  ★  pwa - PWA template for vue-cli based on the webpack template
-  ★  simple - The simplest possible Vue setup in a single HTML file
-  ★  webpack - A full-featured Webpack + vue-loader setup with hot reload, linting, testing & css extraction.
-  ★  webpack-simple - A simple Webpack + vue-loader setup for quick prototyping.
+
+
+
+## 注意
+
+不要在实例属性或者回调函数中（如 vm.$watch('a', newVal => this.myMethod())）使用箭头函数。因为箭头函数绑定父级上下文，所以 this 不会像预想的一样是 Vue 实例，而是 this.myMethod 未被定义。
+
+
+  [1]: http://img.zhimengzhe.com/d/file/p/2017-03-05/6e69817f1e18ae5389320cc5c00641b4.jpg
