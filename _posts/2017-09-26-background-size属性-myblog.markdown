@@ -35,3 +35,19 @@ background-size 属性规定背景图像的尺寸。
 
 * contain	
   把图像图像扩展至最大尺寸，以使其宽度和高度完全适应内容区域。
+
+[例子](http://www.topcss.org/demo/background-size-cover-contain.html)
+
+### background-size:cover
+背景铺满元素
+
+1. 调整背景图片的宽度或高度（较小者），以铺满整个元素
+2. 保持背景图片的宽高比
+
+### background-size:contain
+元素包含整个背景图片
+
+1. 调整背景图片的宽度或高度（较大者），使背景图片完全包含在元素中
+2. 保持背景图片的宽高比
+
+
