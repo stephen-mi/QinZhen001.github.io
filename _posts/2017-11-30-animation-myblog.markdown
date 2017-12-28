@@ -58,9 +58,22 @@ animation-fill-mode : none | forwards | backwards | both;
 
 
 
+### animation-play-state 属性
+暂停动画：
+```
+div
+{
+animation-play-state:paused;
+-webkit-animation-play-state:paused; /* Safari 和 Chrome */
+}
+```
 
+值:
 
-
+* running
+    当前动画正在运行。
+* paused
+    当前动画以被停止。 
 
 
 
