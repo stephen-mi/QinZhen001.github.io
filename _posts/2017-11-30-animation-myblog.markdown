@@ -18,12 +18,12 @@ tags:
 [网页链接](http://www.w3school.com.cn/cssref/pr_animation.asp)
 
 animation 属性是一个简写属性，用于设置六个动画属性：
-    animation-name
-    animation-duration
-    animation-timing-function
-    animation-delay
-    animation-iteration-count
-    animation-direction
+* animation-name
+* animation-duration
+* animation-timing-function
+* animation-delay
+* animation-iteration-count
+* animation-direction
 
 
 
@@ -49,7 +49,7 @@ animation-fill-mode : none | forwards | backwards | both;
 
 
 
-动画按执行时间来划分，它分为三个过程，或者说一次动画过程可以将元素划分为三个状态：动画等待、动画进行和动画结束。默认情况之下，只有在动画进行状态，才会应用@keyframes所声明的动画；而在动画等待和动画结束状态，对元素样式并不会产生任何的影响。
+动画按执行时间来划分，它分为三个过程，或者说一次动画过程可以将元素划分为三个状态：**动画等待、动画进行和动画结束**。默认情况之下，只有在动画进行状态，才会应用@keyframes所声明的动画；而在动画等待和动画结束状态，对元素样式并不会产生任何的影响。
 
 ### 解释animation-fill-mode的每个值
 
@@ -81,4 +81,5 @@ animation-play-state:paused;
 
 著作权归作者所有。
 商业转载请联系作者获得授权,非商业转载请注明出处。
+
 原文: https://www.w3cplus.com/css3/understanding-css-animation-fill-mode-property.html © w3cplus.com

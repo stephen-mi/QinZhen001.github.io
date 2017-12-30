@@ -18,6 +18,6 @@ tags:
 [网页链接](http://www.gulpjs.com.cn/docs/getting-started/)
 
 
-```
+
 /AppleWebKit.*Mobile/i.test(navigator.userAgent) || /Android|iPhone|Windows Phone|webOS|iPod|BlackBerry/i.test(navigator.userAgent)
-```
+
