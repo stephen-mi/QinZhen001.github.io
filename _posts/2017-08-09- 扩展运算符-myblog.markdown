@@ -25,7 +25,7 @@ console.log(1, ...[2, 3, 4], 5)
 [...document.querySelectorAll('div')]  
 // [<div>, <div>, <div>]  
 ```
-<strong>该运算符将一个数组，变为参数序列</strong>
+该运算符将一个数组，变为参数序列
 
 ```
 function push(array, ...items) {  
@@ -128,5 +128,26 @@ let map = new Map([
 let arr = [...map.keys()]; // [1, 2, 3]  
 ```
 
+##扩展
+
+### 去除数组的重复元素
+Array.from()方法可以将Set结构转化为数组结构
+```
+function dedupe(array) {
+    return Array.from(new Set(array));
+}
+
+dedupe([1,2,3,3]);
+```
+
+扩展运算符（…）内部使用for…of循环
+```
+let arr = [1,2,3,3];
+let unique = [...new Set(arr)];
+```
+
+
 ## 后记
 <strong>如果对没有iterator接口的对象，使用扩展运算符，将会报错。</strong>
+
+

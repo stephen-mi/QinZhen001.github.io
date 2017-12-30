@@ -1,0 +1,68 @@
+---
+layout:     post
+title:      "Es6中的箭头函数"
+date:       2017-12-30 22:02:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - ES6
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+
+
+[网页链接](http://blog.csdn.net/itpinpai/article/details/52182093)
+
+
+### 基本用法：
+ES6中允许使用“箭头”(=>)定义函数
+`var f   = v => v;  `
+上面代码相当于：
+```
+var f = function( v )  {  
+    return v;  
+}  
+```
+
+### 根据箭头函数有参数和无参数来区分
+1. 无参数的箭头函数
+var f = () => 5;  
+2. 有参数的箭头函数
+var sum = ( a, b) => a + b;  
+
+**有的函数体内的语句大于一条的话，它的写法如下使用一个大括号将其括起来，并使用return语句返回**
+
+`var sum = (a, b) => { return a+b;}`
+
+**由于大括号被解释为代码块，所以如果箭头函数直接返回一个对象时，必须在对象外面加一个大括号**
+
+`var getFunction = id => ({id: id, anme: "Temp"});  `
+
+### 箭头函数也可以与变量解构结合使用
+`const full = ({first, last}) => first +"  "+ last;`
+
+等同于
+```
+function full(person) {  
+    return person.first +"  "+ person.last;  
+}  
+```  
+
+### 使用rest参数与箭头函数结合的例子
+```
+const numbers = (...nums) => nums;  
+numbers(1,2,3,4,5,6,7,8,9); //[1,2,3,4,5,6,7,8,9]  
+//...nums 表示的是一个数组  
+const headAndTail = ( head, ...tail) => [head, tail];  
+headAndTail(1,2,3,4,5,6,7,8,9);// [1, [2,3,4,5,6,7,8,9]]  
+```
+
+## 使用箭头函数注意几点：
+1. 函数体内的this对象就是定义时所在的对象，而不是使用时所在对象；
+2. 不可以当作构造函数使用，也就是不能用new命令实例化一个对象，否则会抛出一个错误；
+3. 不可以使用arguments对象，该对象在函数体内不存在，如果要用的话，可以用rest参数代替；
+4. 不可以使用yield命令，箭头函数不能用作Generator函数；
