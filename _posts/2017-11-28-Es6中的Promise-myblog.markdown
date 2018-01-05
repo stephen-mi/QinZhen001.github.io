@@ -92,8 +92,33 @@ myFirstPromise.then(function(successMessage){
 });
 ```
 
+### Promise.prototype.then() VS Promise.prototype.catch()
+
+.then()方法使Promise原型链上的方法，它包含两个参数方法，分别是已成功resolved的回调和已失败rejected的回调
+
+```
+promise.then(
+    () => { console.log('this is success callback') },
+    () => { console.log('this is fail callback') }
+)
+```
+
+.catch()的作用是捕获Promise的错误，与then()的rejected回调作用几乎一致。但是由于Promise的抛错具有冒泡性质，能够不断传递，这样就能够在下一个catch()中统一处理这些错误。同时catch()也能够捕获then()中抛出的错误，**所以建议不要使用then()的rejected回调，而是统一使用catch()来处理错误**
+
+```
+promise.then(
+    () => { console.log('this is success callback') }
+).catch(
+    (err) => { console.log(err) }
+)
+```
 
 
+
+作者：君未来我已老
+链接：https://www.jianshu.com/p/c98eb98bd00c
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 
   [1]: https://mdn.mozillademos.org/files/8633/promises.png
