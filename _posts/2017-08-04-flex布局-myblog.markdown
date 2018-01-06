@@ -180,9 +180,14 @@ order: `<integer>`
 }
 ```
 
+
+
+
 * 设置子元素为从左到右（flex-direction:row），内容超出换行（flex-wrap:wrap）.
 * 设置子元素的内容向右对齐（justify-content:flex-end）
 * 当小于800px时，内容为居中，当小于500px时，内容纵向排列，从上到下。
+
+
 
 [自适应导航demo](http://caibaojian.com/demo/flexbox/flexbox4.html#)
 
