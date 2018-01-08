@@ -286,7 +286,9 @@ returnMultipleValues((foo, bar) => ...);
 ```
 
 #### 从CommonJS的模块中导入接口名
-不使用ES6模块了吗？仍使用CommonJS的模块？没问题！当导入一些CommonJS的模块时，非常常见的情况是模块的接口功能比你实际需求的多许多。通过解构的方式，你可以明确你需要的那部分，并且可以防止多余的接口名污染你的命名空间：
+不使用ES6模块了吗？仍使用CommonJS的模块？没问题！
+
+当导入一些CommonJS的模块时，非常常见的情况是模块的接口功能比你实际需求的多许多。通过解构的方式，你可以明确你需要的那部分，并且可以防止多余的接口名污染你的命名空间：
 
 ```
 const { SourceMapConsumer, SourceNode } = require("source-map");  
