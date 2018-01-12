@@ -17,6 +17,11 @@ tags:
 ### 工具大全
 https://tool.lu/
 
+### cubic-bezier
+http://cubic-bezier.com/#.17,.67,.83,.67
+
+### 正则检验
+https://regexper.com/
 
 ## 其他
 
@@ -31,6 +36,11 @@ https://dribbble.com/
 ### node学习
 https://yunnysunny.gitbooks.io/nodebook/content/
 
+### emoji表情
+https://www.webpagefx.com/tools/emoji-cheat-sheet/
+
+### 在线运行
+http://jsbin.com/?css,js,console
 
 ### 前端大佬blog
 http://www.zhangxinxu.com/
