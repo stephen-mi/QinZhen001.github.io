@@ -237,13 +237,170 @@ function addTodoWithDispatch(text) {
 
 不同的是，Redux 中只需把 action 创建函数的结果传给 dispatch() 方法即可发起一次 dispatch 过程。
 
+```
+dispatch(addTodo(text))
+dispatch(completeTodo(index))
+```
+
+或者创建一个 **被绑定的 action 创建**函数 来自动 dispatch：
+
+```
+const boundAddTodo = (text) => dispatch(addTodo(text))
+const boundCompleteTodo = (index) => dispatch(completeTodo(index))
+```
+
+```
+boundAddTodo(text);
+boundCompleteTodo(index);
+```
+
+store 里能直接通过 store.dispatch() 调用 dispatch() 方法，但是多数情况下你会使用 react-redux 提供的 connect() 帮助器来调用。bindActionCreators() 可以自动把多个 action 创建函数 绑定到 dispatch() 方法上。
+
+### Reducer
+Action 只是描述了**有事情发生了**这一事实，并没有指明应用如何更新 state。而这正是 reducer 要做的事情。
+
+#### 设计 State 结构
+在 Redux 应用中，所有的 state 都被保存在一个单一对象中。建议在写代码前先想一下这个对象的结构。如何才能以最简的形式把应用的 state 用对象描述出来？
+
+#### Action 处理
+
+现在我们已经确定了 state 对象的结构，就可以开始开发 reducer。reducer 就是一个纯函数，接收旧的 state 和 action，返回新的 state。
+
+`(previousState, action) => newState`
 
 
+之所以称作 reducer 是因为它将被传递给 `Array.prototype.reduce(reducer, ?initialValue)` 方法。保持 reducer 纯净非常重要。永远不要在 reducer 里做这些操作：
+
+* 修改传入参数；
+* 执行有副作用的操作，如 API 请求和路由跳转；
+* 调用非纯函数，如 Date.now() 或 Math.random()。
 
 
+>只要传入参数相同，返回计算得到的下一个 state 就一定相同。没有特殊情况、没有副作用，没有 API 请求、没有变量修改，单纯执行计算。
 
+```
+import { VisibilityFilters } from './actions'
 
+const initialState = {
+  visibilityFilter: VisibilityFilters.SHOW_ALL,
+  todos: []
+};
 
+function todoApp(state, action) {
+  if (typeof state === 'undefined') {
+    return initialState
+  }
 
+  // 这里暂不处理任何 action，
+  // 仅返回传入的 state。
+  return state
+}
+```
+这里一个技巧是使用 ES6 参数默认值语法 来精简代码。
+
+```
+function todoApp(state = initialState, action) {
+  // 这里暂不处理任何 action，
+  // 仅返回传入的 state。
+  return state
+}
+```
+
+现在可以处理 SET_VISIBILITY_FILTER。需要做的只是改变 state 中的 visibilityFilter。
+
+```
+function todoApp(state = initialState, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    default:
+      return state
+  }
+}
+```
+
+**注意:**
+1. 不要修改 state。 使用 Object.assign() 新建了一个副本。不能这样使用 Object.assign(state, { visibilityFilter: action.filter })，因为它会改变第一个参数的值。你必须把第一个参数设置为空对象。你也可以开启对ES7提案对象展开运算符的支持, 从而使用 { ...state, ...newState } 达到相同的目的。
+2. 在 default 情况下返回旧的 state。遇到未知的 action 时，一定要返回旧的 state。
+
+#### 处理多个 action
+还有两个 action 需要处理。让我们先处理 ADD_TODO。
+```
+function todoApp(state = initialState, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        todos: [
+          ...state.todos,
+          {
+            text: action.text,
+            completed: false
+          }
+        ]
+      })
+    default:
+      return state
+  }
+}
+```
+如上，不直接修改 state 中的字段，而是返回新对象。新的 todos 对象就相当于旧的 todos 在末尾加上新建的 todo。而这个新的 todo 又是基于 action 中的数据创建的。
+
+最后，TOGGLE_TODO 的实现也很好理解：
+
+```
+case TOGGLE_TODO:
+  return Object.assign({}, state, {
+    todos: state.todos.map((todo, index) => {
+      if (index === action.index) {
+        return Object.assign({}, todo, {
+          completed: !todo.completed
+        })
+      }
+      return todo
+    })
+  })
+```
+
+#### 拆分 Reducer
+目前的代码看起来有些冗长：
+```
+function todoApp(state = initialState, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        todos: [
+          ...state.todos,
+          {
+            text: action.text,
+            completed: false
+          }
+        ]
+      })
+    case TOGGLE_TODO:
+      return Object.assign({}, state, {
+        todos: state.todos.map((todo, index) => {
+          if(index === action.index) {
+            return Object.assign({}, todo, {
+              completed: !todo.completed
+            })
+          }
+          return todo
+        })
+      })
+    default:
+      return state
+  }
+}
+```
 
 
