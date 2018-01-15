@@ -56,6 +56,33 @@ var boundGetNum = getNum.bind(module);
 boundGetNum(); // 81
 ```
 
+### bind()在React中的使用
+```
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+```
 
 
+React构造方法中的bind即将handleClick函数与这个组件Component进行绑定以**确保在这个处理函数中使用this时可以时刻指向这一组件**。
 

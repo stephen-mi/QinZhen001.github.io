@@ -267,17 +267,26 @@ Son.propTypes = {
 ```
 
 
-### PropTypes.any.isRequired
+#### PropTypes.any.isRequired
 
 我们上述的写法是number:PropTypes.number.isRequired，这要求number是数字类型，但如果你不想控制number的类型而仅仅是想控制它的必要性呢？难道写成number:isRequired或number:PropTypes.isRequired? 
 
 这个时候PropTypes.any就登场啦！它代表了该变量可取任何一种数据类型，所以你可以写成这样——**number: PropTypes.any.isRequired**
 
 
+### 将PropTypes的属性值写成函数
+应对更复杂的类型检测
 
-https://www.cnblogs.com/penghuwan/p/6796139.html
-
-
+```
+Son.propTypes = {
+      prop:function(props,propName,componentName){
+          if(/*判断条件*/){
+               return new Error(/*错误的参数*/)
+           }
+    }
+}
+```
+在属性prop的类型检测中，属性值是一个函数，在这里props是包含prop的props对象，propName是prop的属性名，componentName是props所在的组件名称，函数的返回值是一个Error对象
 
 
 
