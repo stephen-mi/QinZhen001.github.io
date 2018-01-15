@@ -14,7 +14,11 @@ tags:
 
 ## 正文
 
+基于 Node.js 平台，快速、开放、极简的 web 开发框架。
 
-[网页链接](https://www.runoob.com/w3cnote/express-4-x-api.html)
+
+http://www.expressjs.com.cn/
+
+[Express-api](https://www.runoob.com/w3cnote/express-4-x-api.html)
 
 

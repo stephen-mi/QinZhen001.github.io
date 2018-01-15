@@ -403,4 +403,11 @@ function todoApp(state = initialState, action) {
 }
 ```
 
-
+## 总结
+* store 由 Redux 的 createStore(reducer) 生成
+* state 通过 store.getState() 获取，本质上一般是一个存储着整个应用状态的对象
+* action 本质上是一个包含 type 属性的普通对象，由 Action Creator (函数) 产生
+* 改变 state 必须 dispatch 一个 action
+* reducer 本质上是根据 action.type 来更新 state 并返回 nextState 的函数
+* reducer 必须返回值，否则 nextState 即为 undefined
+* 实际上，state 就是所有 reducer 返回值的汇总
