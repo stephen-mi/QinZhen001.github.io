@@ -15,6 +15,13 @@ tags:
 
 React-Redux 将所有组件分成两大类：UI 组件（presentational component）和容器组件（container component）。
 
+|                | 容器组件              | 展示组件              |
+| -------------- | --------------------- | --------------------- |
+| Location       | 最顶层，路由处理      | 中间和子组件          |
+| Aware of Redux | 是                    | 否                    |
+| 读取数据       | 从 Redux 获取 state   | 从 props 获取数据     |
+| 修改数据       | 向 Redux 派发 actions | 从 props 调用回调函数 |
+
 ### UI 组件
 
 UI 组件有以下几个特征。
@@ -44,21 +51,27 @@ const Title =
 React-Redux 规定，所有的 UI 组件都由用户提供，容器组件则是由 React-Redux 自动生成。也就是说，用户负责视觉层，状态管理则是全部交给它。
 
 ### connect()
-React-Redux 提供connect方法，用于从 UI 组件生成容器组件。connect的意思，就是将这两种组件连起来。
+React-Redux 提供connect方法，
+
+
+connect的作用就是将React和Redux中的store连接起来
+
+
+1. 接收一个组件，将Redux中的store通过props传递给组件
+2. 将Redux中的action也通过props传递给组件
+3. 返回一个新的组件，这个组件可以通过this.props访问到store中的属性，也可能是触发action
+4. 当store中的数据发生变化的时候，通知新的组件
+
+
+
+
 
 ```
 import { connect } from 'react-redux'
 const VisibleTodoList = connect()(TodoList);
 ```
 
-上面代码中，TodoList是 UI 组件，VisibleTodoList就是由 React-Redux 通过connect方法自动生成的容器组件。
 
-但是，因为没有定义业务逻辑，上面这个容器组件毫无意义，只是 UI 组件的一个单纯的包装层。为了定义业务逻辑，需要给出下面两方面的信息。
-
-1. 输入逻辑：外部的数据（即state对象）如何转换为 UI 组件的参数
-2. 输出逻辑：用户发出的动作如何变为 Action 对象，从 UI 组件传出去。
-
-因此，connect方法的完整 API 如下。
 ```
 import { connect } from 'react-redux'
 
@@ -72,8 +85,11 @@ const VisibleTodoList = connect(
 
 
 #### mapStateToProps()
+mapStateToProps(state, ownProps) : stateProps
 
-mapStateToProps是一个函数。它的作用就是像它的名字那样，建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。
+**表示：哪些 Redux 全局的 state 是我们组件想要通过 props 获取的？**
+
+它是一个函数。它的作用就是像它的名字那样，建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。
 
 作为函数，mapStateToProps执行后应该返回一个对象，里面的每一个键值对就是一个映射。请看下面的例子。
 
@@ -120,9 +136,13 @@ const mapStateToProps = (state, ownProps) => {
 ```
 使用ownProps作为参数后，如果容器组件的参数发生变化，也会引发 UI 组件重新渲染。
 
-connect方法可以省略mapStateToProps参数，那样的话，UI 组件就不会订阅Store，就是说 Store 的更新不会引起 UI 组件的更新。
+>connect方法可以省略mapStateToProps参数，那样的话，UI 组件就不会订阅Store，就是说 Store 的更新不会引起 UI 组件的更新。
 
 #### mapDispatchToProps()
+mapDispatchToProps(dispatch, [ownProps])
+
+**代表：哪些 action 创建函数是我们想要通过 props 获取的？**
+
 mapDispatchToProps是connect函数的第二个参数，用来建立 UI 组件的参数到store.dispatch方法的映射。也就是说，它定义了哪些用户的操作应该当作 Action，传给 Store。它可以是一个函数，也可以是一个对象。
 
 如果mapDispatchToProps是一个函数，会得到dispatch和ownProps（容器组件的props对象）两个参数。
@@ -145,7 +165,7 @@ const mapDispatchToProps = (
 
 从上面代码可以看到，mapDispatchToProps作为函数，应该返回一个对象，该对象的每个键值对都是一个映射，定义了 UI 组件的参数怎样发出 Action。
 
-如果mapDispatchToProps是一个对象，它的每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，返回的 Action 会由 Redux 自动发出。举例来说，上面的mapDispatchToProps写成对象就是下面这样。
+如果mapDispatchToProps是一个对象，它的**每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，返回的 Action 会由 Redux 自动发出。**举例来说，上面的mapDispatchToProps写成对象就是下面这样。
 
 ```
 const mapDispatchToProps = {
@@ -154,6 +174,47 @@ const mapDispatchToProps = {
     filter: filter
   };
 }
+```
+
+#### connect常见的使用
+们常见的写法，也就是ES7的decorator装饰器，也就是装饰者模式，这种写法比较简便：
+```
+@connect(
+  state=>({ num: state}),
+  { add, remove, addAsync }
+)
+class App extends React.Component{
+  render(){
+    return (
+      <div>
+        <h2>现在有物品{this.props.num}件</h2>
+        <button onClick={this.props.add}>add</button>
+        <button onClick={this.props.remove}>remove</button>
+        <button onClick={this.props.addAsync}>addAsync</button>
+      </div>
+    )
+  }
+}
+export default App;
+```
+或者是更容易理解的高阶函数的写法：
+```
+class App extends React.Component{
+  render(){
+    return (
+      <div>
+        <h2>现在有物品{this.props.num}件</h2>
+        <button onClick={this.props.add}>add</button>
+        <button onClick={this.props.remove}>remove</button>
+        <button onClick={this.props.addAsync}>addAsync</button>
+      </div>
+    )
+  }
+}
+App = connect(
+    state => ({num: state),
+    { add, remove, addAsync }
+)(App)
 ```
 
 
