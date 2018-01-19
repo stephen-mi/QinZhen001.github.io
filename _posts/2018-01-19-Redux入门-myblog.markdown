@@ -403,6 +403,29 @@ function todoApp(state = initialState, action) {
 }
 ```
 
+## 补充
+张著名的 flux 的单向数据流图
+```
+                 _________               ____________               ___________
+                |         |             |            |             |           |
+                | Action  |------------▶| Dispatcher |------------▶| callbacks |
+                |_________|             |____________|             |___________|
+                     ▲                                                   |
+                     |                                                   |
+                     |                                                   |
+ _________       ____|_____                                          ____▼____
+|         |◀----|  Action  |                                        |         |
+| Web API |     | Creators |                                        |  Store  |
+|_________|----▶|__________|                                        |_________|
+                     ▲                                                   |
+                     |                                                   |
+                 ____|________           ____________                ____▼____
+                |   User       |         |   React   |              | Change  |
+                | interactions |◀--------|   Views   |◀-------------| events  |
+                |______________|         |___________|              |_________|
+
+```
+
 ## 总结
 * store 由 Redux 的 createStore(reducer) 生成
 * state 通过 store.getState() 获取，本质上一般是一个存储着整个应用状态的对象
@@ -411,3 +434,5 @@ function todoApp(state = initialState, action) {
 * reducer 本质上是根据 action.type 来更新 state 并返回 nextState 的函数
 * reducer 必须返回值，否则 nextState 即为 undefined
 * 实际上，state 就是所有 reducer 返回值的汇总
+
+
