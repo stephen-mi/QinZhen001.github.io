@@ -18,6 +18,7 @@ Action 发出以后，Reducer 立即算出 State，这叫做同步；Action 发�
 
 怎么才能 Reducer 在异步操作结束后自动执行呢？这就要用到新的工具：中间件（middleware）。
 
+>**中间件:它提供的是位于 action 被发起之后，到达 reducer 之前的扩展点。**
 
 redux-thunk中间件可以让action创建函数先不返回一个action对象，而是返回一个函数，函数传递两个参数(dispatch,getState),在函数体内进行业务逻辑的封装
 
