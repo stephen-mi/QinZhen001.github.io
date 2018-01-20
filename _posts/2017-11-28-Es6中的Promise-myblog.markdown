@@ -92,6 +92,81 @@ myFirstPromise.then(function(successMessage){
 });
 ```
 
+包装成一个函数
+```
+function runAsync () {
+    var promise = new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            console.log('执行完成');
+            resolve('随便什么数据');
+        }, 2000);
+    });
+    return promise;
+}
+
+
+runAsync().then(function (data) {
+    console.log(data);
+    // 后边可以用传过来的数据来做一些其他操作
+    // ......
+});
+```
+
+### 链式调用
+```
+function runAsync1(){
+    var promise = new Promise(function(resolve, reject){
+        //做一些异步操作
+        setTimeout(function(){
+            console.log('异步任务1执行完成');
+            resolve('随便什么数据1');
+        }, 1000);
+    });
+    return promise;
+}
+function runAsync2(){
+    var promise = new Promise(function(resolve, reject){
+        //做一些异步操作
+        setTimeout(function(){
+            console.log('异步任务2执行完成');
+            resolve('随便什么数据2');
+        }, 2000);
+    });
+    return promise;
+}
+function runAsync3(){
+    var promise = new Promise(function(resolve, reject){
+        //做一些异步操作
+        setTimeout(function(){
+            console.log('异步任务3执行完成');
+            resolve('随便什么数据3');
+        }, 2000);
+    });
+    return promise;
+}
+runAsync1()
+    .then(function (data) {
+        console.log(data);
+        return runAsync2();
+    })
+    .then(function (data) {
+        console.log(data);
+        return runAsync3();
+    })
+    .then(function (data) {
+        console.log(data);
+    });
+```
+
+这段代码运行的结果是：
+
+异步任务1执行完成
+随便什么数据1
+异步任务2执行完成
+随便什么数据2
+异步任务3执行完成
+随便什么数据3
+
 ### Promise.prototype.then() VS Promise.prototype.catch()
 
 .then()方法使Promise原型链上的方法，它包含两个参数方法，分别是已成功resolved的回调和已失败rejected的回调
