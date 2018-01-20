@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "redux-undo"
-date:       2018-01-159 13:20:00
+date:       2018-01-19 13:20:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
