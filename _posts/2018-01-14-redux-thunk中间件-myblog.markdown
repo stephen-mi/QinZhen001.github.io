@@ -14,6 +14,8 @@ tags:
 
 ## redux-thunk中间件
 
+http://www.redux.org.cn/docs/advanced/AsyncActions.html
+
 Action 发出以后，Reducer 立即算出 State，这叫做同步；Action 发出以后，过一段时间再执行 Reducer，这就是异步。
 
 怎么才能 Reducer 在异步操作结束后自动执行呢？这就要用到新的工具：中间件（middleware）。
@@ -111,6 +113,209 @@ store.dispatch(add());
 store.dispatch(reducer());
 store.dispatch(addIfOdd());
 store.dispatch(addAsy());
+```
+
+
+
+### 再看一个例子
+通过使用指定的 middleware，action creator 除了返回 action 对象外还可以返回函数。这时，这个 action creator 就成为了 thunk。
+
+当 action creator 返回函数时，这个函数会被 Redux Thunk middleware 执行。这个函数并不需要保持纯净；它还可以带有副作用，包括执行异步 API 请求。这个函数还可以 dispatch action，就像 dispatch 前面定义的同步 action 一样。
+```
+import fetch from 'isomorphic-fetch'
+
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+function requestPosts(subreddit) {
+  return {
+    type: REQUEST_POSTS,
+    subreddit
+  }
+}
+
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+function receivePosts(subreddit, json) {
+  return {
+    type: RECEIVE_POSTS,
+    subreddit,
+    posts: json.data.children.map(child => child.data),
+    receivedAt: Date.now()
+  }
+}
+
+// 来看一下我们写的第一个 thunk action creator！
+// 虽然内部操作不同，你可以像其它 action creator 一样使用它：
+// store.dispatch(fetchPosts('reactjs'))
+
+export function fetchPosts(subreddit) {
+
+  // Thunk middleware 知道如何处理函数。
+  // 这里把 dispatch 方法通过参数的形式传给函数，
+  // 以此来让它自己也能 dispatch action。
+
+  return function (dispatch) {
+
+    // 首次 dispatch：更新应用的 state 来通知
+    // API 请求发起了。
+
+    dispatch(requestPosts(subreddit))
+
+    // thunk middleware 调用的函数可以有返回值，
+    // 它会被当作 dispatch 方法的返回值传递。
+
+    // 这个案例中，我们返回一个等待处理的 promise。
+    // 这并不是 redux middleware 所必须的，但这对于我们而言很方便。
+
+    return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
+      .then(response => response.json())
+      .then(json =>
+
+        // 可以多次 dispatch！
+        // 这里，使用 API 请求结果来更新应用的 state。
+
+        dispatch(receivePosts(subreddit, json))
+      )
+
+      // 在实际应用中，还需要
+      // 捕获网络请求的异常。
+  }
+}
+```
+
+
+```
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+import { createStore, applyMiddleware } from 'redux'
+import { selectSubreddit, fetchPosts } from './actions'
+import rootReducer from './reducers'
+
+const loggerMiddleware = createLogger()
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(
+    thunkMiddleware, // 允许我们 dispatch() 函数
+    loggerMiddleware // 一个很便捷的 middleware，用来打印 action 日志
+  )
+)
+
+store.dispatch(selectSubreddit('reactjs'))
+store.dispatch(fetchPosts('reactjs')).then(() =>
+  console.log(store.getState())
+)
+```
+
+
+>thunk 的一个优点是它的结果可以再次被 dispatch：
+
+```
+import fetch from 'isomorphic-fetch'
+
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+function requestPosts(subreddit) {
+  return {
+    type: REQUEST_POSTS,
+    subreddit
+  }
+}
+
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+function receivePosts(subreddit, json) {
+  return {
+    type: RECEIVE_POSTS,
+    subreddit,
+    posts: json.data.children.map(child => child.data),
+    receivedAt: Date.now()
+  }
+}
+
+function fetchPosts(subreddit) {
+  return dispatch => {
+    dispatch(requestPosts(subreddit))
+    return fetch(`http://www.reddit.com/r/${subreddit}.json`)
+      .then(response => response.json())
+      .then(json => dispatch(receivePosts(subreddit, json)))
+  }
+}
+
+function shouldFetchPosts(state, subreddit) {
+  const posts = state.postsBySubreddit[subreddit]
+  if (!posts) {
+    return true
+  } else if (posts.isFetching) {
+    return false
+  } else {
+    return posts.didInvalidate
+  }
+}
+
+export function fetchPostsIfNeeded(subreddit) {
+
+  // 注意这个函数也接收了 getState() 方法
+  // 它让你选择接下来 dispatch 什么。
+
+  // 当缓存的值是可用时，
+  // 减少网络请求很有用。
+
+  return (dispatch, getState) => {
+    if (shouldFetchPosts(getState(), subreddit)) {
+      // 在 thunk 里 dispatch 另一个 thunk！
+      return dispatch(fetchPosts(subreddit))
+    } else {
+      // 告诉调用代码不需要再等待。
+      return Promise.resolve()
+    }
+  }
+}
+```
+这可以让我们逐步开发复杂的异步控制流，同时保持代码整洁如初：
+
+
+
+```
+store.dispatch(fetchPostsIfNeeded('reactjs')).then(() =>
+  console.log(store.getState())
+)
+```
+
+
+### 用双箭头函数优化
+使用双箭头简化函数的写法
+```
+const addToCartUnsafe = productId => ({
+  type: types.ADD_TO_CART,
+  productId
+})
+
+
+export const addToCart = productId => (dispatch, getState) => {
+  if (getState().products.byId[productId].inventory > 0) {
+    dispatch(addToCartUnsafe(productId))
+  }
+}
+```
+转化为ES5
+
+```
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var addToCartUnsafe = function addToCartUnsafe(productId) {
+  return {
+    type: types.ADD_TO_CART,
+    productId: productId
+  };
+};
+
+var addToCart = exports.addToCart = function addToCart(productId) {
+  return function (dispatch, getState) {
+    if (getState().products.byId[productId].inventory > 0) {
+      dispatch(addToCartUnsafe(productId));
+    }
+  };
+};
 ```
 
 ## 异步操作的基本思路
