@@ -21,7 +21,7 @@ var msgs = msgs = ["你会不会喜欢上我呀?(｡･ω･)ﾉﾞ",
     "嘤嘤嘤,又摸我(≖ ‿ ≖)✧",
     "非礼呀！救命！(*´Д｀*)",
     "天凉了,一个人注意多穿衣服别感冒了(ง •̀_•́)ง",
-    "脚好酸,踩到柠檬了( >﹏<。)",
+    "脚好酸,踩到柠檬了\n( >﹏<。)",
     "Wo要吃棒棒糖✪ω✪",
     "呜~你欺负人家~讨厌死了啦(,,• ₃ •,,)",
     "喵.喵..喵... \\(•ㅂ•)/♥ "];
@@ -48,33 +48,12 @@ jQuery(document).ready(function ($) {
 });
 
 
-// //无聊动动
-// jQuery(document).ready(function ($) {
-//     window.setInterval(function () {
-//         msgs = ["播报明日天气<iframe name=\"xidie\" src=\"http://t.xidie.com/skin/2010-0601.html\"frameborder=\“0\” scrolling=\"no\" height=\"15px\"  width=\"130px\" allowtransparency=\"true\" ></iframe>", "乾坤大挪移！", "我飘过来了！~", "我飘过去了", "我得意地飘！~飘！~"];
-//         var i = Math.floor(Math.random() * msgs.length);
-//         s = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, -0.1, -0.2, -0.3, -0.4, -0.5, -0.6, -0.7, -0.75];
-//         var i1 = Math.floor(Math.random() * s.length);
-//         var i2 = Math.floor(Math.random() * s.length);
-//         $(".spig").animate({
-//                 left: document.body.offsetWidth / 2 * (1 + s[i1]),
-//                 top: document.body.offsetheight / 2 * (1 + s[i1])
-//             },
-//             {
-//                 duration: 2000,
-//                 complete: showMessage(msgs[i])
-//             });
-//     }, 45000);
-// });
-
-
-var spig_top = 50;
 //滚动条移动
 jQuery(document).ready(function ($) {
     var f = $(".spig").offset().top;
     $(window).scroll(function () {
         $(".spig").animate({
-                top: $(window).scrollTop() + f + 300
+                top: $(window).scrollTop() + f
             },
             {
                 queue: false,
@@ -89,11 +68,7 @@ jQuery(document).ready(function ($) {
         console.log('click', ismove)
         if (!ismove) {
             var i = Math.floor(Math.random() * msgs.length);
-            $(".spig").animate({},
-                {
-                    duration: 500,
-                    complete: showMessage(msgs[i])
-                });
+            showMessage(msgs[i])
         } else {
             ismove = false;
         }
