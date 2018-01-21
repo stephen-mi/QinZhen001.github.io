@@ -74,8 +74,8 @@
       <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="26" lean-forward="false" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+            <state relative-caret-position="286">
+              <caret line="13" column="22" lean-forward="false" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -373,7 +373,7 @@
       <workItem from="1516087033567" duration="877000" />
       <workItem from="1516105155723" duration="152000" />
       <workItem from="1516461515667" duration="1513000" />
-      <workItem from="1516511129777" duration="13079000" />
+      <workItem from="1516511129777" duration="13221000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -543,11 +543,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516534943185</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="qz commit">
+      <created>1516535121430</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1516535121430</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19854000" />
+    <option name="totallyTimeSpent" value="19996000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="438" y="56" width="949" height="861" extended-state="0" />
@@ -955,8 +962,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/spig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="26" lean-forward="false" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+        <state relative-caret-position="286">
+          <caret line="13" column="22" lean-forward="false" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
