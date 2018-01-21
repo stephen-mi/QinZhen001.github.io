@@ -51,8 +51,8 @@
       <file leaf-file-name="page.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_layouts/page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="592">
-              <caret line="237" column="8" lean-forward="true" selection-start-line="237" selection-start-column="8" selection-end-line="237" selection-end-column="8" />
+            <state relative-caret-position="220">
+              <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
               <folding>
                 <element signature="n#style#0;n#header#0;n#!!top" expanded="true" />
                 <element signature="n#div#0;n#div#0;n#!!top" expanded="false" />
@@ -135,8 +135,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="282" />
-    <option name="y" value="27" />
+    <option name="x" value="409" />
+    <option name="y" value="56" />
     <option name="width" value="1932" />
     <option name="height" value="1074" />
   </component>
@@ -331,7 +331,7 @@
       <workItem from="1516087033567" duration="877000" />
       <workItem from="1516105155723" duration="152000" />
       <workItem from="1516461515667" duration="1513000" />
-      <workItem from="1516511129777" duration="2143000" />
+      <workItem from="1516511129777" duration="2864000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -347,14 +347,21 @@
       <option name="project" value="LOCAL" />
       <updated>1516514115152</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="qz commit">
+      <created>1516514410042</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1516514410042</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8918000" />
+    <option name="totallyTimeSpent" value="9639000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="282" y="27" width="1932" height="1074" extended-state="0" />
+    <frame x="409" y="56" width="1932" height="1074" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12302006" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -732,8 +739,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_layouts/page.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="237" column="8" lean-forward="true" selection-start-line="237" selection-start-column="8" selection-end-line="237" selection-end-column="8" />
+        <state relative-caret-position="220">
+          <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
           <folding>
             <element signature="n#style#0;n#header#0;n#!!top" expanded="true" />
             <element signature="n#div#0;n#div#0;n#!!top" expanded="false" />
