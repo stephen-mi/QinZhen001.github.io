@@ -96,16 +96,14 @@ jQuery(document).ready(function ($) {
                 }); //控件新位置
                 if (!isMove) {
                     // 第一次的时候还没有更改isMove的状态
-                    $(".mumu").fadeTo("300", 0.8);
-                    console.log('fadeTo 0.8');
+                    $("#spig").fadeTo("300", 0.5);
                 }
                 isMove = true;
             }
         }
     }).mouseup(function () {
         if (isMove) {
-            $(".mumu").fadeTo("300", 1);
-            console.log('fadeTo 1');
+            $("#spig").fadeTo("300", 1);
         }
         initMove = false;
         isMove = false;
