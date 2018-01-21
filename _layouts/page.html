@@ -6,13 +6,12 @@ layout: default
     .spig {
       position: absolute;
       bottom: 10px;
-      left: 0;
+      left: 10px;
       display: block;
       z-index: 9999;
     }
 
     #message {
-      margin-left: 10px;
       padding: 2px;
       min-height: 1em;
       max-width: 150px;
@@ -31,6 +30,8 @@ layout: default
     }
 
     .mumu {
+      display: inline-block;
+      margin: 0 auto;
       width: 150px;
       height: 400px;
       cursor: move;
@@ -40,10 +41,6 @@ layout: default
     @media (min-width: 1360px) {
       .spig {
         margin-left: 16px;
-      }
-
-      #message {
-        margin-left: 0;
       }
     }
   }
