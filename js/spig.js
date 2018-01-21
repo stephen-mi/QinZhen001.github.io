@@ -94,10 +94,14 @@ jQuery(document).ready(function ($) {
                     top: y,
                     left: x
                 }); //控件新位置
+                $(".mumu").fadeTo("300", 0.8);
                 ismove = true;
             }
         }
     }).mouseup(function () {
+        if (ismove) {
+            $(".mumu").fadeTo("300", 1);
+        }
         _move = false;
         ismove = false;
     });
