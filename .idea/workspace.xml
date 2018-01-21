@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/hux-blog.min.css" afterPath="$PROJECT_DIR$/css/hux-blog.min.css" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -71,31 +72,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hux-blog.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="hux-blog.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/hux-blog.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="359" column="12" lean-forward="false" selection-start-line="359" selection-start-column="12" selection-end-line="359" selection-end-column="12" />
+            <state relative-caret-position="477">
+              <caret line="359" column="43" lean-forward="true" selection-start-line="359" selection-start-column="3" selection-end-line="359" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hux-blog.less" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/less/hux-blog.less">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hux-blog.min.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="hux-blog.min.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/css/hux-blog.min.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="0" column="2022" lean-forward="false" selection-start-line="0" selection-start-column="2022" selection-end-line="0" selection-end-column="2022" />
+            <state relative-caret-position="248">
+              <caret line="0" column="4629" lean-forward="false" selection-start-line="0" selection-start-column="4623" selection-end-line="0" selection-end-column="4629" />
               <folding />
             </state>
           </provider>
@@ -142,10 +133,7 @@
       <find>dody</find>
       <find>dod</find>
       <find>do</find>
-      <find>b</find>
-      <find>bo</find>
       <find>bod</find>
-      <find>body</find>
       <find>cyrs</find>
       <find>cyr</find>
       <find>cy</find>
@@ -155,6 +143,9 @@
       <find>curs</find>
       <find>cursor</find>
       <find>url('../img/cursor.svg')</find>
+      <find>b</find>
+      <find>bo</find>
+      <find>body</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -171,6 +162,7 @@
         <option value="$PROJECT_DIR$/_layouts/page.html" />
         <option value="$PROJECT_DIR$/less/hux-blog.less" />
         <option value="$PROJECT_DIR$/css/hux-blog.css" />
+        <option value="$PROJECT_DIR$/css/hux-blog.min.css" />
       </list>
     </option>
   </component>
@@ -417,7 +409,7 @@
       <workItem from="1516087033567" duration="877000" />
       <workItem from="1516105155723" duration="152000" />
       <workItem from="1516461515667" duration="1513000" />
-      <workItem from="1516511129777" duration="9436000" />
+      <workItem from="1516511129777" duration="9649000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -545,11 +537,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516529700059</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="qz commit">
+      <created>1516529703790</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1516529703790</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16211000" />
+    <option name="totallyTimeSpent" value="16424000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -948,18 +947,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/hux-blog.min.css">
+    <entry file="file://$PROJECT_DIR$/css/hux-blog.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="0" column="2022" lean-forward="false" selection-start-line="0" selection-start-column="2022" selection-end-line="0" selection-end-column="2022" />
+        <state relative-caret-position="477">
+          <caret line="359" column="43" lean-forward="true" selection-start-line="359" selection-start-column="3" selection-end-line="359" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/hux-blog.css">
+    <entry file="file://$PROJECT_DIR$/css/hux-blog.min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="359" column="12" lean-forward="false" selection-start-line="359" selection-start-column="12" selection-end-line="359" selection-end-column="12" />
+        <state relative-caret-position="248">
+          <caret line="0" column="4629" lean-forward="false" selection-start-line="0" selection-start-column="4623" selection-end-line="0" selection-end-column="4629" />
           <folding />
         </state>
       </provider>
