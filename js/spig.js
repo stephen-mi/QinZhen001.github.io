@@ -54,7 +54,7 @@ jQuery(document).ready(function ($) {
 //鼠标点击时
 jQuery(document).ready(function ($) {
     $(".mumu").click(function () {
-        console.log('click', ismove)
+        // console.log('click', ismove)
         if (!ismove) {
             var i = Math.floor(Math.random() * msgs.length);
             showMessage(msgs[i])
