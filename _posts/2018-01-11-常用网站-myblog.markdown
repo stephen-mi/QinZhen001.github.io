@@ -31,6 +31,9 @@ http://babeljs.io/repl/#?babili=false&evaluate=true&lineWrap=false&presets=es201
 ### pdf转换器
 https://pdfcandy.com/
 
+### GitHub上 README 增加图片标签 
+http://shields.io/
+
 >需要翻墙
 
 ### 图标库
