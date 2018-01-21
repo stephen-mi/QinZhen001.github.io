@@ -2,37 +2,42 @@
 layout: default
 ---
 <style>
-  .spig {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    display: block;
-    z-index: 9999;
+  @media (min-width: 1110px) {
+    .spig {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      display: block;
+      z-index: 9999;
+    }
+
+    #message {
+      margin-left: 10px;
+      padding: 2px;
+      min-height: 1em;
+      max-width: 150px;
+      color: #FF4081;
+      border: 1px solid #c4c4c4;
+      background: #ddd;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      z-index: 10000;
+      font-size: 14px;
+      -moz-box-shadow: 0 0 15px #eeeeee;
+      -webkit-box-shadow: 0 0 15px #eeeeee;
+      box-shadow: 0 0 15px #eeeeee;
+      outline: none;
+    }
+
+    .mumu {
+      width: 150px;
+      height: 400px;
+      cursor: move;
+      background: url('../img/figure-person.png') no-repeat;
+    }
   }
 
-  #message {
-    min-height: 1em;
-    text-align: center;
-    width: auto !important;
-    color: #191919;
-    border: 1px solid #c4c4c4;
-    background: #ddd;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    z-index: 10000;
-    -moz-box-shadow: 0 0 15px #eeeeee;
-    -webkit-box-shadow: 0 0 15px #eeeeee;
-    box-shadow: 0 0 15px #eeeeee;
-    outline: none;
-  }
-
-  .mumu {
-    width: 150px;
-    height: 400px;
-    cursor: move;
-    background: url('../img/figure-person.png') no-repeat;
-  }
 </style>
 <!-- Page Header -->
 <header class="intro-header"
