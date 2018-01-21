@@ -3,32 +3,32 @@ layout: default
 ---
 <style>
   .spig {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
     display: block;
     width: 150px;
     height: 400px;
-    position: fixed;
-    bottom: 10px;
-    left: 0;
     z-index: 9999;
   }
 
   #message {
+    position: absolute;
+    margin-left: 10px;
+    padding: 5px;
+    top: -45px;
+    min-height: 1em;
+    text-align: center;
+    width: auto !important;
     color: #191919;
     border: 1px solid #c4c4c4;
     background: #ddd;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    min-height: 1em;
-    padding: 5px;
-    top: -45px;
-    position: absolute;
-    text-align: center;
-    width: auto !important;
     z-index: 10000;
     -moz-box-shadow: 0 0 15px #eeeeee;
     -webkit-box-shadow: 0 0 15px #eeeeee;
-    border-color: #eeeeee;
     box-shadow: 0 0 15px #eeeeee;
     outline: none;
   }
@@ -237,7 +237,7 @@ layout: default
     {% endif %}
   </div>
   <div id="spig" class="spig">
-    <div id="message">加载中……</div>
+    <div id="message">加载中加载中加载中加载中加载中加载中加载中加载中加载中加载中……</div>
     <div id="mumu" class="mumu"></div>
   </div>
 </div>
