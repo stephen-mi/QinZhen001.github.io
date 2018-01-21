@@ -1,28 +1,17 @@
 /*
  *作者木木
- *
  *http://www.dao-gu.com
+ *在原基础上进行了增删
  */
-//右键菜单
-// jQuery(document).ready(function ($) {
-//     $("#spig").mousedown(function (e) {
-//         if (e.which == 3) {
-//             showMessage("秘密通道:<br />    <a href=\"http://www.anotherhome.net\" title=\"首页\">首页</a>    <a href=\"http://www.anotherhome.net/?page_id=366\" title=\"项目\">项目</a>    <a href=\"http://www.anotherhome.net/wp-login.php\" title=\"后台\">后台</a> ", 10000);
-//         }
-//     });
-//     $("#spig").bind("contextmenu", function (e) {
-//         return false;
-//     });
-// });
 
 
 var msgs = msgs = ["你会不会喜欢上我呀?(｡･ω･)ﾉﾞ",
-    "我已经有三个喜欢的人。你呀，你呀，你呀。⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
-    "嘤嘤嘤,又摸我(≖ ‿ ≖)✧",
-    "非礼呀！救命！(*´Д｀*)",
-    "天凉了,一个人注意多穿衣服别感冒了(ง •̀_•́)ง",
-    "脚好酸,踩到柠檬了\n( >﹏<。)",
-    "Wo要吃棒棒糖✪ω✪",
+    "我已经有三个喜欢的人了。你呀，你呀，你呀。⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄",
+    "嘤嘤嘤,又摸我<br/>(≖ ‿ ≖)✧",
+    "非礼呀！救命！<br/>(*´Д｀*)",
+    "天凉了,一个人注意多穿衣服别感冒了<br/>(ง •̀_•́)ง",
+    "脚好酸,踩到柠檬了<br/>( >﹏<。)",
+    "Wo要吃棒棒糖<br/>✪ω✪",
     "呜~你欺负人家~讨厌死了啦(,,• ₃ •,,)",
     "喵.喵..喵... \\(•ㅂ•)/♥ "];
 
@@ -50,7 +39,7 @@ jQuery(document).ready(function ($) {
 
 //滚动条移动
 jQuery(document).ready(function ($) {
-    var f = $(".spig").offset().top;
+    var f = parseInt($(".spig").css("top"));
     $(window).scroll(function () {
         $(".spig").animate({
                 top: $(window).scrollTop() + f
