@@ -12,7 +12,7 @@ layout: default
     }
 
     #message {
-      padding: 2px;
+      padding: 2px 4px;
       min-height: 1em;
       max-width: 150px;
       color: #FF4081;
@@ -34,8 +34,60 @@ layout: default
       margin: 0 auto;
       width: 150px;
       height: 400px;
-      cursor: move;
+      /*cursor: move;*/
       background: url('../img/figure-person.png') no-repeat;
+    }
+
+    .music-note {
+      position: absolute;
+      font-size: 50px;
+      color: #FCB040;
+      width: 1px;
+      left: 50%;
+      opacity: 0;
+    }
+
+    .music-note#one {
+      margin-left: -50px;
+      top: 50%;
+      animation: note-anim 2s 3.5s infinite ease;
+      animation-fill-mode: forwards;
+      -webkit-animation: note-anim 2s 3.5s infinite ease;
+      -webkit-animation-fill-mode: forwards;
+    }
+
+    .music-note#two {
+      margin-left: 50px;
+      top: 30%;
+      animation: note-anim 2s 4.3s infinite ease;
+      animation-fill-mode: forwards;
+      -webkit-animation: note-anim 2s 4.3s infinite ease;
+      -webkit-animation-fill-mode: forwards;
+    }
+
+    @-webkit-keyframes note-anim /* Safari and Chrome */
+    {
+      0% {
+        opacity: 0;
+        -webkit-transform: translate(0px, 50px);
+        transform: translate(0px, 50px);
+      }
+      30% {
+        -webkit-transform: rotate(12deg) translate(-30px, 0px);
+        transform: rotate(12deg) translate(-30px, 0px);
+      }
+      45% {
+        opacity: 1;
+      }
+      60% {
+        -webkit-transform: rotate(-12deg) translate(30px, -100px);
+        transform: rotate(-12deg) translate(30px, -100px);
+      }
+      100% {
+        opacity: 0;
+        -webkit-transform: rotate(0deg) translate(0px, -200px);
+        transform: rotate(0deg) translate(0px, -200px);
+      }
     }
 
     @media (min-width: 1360px) {
@@ -245,5 +297,9 @@ layout: default
   <div id="spig" class="spig">
     <div id="message">欢迎来到渣臻的Blog(｡・`ω´･)</div>
     <div id="mumu" class="mumu"></div>
+    <span class="music-note" id="one">&#9835;</span>
+    <span class="music-note" id="two">&#9834;</span>
   </div>
 </div>
+
+<script src="../js/spig.js"></script>
