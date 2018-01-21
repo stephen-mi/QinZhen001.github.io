@@ -54,12 +54,12 @@ jQuery(document).ready(function ($) {
 //鼠标点击时
 jQuery(document).ready(function ($) {
     $(".mumu").click(function () {
-        // console.log('click', ismove)
-        if (!ismove) {
+        // console.log('click', isMove)
+        if (!isMove) {
             var i = Math.floor(Math.random() * msgs.length);
             showMessage(msgs[i])
         } else {
-            ismove = false;
+            isMove = false;
         }
     });
 });
@@ -74,17 +74,17 @@ function showMessage(a, b) {
 };
 
 //拖动
-var _move = false;
-var ismove = false; //移动标记
+var initMove = false;
+var isMove = false; //移动标记
 var _x, _y; //鼠标离控件左上角的相对位置
 jQuery(document).ready(function ($) {
     $("#spig").mousedown(function (e) {
-        _move = true;
+        initMove = true;
         _x = e.pageX - parseInt($("#spig").css("left"));
         _y = e.pageY - parseInt($("#spig").css("top"));
     });
     $(document).mousemove(function (e) {
-        if (_move) {
+        if (initMove) {
             var x = e.pageX - _x;
             var y = e.pageY - _y;
             var wx = $(window).width() - $('#spig').width();
@@ -94,15 +94,20 @@ jQuery(document).ready(function ($) {
                     top: y,
                     left: x
                 }); //控件新位置
-                $(".mumu").fadeTo("300", 0.8);
-                ismove = true;
+                if (!isMove) {
+                    // 第一次的时候还没有更改isMove的状态
+                    $(".mumu").fadeTo("300", 0.8);
+                    console.log('fadeTo 0.8');
+                }
+                isMove = true;
             }
         }
     }).mouseup(function () {
-        if (ismove) {
+        if (isMove) {
             $(".mumu").fadeTo("300", 1);
+            console.log('fadeTo 1');
         }
-        _move = false;
-        ismove = false;
+        initMove = false;
+        isMove = false;
     });
 });

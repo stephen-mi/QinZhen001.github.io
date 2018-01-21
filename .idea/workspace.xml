@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_layouts/page.html" afterPath="$PROJECT_DIR$/_layouts/page.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spig.js" afterPath="$PROJECT_DIR$/js/spig.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -75,8 +74,8 @@
       <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="100" column="28" lean-forward="false" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
+            <state relative-caret-position="550">
+              <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -98,8 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>post-</find>
-      <find>post-bg</find>
       <find>post-b</find>
       <find>post</find>
       <find>pos</find>
@@ -128,7 +125,14 @@
       <find>b</find>
       <find>bo</find>
       <find>body</find>
+      <find>_move</find>
+      <find>ismove</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>initMove</replace>
+      <replace>isMove</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -374,7 +378,7 @@
       <workItem from="1516087033567" duration="877000" />
       <workItem from="1516105155723" duration="152000" />
       <workItem from="1516461515667" duration="1513000" />
-      <workItem from="1516511129777" duration="21628000" />
+      <workItem from="1516511129777" duration="22013000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -579,11 +583,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516544944686</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="qz commit">
+      <created>1516545453777</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1516545453777</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28403000" />
+    <option name="totallyTimeSpent" value="28788000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="129" y="116" width="1383" height="861" extended-state="0" />
@@ -829,7 +840,7 @@
         <state relative-caret-position="-49995">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -991,8 +1002,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/spig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="100" column="28" lean-forward="false" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
+        <state relative-caret-position="550">
+          <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
