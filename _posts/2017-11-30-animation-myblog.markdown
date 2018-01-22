@@ -76,6 +76,43 @@ animation-play-state:paused;
     当前动画以被停止。 
 
 
+### 小例子
+```
+.music-note#one {
+    margin-left: -250px;
+    top: 50%;
+    animation: note-anim 2s 3.5s infinite ease;
+    animation-fill-mode: forwards;
+    -webkit-animation: note-anim 2s 3.5s infinite ease;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes note-anim {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate(0px, 50px);
+        transform: translate(0px, 50px);
+    }
+    30% {
+        -webkit-transform: rotate(12deg) translate(-30px, 0px);
+        transform: rotate(12deg) translate(-30px, 0px);
+    }
+    45% {
+        opacity: 1;
+    }
+    60% {
+        -webkit-transform: rotate(-12deg) translate(30px, -100px);
+        transform: rotate(-12deg) translate(30px, -100px);
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: rotate(0deg) translate(0px, -200px);
+        transform: rotate(0deg) translate(0px, -200px);
+    }
+}
+```
+
+>这里的3.5s是指animation-delay，规定在第一次动画开始之前的延迟。如果有设置多次播放，对后面播放的动画无延迟效果
 
 
 
