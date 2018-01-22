@@ -16,7 +16,7 @@ $(document).ready(function () {
 //鼠标点击时
 $(document).ready(function () {
     $('.back-to-top').click(function () {
-        $('body,html').animate({scrollTop: 0}, 500)
+        $('body,html').animate({scrollTop: 0}, 500);
         $('.back-to-top').css("top", '-900px');
     })
 })
