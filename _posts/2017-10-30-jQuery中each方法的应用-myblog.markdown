@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "jQuery中each方法的应用"
+title:      "Jquery中each方法的应用"
 date:       2017-10-30 15:21:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - jQuery
+    - Jquery
 ---
 
 > “Yeah It's on. ”

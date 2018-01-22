@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "jQuery中动画animate"
+title:      "Jquery中动画animate"
 date:       2017-10-29 22:52:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - jQuery
+    - Jquery
 ---
 
 > “Yeah It's on. ”

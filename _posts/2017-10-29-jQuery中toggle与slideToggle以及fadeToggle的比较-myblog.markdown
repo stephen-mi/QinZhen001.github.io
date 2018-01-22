@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "jQuery中toggle与slideToggle以及fadeToggle的比较"
+title:      "Jquery中toggle与slideToggle以及fadeToggle的比较"
 date:       2017-10-29 22:33:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - jQuery
+    - Jquery
 ---
 
 > “Yeah It's on. ”
