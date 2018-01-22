@@ -4,6 +4,7 @@
 //滚动条移动
 $(document).ready(function () {
     $(window).scroll(function () {
+        console.log('scroll', $(window).scrollTop())
         if ($(window).scrollTop() >= 200) {
             $('.back-to-top').css("top", '-90px');
         } else {
