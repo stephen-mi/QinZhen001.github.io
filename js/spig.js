@@ -40,14 +40,9 @@ jQuery(document).ready(function ($) {
 //滚动条移动
 jQuery(document).ready(function ($) {
     var f = parseInt($(".spig").css("top"));
-    var currentTop = 0;
-    $(window).scrollStart(function () {
-        currentTop = $(window).scrollTop();
-        console.log('currentTop', currentTop);
-    })
-    $(window).scrollEnd(function () {
+    $(window).scroll(function () {
         $("#spig").animate({
-                top: $(window).scrollTop() - currentTop + f
+                top: $(window).scrollTop() + f
                 //有bug 要记录当前滚动条的位置
             },
             {
