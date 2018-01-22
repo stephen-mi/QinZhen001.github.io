@@ -41,7 +41,7 @@ jQuery(document).ready(function ($) {
 jQuery(document).ready(function ($) {
     var f = parseInt($(".spig").css("top"));
     $(window).scroll(function () {
-        $(".spig").animate({
+        $("#spig").animate({
                 top: $(window).scrollTop() + f
             },
             {
@@ -96,14 +96,14 @@ jQuery(document).ready(function ($) {
                 }); //控件新位置
                 if (!isMove) {
                     // 第一次的时候还没有更改isMove的状态
-                    $("#spig").fadeTo("300", 0.5);
+                    $("#spig").fadeTo("100", 0.5);
                 }
                 isMove = true;
             }
         }
     }).mouseup(function () {
         if (isMove) {
-            $("#spig").fadeTo("300", 1);
+            $("#spig").fadeTo("100", 1);
         }
         initMove = false;
         isMove = false;
