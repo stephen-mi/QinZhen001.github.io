@@ -26,13 +26,13 @@ jQuery(document).ready(function ($) {
 //鼠标在上方时
 jQuery(document).ready(function ($) {
     //$(".mumu").jrumble({rangeX: 2,rangeY: 2,rangeRot: 1});
-    $(".mumu").mouseover(function () {
-        $(".mumu").fadeTo("300", 0.8);
+    $("#spig").mouseover(function () {
+        $("#spig").fadeTo("300", 0.8);
         var i = Math.floor(Math.random() * msgs.length);
         showMessage(msgs[i]);
     });
-    $(".mumu").mouseout(function () {
-        $(".mumu").fadeTo("300", 1)
+    $("#spig").mouseout(function () {
+        $("#spig").fadeTo("300", 1)
     });
 });
 
