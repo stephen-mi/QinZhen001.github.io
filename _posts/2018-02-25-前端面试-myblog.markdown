@@ -1320,13 +1320,11 @@ console.log('B')
 
 
 ```
-		
+<script src="xxx.js" defer></script>		
 ```
 
-
 ```
-
-
+<script src="xxx.js" async></script>	
 ```
 
 异步加载的区别：
@@ -1363,21 +1361,21 @@ console.log('B')
 
 
 **简单介绍下Cache-Control的属性设置:**
-1) max-age: 设置缓存的最大的有效时间，单位为秒（s）。max-age会覆盖掉Expires
-2) s-maxage: 只用于共享缓存，比如CDN缓存（s -> share）。与max-age 的区别是：max-age用于普通缓存，
+1. max-age: 设置缓存的最大的有效时间，单位为秒（s）。max-age会覆盖掉Expires
+2. s-maxage: 只用于共享缓存，比如CDN缓存（s -> share）。与max-age 的区别是：max-age用于普通缓存，
 而s-maxage用于代理缓存。如果存在s-maxage,则会覆盖max-age 和 Expires.
-3) public：响应会被缓存，并且在多用户间共享。默认是public。
-4) private: 响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-5) no-cache: 指定不缓存响应，表明资源不进行缓存。但是设置了no-cache之后并不代表浏览器不缓存，而是在缓存前要向服务器确认资源是否被更改。因此有的时候只设置no-cache防止缓存还是不够保险，还可以加上private指令，将过期时间设为过去的时间。
-6) no-store: 绝对禁止缓存。
-7) must-revalidate: 如果页面过期，则去服务器进行获取。
+3. public：响应会被缓存，并且在多用户间共享。默认是public。
+4. private: 响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+5. no-cache: 指定不缓存响应，表明资源不进行缓存。但是设置了no-cache之后并不代表浏览器不缓存，而是在缓存前要向服务器确认资源是否被更改。因此有的时候只设置no-cache防止缓存还是不够保险，还可以加上private指令，将过期时间设为过去的时间。
+6. no-store: 绝对禁止缓存。
+7. must-revalidate: 如果页面过期，则去服务器进行获取。
 
 ![enter description here][10]
 
 
 
-1) 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
-2) 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
+1. 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
+2. 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
 
 ![enter description here][11]
 
