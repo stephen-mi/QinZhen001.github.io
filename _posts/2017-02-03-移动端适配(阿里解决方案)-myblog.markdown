@@ -1,0 +1,135 @@
+---
+layout:     post
+title:      "移动端适配(阿里解决方案)"
+date:       2018-02-03 15:31:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - Other
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+[网页链接](https://www.w3cplus.com/css/vw-for-layout.html)
+
+在移动端布局，我们需要面对两个最为重要的问题：
+
+* 各终端下的适配问题
+* Retina屏的细节处理
+
+不同的终端，我们面对的屏幕分辨率、DPR、1px、2x图等一系列的问题。那么这个布局方案也是针对性的解决这些问题，只不过解决这些问题不再是使用Hack手段来处理，而是直接使用原生的CSS技术来处理的。
+
+
+首要解决的是适配终端。回想一下，以前的Flexible方案是通过JavaScript来模拟vw的特性，那么到今天为止，vw已经得到了众多浏览器的支持，也就是说，可以直接考虑将vw单位运用于我们的适配布局中。
+
+众所周知，vw是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是window.innerWidth/window.innerHeight的大小。用下图简单的来示意一下：
+
+
+![enter description here][1]
+
+
+
+在CSS Values and Units Module Level 3中和Viewport相关的单位有四个，分别为vw、vh、vmin和vmax。
+
+* vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
+* vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
+* vmin：vmin的值是当前vw和vh中较小的值
+* vmax：vmax的值是当前vw和vh中较大的值
+
+
+>vmin和vmax是根据Viewport中长度偏大的那个维度值计算出来的，如果window.innerHeight > window.innerWidth则vmin取百分之一的window.innerWidth，vmax取百分之一的window.innerHeight计算。
+
+
+![enter description here][2]
+
+
+所以在这个方案中大胆的使用vw来替代以前Flexible中的rem缩放方案。
+
+
+
+目前出视觉设计稿，我们都是使用750px宽度的，从上面的原理来看，那么100vw = 750px，即1vw = 7.5px。那么我们可以根据设计图上的px值直接转换成对应的vw值。看到这里，很多同学开始感到崩溃，又要计算，能不能简便一点，能不能再简单一点，其实是可以的，我们可以使用PostCSS的插件postcss-px-to-viewport，让我们可以直接在代码中写px，比如：
+```
+[w-369]{
+    width: 369px;
+}
+
+[w-369] h2 span {
+    background: #FF5000;
+    color: #fff;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 20px;
+    text-shadow: 0 2px 2px #FF5000;
+    padding: 2px 5px;
+    margin-right: 5px;
+}
+```
+PostCSS编译之后就是我们所需要的带vw代码：
+```
+[w-369] {
+    width: 49.2vw;
+}
+[w-369] h2 span {
+    background: #ff5000;
+    color: #fff;
+    display: inline-block;
+    border-radius: .53333vw;
+    text-shadow: 0 0.26667vw 0.26667vw #ff5000;
+    padding: .26667vw .66667vw;
+}
+[w-369] h2 span,
+[w-369] i {
+    font-size: 2.66667vw;
+    margin-right: .66667vw;
+}
+```
+在实际使用的时候，你可以对该插件进行相关的参数配置：
+```
+"postcss-px-to-viewport": {
+    viewportWidth: 750,
+    viewportHeight: 1334,
+    unitPrecision: 5,
+    viewportUnit: 'vw',
+    selectorBlackList: [],
+    minPixelValue: 1,
+    mediaQuery: false
+}
+```
+
+
+
+
+
+假设你的设计稿不是750px而是1125px，那么你就可以修改vewportWidth的值。有关于该插件的详细介绍，可以阅读其官方使用文档。
+
+上面解决了px到vw的转换计算。那么在哪些地方可以使用vw来适配我们的页面。根据相关的测试：
+* 容器适配，可以使用vw
+* 文本的适配，可以使用vw
+* 大于1px的边框、圆角、阴影都可以使用vw
+* 内距和外距，可以使用vw
+
+
+
+## 如何判断自己的应用是否支持
+
+
+
+## 总结
+* 使用vw来实现页面的适配，并且通过PostCSS的插件postcss-px-to-viewport把px转换成vw。这样的好处是，我们在撸码的时候，不需要进行任何的计算，你只需要根据设计图写px单位
+* 为了更好的实现长宽比，特别是针对于img、vedio和iframe元素，通过PostCSS插件postcss-aspect-ratio-mini来实现，在实际使用中，只需要把对应的宽和高写进去即可
+* 为了解决1px的问题，使用PostCSS插件postcss-write-svg,自动生成border-image或者background-image的图片
+
+
+
+
+著作权归作者所有。
+商业转载请联系作者获得授权,非商业转载请注明出处。
+原文: https://www.w3cplus.com/css/vw-for-layout.html © w3cplus.com
+
+
+  [1]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-4.png
+  [2]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-5.png
+  [3]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-6.png

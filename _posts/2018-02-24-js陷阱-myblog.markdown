@@ -1,0 +1,112 @@
+---
+layout:     post
+title:      "js陷阱"
+date:       2018-02-24 20:28:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+[网页链接](https://mp.weixin.qq.com/s/LxJtnDghx09wFG9bM20ZcA)
+
+
+### 数字排序
+Javascript 的sort()函数在默认情况下使用字母数字（字符串Unicode码点）排序。
+
+所以[1,2,5,10].sort() 会输出 [1, 10, 2, 5].
+要正确的排序一个数组, 你可以用 [1,2,5,10].sort((a, b) => a — b)
+很简单的解决方案, 前提是你得知道有这么个坑
+
+
+### new Date()
+* 没有参数： 返回当前时间
+* 一个参数 x： 返回1970年1月1日 + x 毫秒。 了解 Unix 的人知道为什么。
+* new Date(1, 1, 1) 返回 1901, 二月 , 1号。因为，第一个参数表示1900年加1年，第二个参数表示这一年的第二个月（因此是二月） — 脑回路正常的人会从1开始索引 — ，第三个参数很明显是这个月的第一天
+* new Date(2016, 1, 1) 不会给1900年加上2016。它仅代表2016年。
+
+
+Date.now() // 获取当前时间的毫秒数
+* var dt = new Date() dt.getTime() // 获取毫秒数
+* dt.getFullYear() // 年 
+* **dt.getMonth() // 月 (0-11) 特别注意这里 实际应用的时候记得+1**
+* dt.getDate() //日 (0 - 31 ) 
+* dt.getHours() //小时(0 - 23) 
+* dt.getMinutes() //分钟(0 - 59)
+* dt.getSeconds() //秒(0 - 59)
+
+
+### Replace
+```
+let s = 'bob'
+const replaced = s.replace('b','l')
+console.log(replaced === 'lob') //true
+console.log(s === 'bob')  //true
+```
+
+**replace 只会替换第一个匹配的字符串**
+
+如果你想替换所有匹配的字符串，你可以使用带/g标志的正则表达式 :
+
+"bob".replace(/b/g, 'l') === 'lol' // 替换所有匹配的字符串
+
+###  比较的时候要注意
+```
+// These are ok
+'abc' === 'abc' // true
+1 === 1         // true
+// These are not
+[1,2,3] === [1,2,3] // false
+{a: 1} === {a: 1}   // false
+{} === {}           // false
+```
+
+
+### 闭包
+```
+const Greeters = []
+for (var i = 0; i < 10; i++) {
+    Greeters.push(function () {
+        return console.log(i)
+    })
+}
+Greeters[0]() // 10
+Greeters[1]() // 10
+Greeters[2]() // 10
+```
+
+原因：
+i一直被引用
+Greeters[0]只是一个函数
+```
+function (){
+				return console.log(i)
+			}
+```
+Greeters[0]()这时候才会调用，此时i已经变为10了 
+
+怎样修改让它输出 0, 1, 2… ？
+
+**用let替代var解决**
+let和var的不同在于作用域。var的作用域是最近的函数块，let的作用域是最近的封闭块，封闭块可以小于函数块（如果不在任何块中，则let和var都是全局的）。
+
+**替代方法: 用 bind:**
+Greeters.push(console.log.bind(null, i))
+
+### hasOwnProperty
+```
+var item
+for(item in f){
+  // 高级浏览器已经在 for in 中屏蔽了来自原型的属性
+  // 但是为了程序的健壮性 建议加上
+  if(f.hasOwnProperty(item)) {
+     console.log(item)
+  }
+}
+```
+

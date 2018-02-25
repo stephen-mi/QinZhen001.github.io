@@ -1,0 +1,82 @@
+---
+layout:     post
+title:      "Object.create"
+date:       2017-07-28 22:54:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+> “Yeah It's on. ”
+
+
+## Object.create(proto [, propertiesObject ]) 
+
+propertiesObject 参数的详细解释：（默认都为false）
+数据属性： 
+* writable:是否可任意写 
+* configurable：是否能够删除，是否能够被修改 
+* enumerable：是否能用 for in 枚举 
+* value：值 
+访问属性：
+* get(): 访问
+* set(): 设置
+
+
+```
+		newObj = Object.create(obj, {
+			t1: {
+				value: 'yupeng',
+				writable: true
+			},
+			bar: {
+				configurable: false,
+				get: function() {
+					return bar;
+				},
+				set: function(value) {
+					bar = value
+				}
+			}
+		})
+```
+
+
+通过 Object.create() 方法，使用一个指定的原型对象和一个额外的属性对象创建一个新对象。这是一个用于对象创建、继承和重用的强大的新接口。说直白点，就是一个新的对象可以继承一个对象的属性，并且可以自行添加属性。
+
+## 用 Object.create实现类式继承
+```
+// Shape - 父类(superclass)
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+// 父类的方法
+Shape.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// Rectangle - 子类(subclass)
+function Rectangle() {
+  Shape.call(this); // call super constructor.
+}
+
+// 子类续承父类
+Rectangle.prototype = Object.create(Shape.prototype);
+Rectangle.prototype.constructor = Rectangle;
+
+// 因为使用“.prototype =...”后,constructor会改变为“=...”的那个
+// constructor，所以要重新指定.constructor 为自身。
+var rect = new Rectangle();
+
+console.log('Is rect an instance of Rectangle?',
+  rect instanceof Rectangle); // true
+console.log('Is rect an instance of Shape?',
+  rect instanceof Shape); // true
+rect.move(1, 1); // Outputs, 'Shape moved.'
+```

@@ -1,0 +1,16 @@
+---
+layout:     post
+title:      "js设计模式"
+date:       2018-02-02 18:44:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - Other
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+[网页链接](https://www.cnblogs.com/libin-1/p/6337115.html)
