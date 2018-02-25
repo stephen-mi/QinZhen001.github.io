@@ -981,7 +981,7 @@ DocumentFragment 接口表示一个没有父级文件的最小文档对象。它
         }, 1000);
     })
 ```   
-### 尽早操作
+#### 尽早操作
 ```
     window.addEventListener('load', function () {
         // 页面的全部资源加载完才会执行，包括图片，视频等
@@ -1026,23 +1026,26 @@ JavaScript是在浏览器执行的语言， 是因为它有BOM和DOM，前者提
 * typeof console.log 结果 “function”
 
 ### == 运算符
-100 = ‘100’ //true 0 == ‘’ //true null == undefined //true
-
+100 == ‘100’ //true 
+0 == ‘’ //true 
+null == undefined //true
+```
 if(obj.a == null){ // 这里相当于obj.a === null || obj.a === undefined 的简写形式 // 这是jquery源码中的推荐写法 }
-
+```
 
 
 ### 如何理解JSON
 JSON只不过是一个JS对象而已
-
+```
 JSON.stringify({a:10,b:20}) 
 JSON.parse(‘{“a”:10,”b”:20}’)
-
+```
 
 ### 判断一个变量会被当作true还是false
+```
 var a = 100 
 console.log(!!a)
-
+```
 
 ### 如何准确判断一个变量是数组类型
 ```
@@ -1084,7 +1087,7 @@ console.log(typeof arr);//object,typeof是无法判断是否是数组的
     var arr = [1, 2, 3, 4];
     var arr2 = arr.map(function (item, index, array) {
         //将元素重新组装，并返回
-        return '<b>' + item + '</b>'
+        return '' + item + ''
     });
 ```
 #### 数组 filter
@@ -1161,8 +1164,7 @@ console.log(location.hash);
         }
     }
 ```
-
-readyState
+#### readyState
 * 0 (未初始化) 还没有调用send()方法
 * 1 (载入) 已调用send()方法，正在发送请求
 * 2 (载入完成) send()方法执行完成，已经接收到全部响应内容
@@ -1313,13 +1315,13 @@ console.log('B')
 
 
 ```
-<script type="text/javascript" src="b1j6wg/defer2.js" defer>		</script>
+		
 ```
 
 
 ```
-<script type="text/javascript" src="b1j6wg/async1.js" async>
-</script>
+
+
 ```
 
 异步加载的区别：
@@ -1441,22 +1443,22 @@ window.addEventListener('error',function(e){
 ```
 利用Image对象上报
 
-<script>
+
     (new Image()).src = 'http://baidu.com/test?error=tksjk...'
     // ?后面就可以添加错误信息了
-</script>    
+    
 ```
 
 ## 算法类
-[快速排序](https://segmentfault.com/a/1190000009426421)
-[选择排序](https://segmentfault.com/a/1190000009366805)
-[希尔排序](https://segmentfault.com/a/1190000009461832)
-[堆栈](https://juejin.im/entry/58759e79128fe1006b48cdfd)
-[队列](https://juejin.im/entry/58759e79128fe1006b48cdfd)
-[链表](https://juejin.im/entry/58759e79128fe1006b48cdfd)
-[深入学习递归](https://segmentfault.com/a/1190000009857470)
-[波兰式和逆波兰式](http://www.cnblogs.com/chenying99/p/3675876.html)
-[波兰式和逆波兰式github](https://github.com/Tairraos/rpn.js/blob/master/rpn.js)
+* [快速排序](https://segmentfault.com/a/1190000009426421)
+* [选择排序](https://segmentfault.com/a/1190000009366805)
+* [希尔排序](https://segmentfault.com/a/1190000009461832)
+* [堆栈](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+* [队列](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+* [链表](https://juejin.im/entry/58759e79128fe1006b48cdfd)
+* [深入学习递归](https://segmentfault.com/a/1190000009857470)
+* [波兰式和逆波兰式](http://www.cnblogs.com/chenying99/p/3675876.html)
+* [波兰式和逆波兰式github地址](https://github.com/Tairraos/rpn.js/blob/master/rpn.js)
 
 
 
