@@ -1319,6 +1319,7 @@ console.log('B')
 3. async
 
 
+<<<<<<< HEAD
 ```javascript
 <script src="xxx.js" defer></script>		
 ```
@@ -1326,6 +1327,16 @@ console.log('B')
 
 ```javascript
 <script src="xxx.js" async></script>
+=======
+```
+		
+```
+
+
+```
+
+
+>>>>>>> parent of a40be1c... qz commit
 ```
 
 异步加载的区别：
