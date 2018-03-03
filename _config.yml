@@ -48,10 +48,10 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: Qz
+disqus_username: qinzhen001
 
 # Netease setttings
-netease_comment: false
+netease_comment: true
 
 
 
