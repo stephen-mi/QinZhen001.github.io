@@ -15,38 +15,51 @@ tags:
 ## 开发中使用
 
 ### 工具大全
-https://tool.lu/
+[https://tool.lu/](https://tool.lu/)
 
 ### cubic-bezier
-http://cubic-bezier.com/#.17,.67,.83,.67
+[http://cubic-bezier.com/#.17,.67,.83,.67](http://cubic-bezier.com/#.17,.67,.83,.67)
 
 ### 正则检验
-https://regexper.com/
+[https://regexper.com/](https://regexper.com/)
 
 ### ES6转ES5
-http://babeljs.io/repl/#?babili=false&evaluate=true&lineWrap=false&presets=es2015,react,stage-2&targets=&browsers=&builtIns=false&code=const%20fetchPosts%20=%20reddit%20=%3E%20dispatch%20=%3E%20%7B%0A%20%20dispatch%28requestPosts%28reddit%29%29%0A%20%20return%20fetch%28%60https://www.reddit.com/r/
+[ES6转ES5](http://babeljs.io/repl/#?babili=false&evaluate=true&lineWrap=false&presets=es2015,react,stage-2&targets=&browsers=&builtIns=false&code=const%20fetchPosts%20=%20reddit%20=%3E%20dispatch%20=%3E%20%7B%0A%20%20dispatch%28requestPosts%28reddit%29%29%0A%20%20return%20fetch%28%60https://www.reddit.com/r/)
 
 ## 其他
 
 ### pdf转换器
-https://pdfcandy.com/
+[https://pdfcandy.com/](https://pdfcandy.com/)
 
 ### GitHub上 README 增加图片标签 
-http://shields.io/
+[http://shields.io/](http://shields.io/)
 
->需要翻墙
-
-### 图标库
-https://dribbble.com/
 
 ### node学习
-https://yunnysunny.gitbooks.io/nodebook/content/
+[https://yunnysunny.gitbooks.io/nodebook/content/](https://yunnysunny.gitbooks.io/nodebook/content/)
 
-### emoji表情
-https://www.webpagefx.com/tools/emoji-cheat-sheet/
+### emoji表情for GitHub
+[https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+
 
 ### 在线运行
-http://jsbin.com/?css,js,console
+[http://jsbin.com/?css,js,console](http://jsbin.com/?css,js,console)
 
-### 前端大佬blog
-http://www.zhangxinxu.com/
+### 前端大牛blog
+[http://www.zhangxinxu.com/](http://www.zhangxinxu.com/)
+
+### 代码转图片
+[https://carbon.now.sh](https://carbon.now.sh)
+
+## 需要翻墙
+
+### 图标库
+[https://dribbble.com/](https://dribbble.com/)
+
+
+
+
+
+
+
+
