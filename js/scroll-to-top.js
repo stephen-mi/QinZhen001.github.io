@@ -6,7 +6,7 @@ $(document).ready(function () {
     $(window).scroll(function () {
         // console.log('scroll', $(window).scrollTop())
         if ($(window).scrollTop() >= 300) {
-            $('.back-to-top').css("top", '-250px');
+            $('.back-to-top').css("top", '-270px');
         } else {
             $('.back-to-top').css("top", '-900px');
         }
