@@ -15,6 +15,9 @@ var msgs = msgs = ["你会不会喜欢上我呀?(｡･ω･)ﾉﾞ",
     "呜~你欺负人家~讨厌死了啦(,,• ₃ •,,)",
     "喵.喵..喵... \\(•ㅂ•)/♥ "];
 
+var spig_top = parseInt($(".spig").css("top"));
+var cur_scrollTop = $(window).scrollTop()
+
 //鼠标在消息上时
 jQuery(document).ready(function ($) {
     $("#message").hover(function () {
@@ -39,18 +42,18 @@ jQuery(document).ready(function ($) {
 
 //滚动条移动
 jQuery(document).ready(function ($) {
-    var f = parseInt($(".spig").css("top"));
-    $(window).scroll(function () {
+    $(window).scroll(function (e) {
         $("#spig").animate({
-                top: $(window).scrollTop() + f
-                //有bug 要记录当前滚动条的位置
-            },
-            {
-                queue: false,
-                duration: 1000
-            });
+            top: parseInt($(window).scrollTop() - cur_scrollTop + spig_top)
+        }, {
+            queue: false,
+            duration: 1000
+        }, function () {
+            cur_scrollTop = $(window).scrollTop()
+        });
     });
 });
+
 
 // //鼠标点击时
 // jQuery(document).ready(function ($) {
@@ -86,23 +89,21 @@ jQuery(document).ready(function ($) {
         _x = e.pageX - parseInt($("#spig").css("left"));
         _y = e.pageY - parseInt($("#spig").css("top"));
     });
-    $(document).mousemove(function (
-        e) {
+    $(document).mousemove(function (e) {
         if (initMove) {
+            isMove = true;
             var x = e.pageX - _x;
             var y = e.pageY - _y;
             var wx = $(window).width() - $('#spig').width();
             var dy = $(document).height() - $('#spig').height();
-            if (x >= 0 && x <= wx && y > 0 && y <= dy) {
+            if (x > 0 && x < wx && y > 0 && y < dy) {
+                //控件新位置
                 $("#spig").css({
                     top: y,
                     left: x
-                }); //控件新位置
-                if (!isMove) {
-                    // 第一次的时候还没有更改isMove的状态
-                    $("#spig>.mumu").fadeTo("100", 0.5);
-                }
-                isMove = true;
+                });
+                spig_top = parseInt($(".spig").css("top"));
+                cur_scrollTop = $(window).scrollTop()
             }
         }
     }).mouseup(function () {

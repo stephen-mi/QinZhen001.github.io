@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<link rel="stylesheet" href="../css/figure-person.css">
+<link rel="stylesheet" href="../css/page.css">
 <!-- Page Header -->
 <header class="intro-header"
         style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
@@ -205,7 +205,9 @@ layout: default
     <span class="music-note" id="one">&#9835;</span>
     <span class="music-note" id="two">&#9834;</span>
   </div>
+  <canvas class="canvas-bg"></canvas>
 </div>
 
+<script src="../js/canvas-bg.js" defer></script>
 <script src="../js/jquery.min.js" defer></script>
 <script src="../js/spig.js" defer></script>
