@@ -88,6 +88,7 @@ jQuery(document).ready(function ($) {
         initMove = true;
         _x = e.pageX - parseInt($("#spig").css("left"));
         _y = e.pageY - parseInt($("#spig").css("top"));
+        e.stopPropagation()
     });
     $(document).mousemove(function (e) {
         if (initMove) {
@@ -106,11 +107,13 @@ jQuery(document).ready(function ($) {
                 cur_scrollTop = $(window).scrollTop()
             }
         }
+        e.stopPropagation()
     }).mouseup(function () {
         if (isMove) {
             $("#spig>.mumu").fadeTo("100", 1);
         }
         initMove = false;
         isMove = false;
+        e.stopPropagation()
     });
 });
