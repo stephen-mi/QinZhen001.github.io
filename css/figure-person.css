@@ -34,7 +34,7 @@
         margin: 0 auto;
         width: 150px;
         height: 400px;
-        /*cursor: move;*/
+        cursor: move;
         background: url('../img/figure-person.png') no-repeat;
     }
 
@@ -95,5 +95,11 @@
             margin-left: 16px;
         }
 
+    }
+}
+
+@media (max-width: 1110px) {
+    .spig {
+        display: none;
     }
 }

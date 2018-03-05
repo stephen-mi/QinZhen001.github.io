@@ -6,4 +6,5 @@
 * [套用了huxpro大佬模版](https://github.com/huxpro/huxpro.github.io/)
 
 ## 2018-03-05
-加入disqus评论模块 **(需要翻墙科学上网)**
+* 加入disqus评论模块 **(需要翻墙科学上网)**
+* 加入百度统计

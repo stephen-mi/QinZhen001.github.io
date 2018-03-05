@@ -26,13 +26,13 @@ jQuery(document).ready(function ($) {
 //鼠标在上方时
 jQuery(document).ready(function ($) {
     //$(".mumu").jrumble({rangeX: 2,rangeY: 2,rangeRot: 1});
-    $("#spig").mouseover(function () {
-        $("#spig").fadeTo("300", 0.8);
+    $("#spig").mouseenter(function () {
+        $("#spig>.mumu").fadeTo("300", 0.8);
         var i = Math.floor(Math.random() * msgs.length);
         showMessage(msgs[i]);
     });
-    $("#spig").mouseout(function () {
-        $("#spig").fadeTo("300", 1)
+    $("#spig").mouseleave(function () {
+        $("#spig>.mumu").fadeTo("300", 1)
     });
 });
 
@@ -52,18 +52,20 @@ jQuery(document).ready(function ($) {
     });
 });
 
-//鼠标点击时
-jQuery(document).ready(function ($) {
-    $(".mumu").click(function () {
-        // console.log('click', isMove)
-        if (!isMove) {
-            var i = Math.floor(Math.random() * msgs.length);
-            showMessage(msgs[i])
-        } else {
-            isMove = false;
-        }
-    });
-});
+// //鼠标点击时
+// jQuery(document).ready(function ($) {
+//     $(".mumu").click(function () {
+//         // console.log('click', isMove)
+//         if (!isMove) {
+//             var i = Math.floor(Math.random() * msgs.length);
+//             showMessage(msgs[i])
+//         } else {
+//             isMove = false;
+//         }
+//     });
+// });
+
+
 //显示消息函数
 function showMessage(a, b) {
     if (b == null) b = 10000;
@@ -84,7 +86,8 @@ jQuery(document).ready(function ($) {
         _x = e.pageX - parseInt($("#spig").css("left"));
         _y = e.pageY - parseInt($("#spig").css("top"));
     });
-    $(document).mousemove(function (e) {
+    $(document).mousemove(function (
+        e) {
         if (initMove) {
             var x = e.pageX - _x;
             var y = e.pageY - _y;
@@ -97,14 +100,14 @@ jQuery(document).ready(function ($) {
                 }); //控件新位置
                 if (!isMove) {
                     // 第一次的时候还没有更改isMove的状态
-                    $("#spig").fadeTo("100", 0.5);
+                    $("#spig>.mumu").fadeTo("100", 0.5);
                 }
                 isMove = true;
             }
         }
     }).mouseup(function () {
         if (isMove) {
-            $("#spig").fadeTo("100", 1);
+            $("#spig>.mumu").fadeTo("100", 1);
         }
         initMove = false;
         isMove = false;
