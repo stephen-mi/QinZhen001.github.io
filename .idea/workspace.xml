@@ -48,8 +48,8 @@
       <file leaf-file-name="canvas-bg.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+            <state relative-caret-position="144">
+              <caret line="49" column="12" lean-forward="true" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -458,7 +458,7 @@
       <workItem from="1520142324969" duration="1586000" />
       <workItem from="1520216576376" duration="905000" />
       <workItem from="1520219206272" duration="11908000" />
-      <workItem from="1520310682345" duration="2349000" />
+      <workItem from="1520310682345" duration="2770000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -807,7 +807,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58657000" />
+    <option name="totallyTimeSpent" value="59078000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="234" y="229" width="1363" height="807" extended-state="0" />
@@ -1212,8 +1212,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+        <state relative-caret-position="144">
+          <caret line="49" column="12" lean-forward="true" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
