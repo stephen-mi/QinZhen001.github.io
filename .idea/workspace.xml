@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spig.js" afterPath="$PROJECT_DIR$/js/spig.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/canvas-bg.js" afterPath="$PROJECT_DIR$/js/canvas-bg.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -44,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="canvas-bg.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="canvas-bg.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-582">
-              <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+            <state relative-caret-position="188">
+              <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -96,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="spig.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="60" column="27" lean-forward="true" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
+            <state relative-caret-position="422">
+              <caret line="111" column="9" lean-forward="true" selection-start-line="111" selection-start-column="9" selection-end-line="111" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -195,8 +196,8 @@
         <option value="$PROJECT_DIR$/css/figure-person.css" />
         <option value="$PROJECT_DIR$/_layouts/page.html" />
         <option value="$PROJECT_DIR$/css/page.css" />
-        <option value="$PROJECT_DIR$/js/canvas-bg.js" />
         <option value="$PROJECT_DIR$/js/spig.js" />
+        <option value="$PROJECT_DIR$/js/canvas-bg.js" />
       </list>
     </option>
   </component>
@@ -211,8 +212,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="315" />
-    <option name="y" value="149" />
+    <option name="x" value="234" />
+    <option name="y" value="229" />
     <option name="width" value="1363" />
     <option name="height" value="807" />
   </component>
@@ -457,7 +458,7 @@
       <workItem from="1520142324969" duration="1586000" />
       <workItem from="1520216576376" duration="905000" />
       <workItem from="1520219206272" duration="11908000" />
-      <workItem from="1520310682345" duration="2100000" />
+      <workItem from="1520310682345" duration="2349000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -806,10 +807,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58408000" />
+    <option name="totallyTimeSpent" value="58657000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="315" y="149" width="1363" height="807" extended-state="0" />
+    <frame x="234" y="229" width="1363" height="807" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20830189" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1201,21 +1202,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
+    <entry file="file://$PROJECT_DIR$/js/spig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-582">
-          <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="422">
+          <caret line="111" column="9" lean-forward="true" selection-start-line="111" selection-start-column="9" selection-end-line="111" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/spig.js">
+    <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="60" column="27" lean-forward="true" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
-          <folding />
+        <state relative-caret-position="188">
+          <caret line="48" column="13" lean-forward="true" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -55,8 +55,12 @@ function y(p) {
     var t = p + (z() * 2 - 1.1) * f
     return (t > h || t < 0) ? y(p) : t
 }
-document.onclick = i
+document.onclick = function () {
+    console.log("onclick bg change")
+    i()
+};
 document.addEventListener("touchstart", function () {
+    console.log("touchstart bg change")
     i()
 }, false);
 i();
