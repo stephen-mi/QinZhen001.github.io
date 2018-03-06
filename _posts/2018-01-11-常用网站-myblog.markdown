@@ -55,6 +55,9 @@ tags:
 ### 找灵感的场所
 [https://codepen.io/](https://codepen.io/)
 
+### 生成展示GitHub信息的iframe 
+[https://ghbtns.com/](https://ghbtns.com/)
+
 ## 需要翻墙
 
 ### 图标库
