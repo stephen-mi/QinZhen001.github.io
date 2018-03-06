@@ -45,10 +45,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="canvas-bg.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="canvas-bg.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
+            <state relative-caret-position="-582">
               <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
@@ -97,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="spig.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="112" column="29" lean-forward="true" selection-start-line="112" selection-start-column="29" selection-end-line="112" selection-end-column="29" />
+            <state relative-caret-position="400">
+              <caret line="114" column="21" lean-forward="true" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -196,8 +196,8 @@
         <option value="$PROJECT_DIR$/css/figure-person.css" />
         <option value="$PROJECT_DIR$/_layouts/page.html" />
         <option value="$PROJECT_DIR$/css/page.css" />
-        <option value="$PROJECT_DIR$/js/spig.js" />
         <option value="$PROJECT_DIR$/js/canvas-bg.js" />
+        <option value="$PROJECT_DIR$/js/spig.js" />
       </list>
     </option>
   </component>
@@ -458,7 +458,7 @@
       <workItem from="1520142324969" duration="1586000" />
       <workItem from="1520216576376" duration="905000" />
       <workItem from="1520219206272" duration="11908000" />
-      <workItem from="1520310682345" duration="1449000" />
+      <workItem from="1520310682345" duration="1721000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -807,7 +807,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57757000" />
+    <option name="totallyTimeSpent" value="58029000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="315" y="149" width="1363" height="807" extended-state="0" />
@@ -1202,21 +1202,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/spig.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="112" column="29" lean-forward="true" selection-start-line="112" selection-start-column="29" selection-end-line="112" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/canvas-bg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
+        <state relative-caret-position="-582">
           <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/spig.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="114" column="21" lean-forward="true" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -90,6 +90,7 @@ jQuery(document).ready(function ($) {
         initMove = true;
         _x = e.pageX - parseInt($("#spig").css("left"));
         _y = e.pageY - parseInt($("#spig").css("top"));
+        $("#spig>.mumu").fadeTo(0, 0.5)
         e.stopPropagation()
     });
     $(document).mousemove(function (e) {
