@@ -1,9 +1,3 @@
-/**
- * Created by qinzhen on 2018/3/5.
- */
-document.addEventListener('touchmove', function (e) {
-    e.preventDefault()
-});
 var c = document.getElementsByTagName('canvas')[0],
     x = c.getContext('2d'),
     pr = window.devicePixelRatio || 1,
@@ -58,8 +52,5 @@ function y(p) {
 document.onclick = function () {
     i()
 };
-// document.addEventListener("touchstart", function () {
-//     console.log("touchstart bg change")
-//     i()
-// }, false);
+
 i();
