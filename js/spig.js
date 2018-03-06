@@ -15,8 +15,8 @@ var msgs = msgs = ["你会不会喜欢上我呀?(｡･ω･)ﾉﾞ",
     "呜~你欺负人家~讨厌死了啦(,,• ₃ •,,)",
     "喵.喵..喵... \\(•ㅂ•)/♥ "];
 
-var spig_top = parseInt($(".spig").css("top"));
-var cur_scrollTop = $(window).scrollTop()
+var spig_top = 0;
+var cur_scrollTop = 0;
 
 //鼠标在消息上时
 jQuery(document).ready(function ($) {
@@ -84,6 +84,8 @@ var initMove = false;
 var isMove = false; //移动标记
 var _x, _y; //鼠标离控件左上角的相对位置
 jQuery(document).ready(function ($) {
+    spig_top = parseInt($(".spig").css("top"));
+    cur_scrollTop = $(window).scrollTop();
     $("#spig").mousedown(function (e) {
         initMove = true;
         _x = e.pageX - parseInt($("#spig").css("left"));
