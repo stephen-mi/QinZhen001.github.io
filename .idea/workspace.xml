@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/canvas-bg.js" afterPath="$PROJECT_DIR$/js/canvas-bg.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spig.js" afterPath="$PROJECT_DIR$/js/spig.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -100,8 +99,8 @@
       <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="114" column="21" lean-forward="true" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
+            <state relative-caret-position="290">
+              <caret line="60" column="27" lean-forward="true" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -458,7 +457,7 @@
       <workItem from="1520142324969" duration="1586000" />
       <workItem from="1520216576376" duration="905000" />
       <workItem from="1520219206272" duration="11908000" />
-      <workItem from="1520310682345" duration="1721000" />
+      <workItem from="1520310682345" duration="2100000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -807,7 +806,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58029000" />
+    <option name="totallyTimeSpent" value="58408000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="315" y="149" width="1363" height="807" extended-state="0" />
@@ -1214,8 +1213,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/spig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="114" column="21" lean-forward="true" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
+        <state relative-caret-position="290">
+          <caret line="60" column="27" lean-forward="true" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
           <folding />
         </state>
       </provider>

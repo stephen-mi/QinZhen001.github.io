@@ -55,18 +55,12 @@ jQuery(document).ready(function ($) {
 });
 
 
-// //鼠标点击时
-// jQuery(document).ready(function ($) {
-//     $(".mumu").click(function () {
-//         // console.log('click', isMove)
-//         if (!isMove) {
-//             var i = Math.floor(Math.random() * msgs.length);
-//             showMessage(msgs[i])
-//         } else {
-//             isMove = false;
-//         }
-//     });
-// });
+//鼠标点击时
+jQuery(document).ready(function ($) {
+    $("#spig").click(function (e) {
+        e.stopPropagation()
+    });
+});
 
 
 //显示消息函数
@@ -106,6 +100,7 @@ jQuery(document).ready(function ($) {
                     top: y,
                     left: x
                 });
+                $("#spig>.mumu").fadeTo(0, 0.5)
                 spig_top = parseInt($(".spig").css("top"));
                 cur_scrollTop = $(window).scrollTop()
             }
@@ -113,7 +108,7 @@ jQuery(document).ready(function ($) {
         e.stopPropagation()
     }).mouseup(function (e) {
         if (isMove) {
-            $("#spig>.mumu").fadeTo("100", 1);
+            $("#spig>.mumu").fadeTo("300", 1);
         }
         initMove = false;
         isMove = false;
