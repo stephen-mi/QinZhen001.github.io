@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/canvas-bg.js" afterPath="$PROJECT_DIR$/js/canvas-bg.js" />
-    </list>
+    <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -458,7 +455,7 @@
       <workItem from="1520142324969" duration="1586000" />
       <workItem from="1520216576376" duration="905000" />
       <workItem from="1520219206272" duration="11908000" />
-      <workItem from="1520310682345" duration="2770000" />
+      <workItem from="1520310682345" duration="2832000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -807,10 +804,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59078000" />
+    <option name="totallyTimeSpent" value="59140000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="234" y="229" width="1363" height="807" extended-state="0" />
+    <frame x="234" y="229" width="1363" height="807" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20830189" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
