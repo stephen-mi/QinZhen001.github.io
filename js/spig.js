@@ -110,7 +110,7 @@ jQuery(document).ready(function ($) {
             }
         }
         e.stopPropagation()
-    }).mouseup(function () {
+    }).mouseup(function (e) {
         if (isMove) {
             $("#spig>.mumu").fadeTo("100", 1);
         }
