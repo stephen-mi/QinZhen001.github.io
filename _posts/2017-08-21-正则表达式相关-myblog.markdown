@@ -29,9 +29,8 @@ var re = /\d+/g;
 alert( str.match(re) );   // [123，54，33，879]
 ```
 
-用法： 字符串.match(正则)
-量词：+ 至少出现一次 匹配不确定的次数（匹配就是搜索查找的意思）
-全局匹配：g——global（正则中默认，只要搜索到复合规则的内容就会结束搜索 ）
+1. 如果有g全局标志,那么返回的数组保存的是,所有匹配的内容，**不包括子匹配**。
+2. 如果没有g全局标志,**那么返回的数组arr.arr[0]保存的是完整的匹配.arr[1]保存的是第一个括号里捕获的字串,依此类推arr[n]保存的是第n个括号捕获的内容**.也就是当包含有全局的标志时则返回的结果第一个是正确匹配的结果，后面依次是子匹配的结果。
 
 
 ### replace
@@ -65,6 +64,77 @@ alert(str2)  //我爱*****，***上太阳升
 <strong>replace是一个很有用的方法，经常会用到。</strong>
 
 | : 或的意思。
+
+
+
+### exec
+与match方法不同exec属于正则表达式的方法。
+语法:var result1 = regexp.exec(str);
+regexp:正则表达式（可以直接定义也可以利用RegExp的方式定义） str:要匹配的字串
+
+exec与match的关联就是exec**(g有没有都无影响)**就等价于**不含有g全局标志的match.即返回数组arr[0]为匹配的完整串.其余的为括号里捕获的字符串（当含有子匹配时）.**
+
+
+当exec和match中具有相同的子表达式且为非全局匹配时两者的输出也是相同的
+```
+var str="visit W3cschool  a W3cschool bull";
+var reg=new RegExp("W3c(school)");
+var b=reg.exec(str);
+console.log(b);
+console.log(str.match(/W3c(school)/));
+```
+执行上诉代码的结果为W3cschool,school
+
+
+----------
+
+
+当为全局匹配时
+```
+var str="visit W3cschool  a W3cschool bull";
+var reg=new RegExp("W3cschool",'g');
+var b=reg.exec(str);
+console.log(b);
+console.log(str.match(/W3cschool/g));
+```
+Exec中没有子表达式其输出为W3cschool，其输出只一个，match全局匹配时其输出元素中将包含所有的匹配项，其输出为W3cshcool,W3cschool
+
+
+#### 总结
+exec中不管是不是全局的匹配，只要没有子表达式，**其返回的都只有一个元素的数组**，如果是全局匹配，可以利用lastIndex进行下一个匹配，匹配成功后reg的lastIndex的值将会变为上次匹配的字符的最后一个位置的索引。在设置g属性后，虽然匹配结果不受g的影响，返回结果仍然是一个数组（第一个值是第一个匹配到的字符串，以后的为分组匹配内容），但是会改变index和 lastIndex等的值
+
+```
+  var patt = new RegExp('ab', 'g');
+
+  var str = 'abcdef12ab34cd56ef';
+
+  var ret;
+
+  while((ret = patt.exec(str))!=null) {
+    document.write(ret+"</br>");
+    document.write("ret.input="+ret.input+"</br>");
+    document.write("ret.index="+ret.index+"</br>");
+    document.write("RegExp.lastIndex ="+patt.lastIndex +"</br>");
+}
+```
+
+输出结果：
+```
+ab
+ret.input=abcdef12ab34cd56ef
+ret.index=0
+RegExp.lastIndex =2
+ab
+ret.input=abcdef12ab34cd56ef
+ret.index=8
+RegExp.lastIndex =10
+```
+当没有全局的变量g时，由于index和lastindex的值不会变化（除非手动修改），则会导致每次的陪匹配都是从字符串的头开始的，所以只要字符串中有匹配，就会导致死循环，当时设置g后，会自动改变前面的两个属性，会依次向后匹配直到没有匹配项退出循环
+
+
+Match在非全局匹配时其他几种情况下（有无子匹配的情况下）的返回结果和exec是相同的，在全局匹配时其将返回包含所有匹配项的数组**（其中不包含子匹配）**。
+
+exec返回的是类数组而match返回的则是数组
 
 ### 正则中的字符
 ()，小括号，叫做分组符。就相当于数学里面的括号。如下：

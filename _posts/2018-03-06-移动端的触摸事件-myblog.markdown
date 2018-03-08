@@ -1,0 +1,49 @@
+---
+layout:     post
+title:      "移动端的触摸事件"
+date:       2018-03-06 12:54:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+[网页链接](https://zhuanlan.zhihu.com/p/23509912)
+
+pc上的web页面鼠 标会产生onmousedown、onmouseup、onmouseout、onmouseover、onmousemove的事件，**但是在移动终端如 iphone、ipod Touch、ipad上的web页面触屏时会产生ontouchstart、ontouchmove、ontouchend、ontouchcancel 事件，分别对应了触屏开始、拖拽及完成触屏事件和取消。**
+* 当按下手指时，触发ontouchstart；
+* 当移动手指时，触发ontouchmove
+* 当移走手指时，触发ontouchend。
+* 当一些更高级别的事件发生的时候（如电话接入或者弹出信息）会取消当前的touch操作，即触发ontouchcancel。一般会在ontouchcancel时暂停游戏、存档等操作。
+
+**上面的这些事件都会冒泡，也都可以取消**
+
+
+>DOM 0级事件不生效：
+>document.ontouchstart = function(){alert("a")}  //不起作用
+
+触摸事件还包含下面三个用于跟踪触摸的属性。
+* touches：表示当前跟踪的触摸操作的touch对象的数组。
+* targetTouches：特定于事件目标的Touch对象的数组。
+* changeTouches：表示自上次触摸以来发生了什么改变的Touch对象的数组。
+
+每个Touch对象包含的属性如下。
+* clientX：触摸目标在视口中的x坐标。
+* clientY：触摸目标在视口中的y坐标。
+* identifier：标识触摸的唯一ID。
+* pageX：触摸目标在页面中的x坐标。
+* pageY：触摸目标在页面中的y坐标。
+* screenX：触摸目标在屏幕中的x坐标。
+* screenY：触摸目标在屏幕中的y坐标。
+* target：触目的DOM节点目标。
+
+
+
+
+
+

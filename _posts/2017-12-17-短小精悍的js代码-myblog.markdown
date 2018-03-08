@@ -37,6 +37,8 @@ array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
   * arr	可选。当前元素所属的数组对象。
 * initialValue	可选。传递给函数的初始值
 
+
+举个栗子：
 ```
 const array1 = [1, 2, 3, 4];
 const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -49,6 +51,20 @@ console.log(array1.reduce(reducer));
 console.log(array1.reduce(reducer, 5));
 // expected output: 15
 ```
+
+
+----------
+
+
+应用在Redux中
+```
+...action.products.reduce((obj,product)=>{
+                obj[product.id] = product
+                return obj
+              },{})
+```
+
+
 
 **逗号运算符**
 它将先计算左边的参数，再计算右边的参数值。然后返回最右边参数的值。
@@ -165,5 +181,26 @@ let arr = [1,2,3,3];
 let unique = [...new Set(arr)];
 ```
 
+
+
+
+### isObject
+``` 
+function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+}
+```
+
+
+### isJson
+```
+function isJson(str) {
+    const start = str.match(/^\s*(\[|\{)/);
+    const end = {'[': /]\s*$/, '{': /}\s*$/};
+    return start && end[start[1]].test(str);
+}
+
+没有g全局标志,那么start[0]保存的是完整的匹配,start[1]保存的是第一个括号里捕获的字串
+```
 
   [1]: https://pic1.zhimg.com/50/fa4f6a40ff9696dc2453d6b30ddc1838_hd.jpg
