@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "React-Redux"
+title:      "react-redux"
 date:       2018-01-18 16:05:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -11,7 +11,7 @@ tags:
 
 > “Yeah It's on. ”
 
-## React-Redux
+## react-redux
 
 React-Redux 将所有组件分成两大类：UI 组件（presentational component）和容器组件（container component）。
 
