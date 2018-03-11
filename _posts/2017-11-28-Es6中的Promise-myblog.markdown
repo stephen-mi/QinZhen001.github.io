@@ -189,6 +189,47 @@ promise.then(
 ```
 
 
+### Promise.resolve()  
+>Promise这里是大写的P
+
+[https://segmentfault.com/q/1010000005330351](https://segmentfault.com/q/1010000005330351)
+
+```
+var foo = {
+    then: (resolve, reject) => resolve('foo')
+};
+var resolved = Promise.resolve(foo);
+相当于
+var resolved = new Promise((resolve, reject) => {
+    foo.then(resolve, reject)
+});
+
+resolved.then((str) => 
+    console.log(str);//foo
+)
+```
+
+
+
+Promise.resolve方法有下面三种形式：
+
+Promise.resolve(value);
+Promise.resolve(promise);
+Promise.resolve(theanable);
+这三种形式都会产生一个新的Promise。其中：
+
+第一种形式提供了自定义Promise的值的能力，它与Promise.reject(reason)对应。两者的不同，在于得到的Promise的状态不同。
+
+第二种形式，提供了创建一个Promise的副本的能力。
+
+第三种形式，是将一个类似Promise的对象转换成一个真正的Promise对象。它的一个重要作用是将一个其他实现的Promise对象封装成一个当前实现的Promise对象。例如你正在用bluebird，但是现在有一个Q的Promise，那么你可以通过此方法把Q的Promise变成一个bluebird的Promise。
+
+实际上第二种形式可以归在第三种形式中。
+
+
+
+
+
 
 作者：君未来我已老
 链接：https://www.jianshu.com/p/c98eb98bd00c
