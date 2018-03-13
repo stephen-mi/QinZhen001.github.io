@@ -174,6 +174,55 @@ const Button = ({children}, context) =>
 Button.contextTypes = {color: PropTypes.string};
 ```
 
+### context的另一种写法(使用static)
+```
+class Sidebar extends React.Component{
+	render(){
+			return (
+				<div>
+					<p>侧边栏</p>
+					<Navbar></Navbar>
+				</div>
+			)
+	}
+}
+
+class Navbar extends React.Component{
+	static contextTypes = {
+		user:PropTypes.string
+	}
+	render(){
+		console.log(this.context)
+		return (
+			<div>{this.context.user}的导航栏</div>
+		)
+	}
+}
+
+class Page extends React.Component{
+	static childContextTypes = {
+		user:PropTypes.string
+	}
+	constructor(props){
+		super(props)
+		this.state = {user:'蜗牛'}
+	}
+	getChildContext(){
+		return this.state
+	}
+	render(){
+		return (
+			<div>
+				<p>我是{this.state.user}</p>
+				<Sidebar></Sidebar>
+			</div>
+		)
+	}
+}
+
+export default Page
+```
+
 
 ### 更新 Context
 
