@@ -206,6 +206,39 @@ function incrementMultiple() {
 **注意:传统式setState的存在，会把函数式setState拖下水**
 
 
+举些函数式setState栗子
+```
+this.setState(preState => ({
+  books: preState.books.concat(['React Guide']);
+}))
+```
+
+
+```
+this.setState(preState => ({
+  books: [...preState.books, 'React Guide'];
+}))
+
+```
+
+
+```
+var books = this.state.books; 
+this.setState({
+  books: books.slice(1,3);
+})
+```
+
+
+```
+this.setState(preState => ({
+  books: preState.books.slice(1,3);
+}))
+```
+
+**注意不要使用push、pop、shift、unshift、splice等方法修改数组类型的状态，因为这些方法都是在原数组的基础上修改，而concat、slice、filter会返回一个新的数组。**
+
+
 ## setState为什么不会同步更新组件状态
 假设，我们现在有机会来对React做一个重大设计调整，把setState的功能设定为同步更改this.state，也就是说，当setState函数返回的时候，this.state已经体现了状态的改变。
 
@@ -292,6 +325,36 @@ ReactDOM.render(
 上面代码是一个 LikeButton 组件，它的 getInitialState 方法用于定义初始状态，也就是一个对象，这个对象可以通过 this.state 属性读取。当用户点击组件，导致状态变化，this.setState 方法就修改状态值，每次修改以后，自动调用 this.render 方法，再次渲染组件。
 
 由于 this.props 和 this.state 都用于描述组件的特性，可能会产生混淆。一个简单的区分方法是，this.props 表示那些一旦定义，就不再改变的特性，而 this.state 是会随着用户互动而产生变化的特性。
+
+## 如何定义State
+定义一个合适的State，是正确创建组件的第一步。State必须能代表一个组件UI呈现的完整状态集，即组件的任何UI改变，都可以从State的变化中反映出来；同时，State还必须是代表一个组件UI呈现的最小状态集，即State中的所有状态都是用于反映组件UI的变化，没有任何多余的状态，也不需要通过其他状态计算而来的中间状态。
+
+组件中用到的一个变量是不是应该作为组件State，可以通过下面的4条依据进行判断：
+
+
+1. 这个变量是否是通过Props从父组件中获取？如果是，那么它不是一个状态。
+2. 这个变量是否在组件的整个生命周期中都保持不变？如果是，那么它不是一个状态。
+3. 这个变量是否可以通过其他状态（State）或者属性(Props)计算得到？如果是，那么它不是一个状态。
+4. 这个变量是否在组件的render方法中使用？如果不是，那么它不是一个状态。这种情况下，这个变量更适合定义为组件的一个普通属性，例如组件中用到的定时器，就应该直接定义为this.timer，而不是this.state.timer。
+
+
+**请务必牢记，并不是组件中用到的所有变量都是组件的状态！当存在多个组件共同依赖一个状态时，一般的做法是状态上移，将这个状态放到这几个组件的公共父组件中。**
+
+## State 与 Props 区别
+除了State, 组件的Props也是和组件的UI有关的。他们之间的主要区别是：State是可变的，是组件内部维护的一组用于反映组件UI变化的状态集合；而Props对于使用它的组件来说，是只读的，要想修改Props，只能通过该组件的父组件修改。在组件状态上移的场景中，父组件正是通过子组件的Props, 传递给子组件其所需要的状态。
+
+
+
+
+作者：艾特老干部
+链接：https://www.jianshu.com/p/c6257cbef1b1
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
+
+
 
 
 

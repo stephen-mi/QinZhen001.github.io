@@ -112,13 +112,14 @@ MessageList.childContextTypes = {
 };
 ```
 
-通过将 childContextTypes 和 getChildContext 添加到 MessageList ( context 提供者)，React 自动地向下传递信息，并且子树中的任何组件（这个例子中的Button）都可以通过定义 contextTypes 去访问它。
+通过将 childContextTypes 和 getChildContext 添加到 MessageList ( context 提供者，也就是父组件)，React 自动地向下传递信息，并且子树中的任何组件（也就是子组件，这个例子中的Button）都可以通过定义 contextTypes 去访问它。
 
 
 如果 contextTypes 没有定义， context 将是一个空对象
 
 
 >注意： 从 React v15.5 开始 ，React.PropTypes 助手函数已被弃用，我们建议使用 prop-types 库 来定义contextTypes。
+
 
 ### 父子耦合
 Context 可以构建 API 使得父组件和子组件进行相互通信。例如， React Router V4 就是使用这种方式的一个库：
