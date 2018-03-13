@@ -12,6 +12,25 @@ tags:
 > “Yeah It's on. ”
 
 ## react-redux
+在react里面用redux，一般我们会用到react-redux，其中包括Provider和connect接口
+
+Provider接收redux的createStore()的结果，并且放到context里，让子组件可以通过context属性直接获取到这个
+createStore的结果，这个createStore的结果是啥呢，如下几个函数:
+```
+return {
+        //真正的返回，执行createStore其实返回的就是这些东东
+        dispatch,       //触发action去执行reducer，更新state
+        subscribe,     //订阅state改变，state改变时会执行subscribe的参数（自己定义的一个函数）
+        getState,      //获取state树
+        replaceReducer,       //替换reducer
+ }
+```
+
+而connect，接收到mapStateToProps，会在内部subscribe全局state的改变，来判断props是否更改，如果需要更新，才触发更新。
+
+**react-redux就是不需要你自己去subscribe全局state的变化，以及去getState，还有判断组件是否需要更新。也是它存在的意义**
+
+
 
 React-Redux 将所有组件分成两大类：UI 组件（presentational component）和容器组件（container component）。
 
@@ -246,6 +265,9 @@ render(
 
 上面代码中，Provider在根组件外面包了一层，这样一来，App的所有子组件就默认都可以拿到state了。
 
+[http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_three_react-redux.html](http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_three_react-redux.html)
 
 
-http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_three_react-redux.html
+
+
+
