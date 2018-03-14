@@ -74,7 +74,7 @@ const supportsHistory = 'pushState' in window.history
 
 
 ### `<Route>`
-<Route> 也许是 RR4 中最重要的组件了，重要到你必须理解它，学会它，用好它。它最基本的职责就是当页面的访问地址与 Route 上的 path 匹配时，就渲染出对应的 UI 界面。
+`<Route>` 也许是 RR4 中最重要的组件了，重要到你必须理解它，学会它，用好它。它最基本的职责就是当页面的访问地址与 Route 上的 path 匹配时，就渲染出对应的 UI 界面。
 
 `<Route>` 自带三个 render method 和三个 props 。
 
@@ -83,14 +83,21 @@ render methods 分别是：
 * `<Route render>`
 * `<Route children>`
 
-每种 render method 都有不同的应用场景，同一个<Route> 应该只使用一种 render method ，大部分情况下你将使用 component 。
+每种 render method 都有不同的应用场景，同一个`<Route>` 应该只使用一种 render method ，大部分情况下你将使用 component 。
 
 props 分别是：
 * match
 * location
 * history
 
-所有的 render method 无一例外都将被传入这些 props。
+**所有的 render method 无一例外都将被传入这些 props。**
+
+在 Route component 中，以 this.props.location 的方式获取，
+在 Route render 中，以 ({ location }) => () 的方式获取，
+在 Route children 中，以 ({ location }) => () 的方式获取，
+History 和 match的获取方式类似。
+
+
 
 #### component
 
