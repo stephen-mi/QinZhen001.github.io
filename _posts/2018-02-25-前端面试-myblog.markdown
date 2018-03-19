@@ -582,15 +582,13 @@ var new2 = function(func){
 
 ### ES5的继承和ES6的继承有什么区别？
 ES5的继承时通过prototype或构造函数机制来实现。ES5的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.apply(this)）。
+
+
 ES6的继承机制完全不同，实质上是先创建父类的实例对象this（所以必须先调用父类的super()方法），然后再用子类的构造函数修改this。
+
 具体的：ES6通过class关键字定义类，里面有构造方法，类之间通过extends关键字实现继承。子类必须在constructor方法中调用super方法，否则新建实例报错。因为子类没有自己的this对象，而是继承了父类的this对象，然后对其进行加工。如果不调用super方法，子类得不到this对象。
+
 ps：super关键字指代父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键字，否则报错。
-
-作者：OBKoro1
-链接：https://juejin.im/post/5aad40e4f265da237f1e12ed
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
 
 
 
@@ -1143,6 +1141,42 @@ null == undefined //true
 ```
 if(obj.a == null){ // 这里相当于obj.a === null || obj.a === undefined 的简写形式 // 这是jquery源码中的推荐写法 }
 ```
+
+### 变量提升（Hoisting）
+```
+function test() {
+   console.log(a);
+   console.log(foo());
+   
+   var a = 1;
+   function foo() {
+      return 2;
+   }
+}
+ 
+test();
+```
+
+这段代码的执行结果是undefined 和 2。
+
+
+上面的代码等同于下面的代码：
+```
+function test() {
+   var a;
+   function foo() {
+      return 2;
+   }
+ 
+   console.log(a);
+   console.log(foo());
+   
+   a = 1;
+}
+ 
+test();
+```
+
 
 
 ### 如何理解JSON
