@@ -1,0 +1,136 @@
+---
+layout:     post
+title:      "webpack4.0爬坑"
+date:       2018-03-22 15:04:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - Webpack
+---
+
+> “webpack4.0爬坑记录 Orz”
+
+
+## 正文
+
+### extract-text-webpack-plugin
+```
+(node:9624) DeprecationWarning: Tapable.plugin is deprecated. Use new API on `.hooks` instead
+
+(node:9624) DeprecationWarning: Tapable.apply is deprecated. Call apply on the plugin directly instead
+
+C:\Users\zsl08.000\Desktop\Vue-Webpack-todo\node_modules\webpack\lib\Chunk.js:460
+
+                throw new Error(
+
+                ^
+
+
+
+Error: Chunk.entrypoints: Use Chunks.groupsIterable and filter by instanceof Entrypoint instead
+```
+
+可以换成mini-css-extract-plugin
+
+[https://www.npmjs.com/package/mini-css-extract-plugin](https://www.npmjs.com/package/mini-css-extract-plugin)
+
+
+This plugin extract CSS into separate files. It creates a CSS file per JS file which contains CSS. It supports On-Demand-Loading of CSS and SourceMaps.
+
+It builds on top of a new webpack v4 feature (module types) and requires webpack 4 to work.
+
+
+Compared to the extract-text-webpack-plugin:
+* Async loading
+* No duplicate compilation (performance)
+* Easier to use
+* Specific to CSS
+
+### uglifyjs-webpack-plugin
+更新 uglifyjs-webpack-plugin 至 v1 版本，以支持 ES2015
+
+
+
+### mode 
+现在可以在两种模式中选择 (mode or --mode) : 生产模式或开发模式
+
+一旦开启了 --mode production，会自动开启代码压缩、scope hoist 等插件，以及自动传递环境变量给 lib 包，所以已经不需要 plugins 这个配置项了。
+
+同理，开启了 --mode development 会自动开启 sourceMap 等开发插件，我们只要关心更简单的配置，这就是 4.0 零配置的重要改变。
+
+
+* entry 的默认值是 ./src 
+* output.path 的默认值是 ./dist
+* mode 的默认值是 production
+* UglifyJs 插件默认开启 caches 和 parallizes
+
+**在 develoment mode 默认**
+
+* 开启 output.pathinfo 
+* 关闭 optimization.minimize 
+
+
+**在 production mode 默认**
+
+* 关闭 in-memory caching
+* 开启 NoEmitOnErrorsPlugin
+* 开启 ModuleConcatenationPlugin
+* 开启 optimization.minimize 
+
+
+
+
+### 配置
+* NoEmitOnErrorsPlugin -> optimization.noEmitOnErrors (生产模式下默认开启)
+* ModuleConcatenationPlugin -> optimization.concatenateModules (开发模式下默认开启)
+* NamedModulesPlugin -> optimization.namedModules (开发模式下默认开启)
+* CommonsChunkPlugin 已被移除 -> optimization.splitChunks, optimization.runtimeChunk
+
+NoEmitOnErrorsPlugin(现已弃用)
+在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误。对于所有资源，统计资料(stat)的 emitted 标识都是 false。
+
+**使用splitChunks**
+在webpack.config.js中的module.exports加入
+```
+    optimization: {
+        splitChunks: {
+            chunks: "initial",         // 必须三选一： "initial" | "all"(默认就是all) | "async"
+            minSize: 0,                // 最小尺寸，默认0
+            minChunks: 1,              // 最小 chunk ，默认1
+            maxAsyncRequests: 1,       // 最大异步请求数， 默认1
+            maxInitialRequests: 1,    // 最大初始化请求书，默认1
+            name: () => {
+            },              // 名称，此选项课接收 function
+            cacheGroups: {                 // 这里开始设置缓存的 chunks
+                priority: "0",                // 缓存组优先级 false | object |
+                vendor: {                   // key 为entry中定义的 入口名称
+                    chunks: "initial",        // 必须三选一： "initial" | "all" | "async"(默认就是异步)
+                    test: /react|lodash/,     // 正则规则验证，如果符合就提取 chunk
+                    name: "vendor",           // 要缓存的 分隔出来的 chunk 名称
+                    minSize: 0,
+                    minChunks: 1,
+                    enforce: true,
+                    maxAsyncRequests: 1,       // 最大异步请求数， 默认1
+                    maxInitialRequests: 1,    // 最大初始化请求书，默认1
+                    reuseExistingChunk: true   // 可设置是否重用该chunk（查看源码没有发现默认值）
+                }
+            }
+        }
+    }
+```
+
+
+### 全新的插件系统
+Webpack 4配备了全新整改的插件系统。这是一个全新的API，这些插件和hooks的API有以下的配置：
+
+* hooks对象将所有钩子作为可扩展类的属性
+* 多种Hook类现在会根据hook类型存在：sync, async, normal, bailing, waterfall, looping.
+* 在添加插件的时候，你需要提供一个名字
+* 在添加插件的时候，你可以选择插件的类型(sync/callback/promise)
+* this.hooks = { myHook: new SyncHook(…) } 是注册钩子的新方法。创建一个新的Hook对象，作为hooks对象的属性
+
+
+
+
+
