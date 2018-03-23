@@ -178,21 +178,116 @@ ReactDOM.render(
 
 
 
+### React中constructor(props){}
+
+在React Class中设置state的初始值或者绑定事件时
+为什么在constructor(){} 中加上super()
+如果去掉super()会怎样呢！
+```
+    constructor() {  
+      this.state = {searchStr: ''};  
+      this.handleChange = this.handleChange.bind(this);  
+    }  
+```
+运行这段代码时，会发现编译错误：
+
+提示没有在this之前加上super()
+其实就是少了super()，导致了this的 Reference Error
+
+```
+    class MyComponent extends React.Component {  
+      constructor() {  
+        console.log(this); // Reference Error  
+      }  
+      
+      render() {  
+        return <div>Hello {this.props.name}</div>;  
+      }  
+    }  
+```
+
+
+----------
+
+```
+    constructor() {  
+      super();  
+      this.state = {searchStr: ''};  
+      this.handleChange = this.handleChange.bind(this);  
+    }  
+```
+那么React的官方例子中都是加上了props作为参数
+```
+    constructor(props) {  
+      super(props);  
+      this.state = {searchStr: ''};  
+      this.handleChange = this.handleChange.bind(this);  
+    }  
+```
 
 
 
+那它们的区别在哪儿呢
+What's the difference between “super()” and “super(props)” in React when using es6 classes?
+借用下stackoverflow上的解释
+
+There is only one reason when one needs to pass props to super():
+When you want to access this.props in constructor.
+(Which is probably redundant since you already have a reference to it.)
+
+
+**只有一个理由需要传递props作为super()的参数，那就是你需要在构造函数内使用this.props**
+那官方提供学习的例子中都是写成super(props)，所以说写成super(props)是完全没问题的，也建议就直接这样写
+
+
+### reducer为什么叫reducer
+我们注意到redux的官方文档里专门有一句对reducer命名的解释：
+
+It's called a reducer because it's the type of function you would pass to Array.prototype.reduce(reducer, ?initialValue)
+
+中文版的文档把这一句话翻译成了：
+
+之所以称作 reducer 是因为它将被传递给 Array.prototype.reduce(reducer, ?initialValue) 方法
+
+我们要注意到这里的中文翻译理解其实是错误的。原文的本意并不是说redux里的reducer会被传入到 Array.prototype.reduce 这个方法中。真的要翻译的话，应该翻译为：
+
+**之所以将这样的函数称之为reducer，是因为这种函数与被传入 Array.prototype.reduce(reducer, ?initialValue) 的回调函数属于相同的类型。**
+
+为什么这么讲呢？我们来看一下array使用reduce方法的具体例子：
+```
+// 以下代码示例来自 MDN JavaScript 文档
+
+/* 这里的callback是和reducer非常相似的函数
+ * arr.reduce(callback, [initialValue])
+ */
+
+var sum = [0, 1, 2, 3].reduce(function(acc, val) {
+  return acc + val;
+}, 0);
+// sum = 6
+
+/* 注意这当中的回调函数 (prev, curr) => prev + curr
+ * 与我们redux当中的reducer模型 (previousState, action) => newState 看起来是不是非常相似呢
+ */
+[0, 1, 2, 3, 4].reduce( (prev, curr) => prev + curr );
+```
+
+
+为了进一步加深理解，我们再了解一下reduce是什么东西，这个名词其实是函数式编程当中的一个术语，在更多的情况下，reduce操作被称为Fold折叠（下图来自维基百科）。
 
 
 
+![enter description here][2]
 
 
+直观起见，我们还是拿JavaScript来理解。reduce属于一种高阶函数，它将其中的回调函数reducer递归应用到数组的所有元素上并返回一个独立的值。这也就是“缩减”或“折叠”的意义所在了。
 
 
-
-
+**总而言之一句话，redux当中的reducer之所以叫做reducer，是因为它和 Array.prototype.reduce 当中传入的回调函数非常相似。**
 
 
 
 
 
   [1]: http://www.ruanyifeng.com/blogimg/asset/2015/bg2015033110.png
+  [2]: https://pic1.zhimg.com/80/v2-a32cb02859ea4ac0f8f50f1ec885d85c_hd.jpg

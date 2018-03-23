@@ -265,10 +265,15 @@ export function compose(...funcs){
 
 
 ### 如何判定一个脚本已经执行完毕
+暂无很好方法 有空在寻找
 
 
+### 去除对象中某些键值对
+```
+const {pwd,...data} = obj //去除密码这一项
 
-
+剩下的data就是去除了pwd的数据
+```
 
 
 
