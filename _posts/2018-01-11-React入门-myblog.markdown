@@ -287,6 +287,142 @@ var sum = [0, 1, 2, 3].reduce(function(acc, val) {
 
 
 
+### JSX 中的 If-Else
+你没法在JSX中使用 if-else 语句，因为 JSX 只是函数调用和对象创建的语法糖。看下面这个例子：
+
+```
+// This JSX:
+<div id={if (condition) { 'msg' }}>Hello World!</div>
+
+// Is transformed to this JS:
+React.createElement("div", {id: if (condition) { 'msg' }}, "Hello World!");
+```
+
+这是不合语法的 JS 代码。不过你可以采用三元操作表达式：
+```
+React.render(<div id={condition ? 'msg' : ''}>Hello World!</div>, mountNode);
+```
+
+
+当三元操作表达式不够健壮，你也可以使用 if 语句来决定应该渲染那个组件。
+```
+var loginButton;
+if (loggedIn) {
+  loginButton = <LogoutButton />;
+} else {
+  loginButton = <LoginButton />;
+}
+
+return (
+  <nav>
+    <Home />
+    {loginButton}
+  </nav>
+)
+```
+
+
+
+
+
+### JSX 根节点的最大数量
+目前， 一个 component 的 render，只能返回一个节点。如果你需要返回一堆 div ， 那你必须将你的组件用 一个div 或 span 或任何其他的组件包裹。
+
+切记，JSX 会被编译成常规的 JS； 因此返回两个函数也就没什么意义了，同样地，千万不要在三元操作符中放入超过一个子节点。
+
+
+### Container Component模式
+一个container负责数据的获取，然后渲染它对应的下级component。就这些而已。
+
+“对应的”的意思是他们拥有共同的名称：
+
+StockWidgetContainer => StockWidget
+TagCloudContainer => TagCloud
+PartyPooperListContainer => PartyPooperList
+
+为什么要用Containers呢？
+
+假设我们需要做一个展示评论的组建。在你不知道container components模式之前，你会把所有的东西都放在一个里面：
+```
+// CommentList.js
+class CommentList extends React.Component {
+  constructor() {
+    super();
+    this.state = { comments: [] }
+  }
+  componentDidMount() {
+    $.ajax({
+      url: "/my-comments.json",
+      dataType: 'json',
+      success: function(comments) {
+        this.setState({comments: comments});
+      }.bind(this)
+    });
+  }
+  render() {
+    return <ul> {this.state.comments.map(renderComment)} </ul>;
+  }
+  renderComment({body, author}) {
+    return <li>{body}—{author}</li>;
+  }
+}
+```
+你的这个组建要同时负责获取数据和展示数据。当然，这种做法没有什么错的，但是你没有很好的利用React的一些优势。
+
+复用性
+除非在一个一模一样的使用环境下，你无法重用CommentList组建。
+
+
+数据结构
+你的展示组建对需要的数据架构有具体的要求，而PropTypes能够很好地满足这个要求。
+展示组建对数据结构有一定的要求，但是却没有办法限制数据类型。如果传入的json结构发生了改变，那么组建就会down掉，并不会抛出任何错误。
+
+
+如果我们使用container
+```
+// CommentListContainer.js
+class CommentListContainer extends React.Component {
+  constructor() {
+    super();
+    this.state = { comments: [] }
+  }
+  componentDidMount() {
+    $.ajax({
+      url: "/my-comments.json",
+      dataType: 'json',
+      success: function(comments) {
+        this.setState({comments: comments});
+      }.bind(this)
+    });
+  }
+  render() {
+    return <CommentList comments={this.state.comments} />;
+  }
+}
+```
+同时，我们修改一下CommentList让它可以接受一个comments的prop。
+```
+// CommentList.js
+class CommentList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() { 
+    return <ul> {this.props.comments.map(renderComment)} </ul>;
+  }
+  renderComment({body, author}) {
+    return <li>{body}—{author}</li>;
+  }
+}
+```
+
+
+所以，我们这么做获得了什么？
+
+我们获取了很多东西…
+我们分离了数据获取和数据渲染的逻辑。
+我们让CommentList变成了可复用的组建。
+我们允许CommentList可以通过PropTypes来限制props数据个格式。如果props格式出错，就会报错。
 
 
   [1]: http://www.ruanyifeng.com/blogimg/asset/2015/bg2015033110.png
