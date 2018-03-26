@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "border-1px()"
+title:      "移动端设置border-1px()"
 date:       2017-10-19 16:45:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -14,11 +14,13 @@ tags:
 
 ## 正文
  
-[网页链接](http://www.cnblogs.com/yuqingfamily/articles/5798928.html)
+[网页链接](https://blog.csdn.net/qq_34543438/article/details/73839086)
 
-利用after伪元素添加border
+即通过伪类+子绝父相 实现1px的下边框
+
 
 **stylus写法**
+在 stylus文件夹中创建mixin.styl文件
 
 ```
 border-1px($color)
@@ -33,6 +35,22 @@ border-1px($color)
     content: ' '
 ```
 
+在 stylus文件夹中创建base.styl文件，内容如下：（根据设备的dpr确定y轴的缩放比例）
+```
+@media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)  
+   .border-1px  
+       &::after  
+          -webkit-transform: scaleY(0.7)  
+          transform: scaleY(0.7)  
+  
+@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)  
+   .border-1px  
+       &::after  
+          -webkit-transform: scaleY(0.5)  
+          transform: scaleY(0.5)  
+```
+
+
 ### 调用
 ```
  .food
@@ -41,3 +59,4 @@ border-1px($color)
           box-sizing border-box
           border-1px(rgba(7, 17, 27, 0.1))
 ```
+
