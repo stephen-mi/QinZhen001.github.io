@@ -55,3 +55,44 @@ div{vertical-align:middle;}
 
 ### Tip
 元素浮动之后就会变为块元素，即 display 属性为 block ，所以 vertical-align 属性就会不起作用。
+
+
+
+### 幽灵空白节点
+[http://www.zhangxinxu.com/wordpress/2015/08/css-deep-understand-vertical-align-and-line-height/](http://www.zhangxinxu.com/wordpress/2015/08/css-deep-understand-vertical-align-and-line-height/)
+
+「幽灵空白节点」是个什么意思呢？
+**在HTML5文档声明下，块状元素内部的内联元素的行为表现，就好像块状元素内部还有一个（更有可能两个-前后）看不见摸不着没有宽度没有实体的空白节点，这个假想又似乎存在的空白节点，我称之为“幽灵空白节点”。**
+
+vertical-align默认值是baseline, 也就是基线对齐.
+
+
+
+
+
+
+**一个inline-block元素，如果里面没有inline内联元素，或者overflow不是visible，则该元素的基线就是其margin底边缘，否则，其基线就是元素里面最后一行内联元素的基线。**
+
+两个同尺寸的inline-block水平元素，唯一区别就是一个空的，一个里面有字符，代码如下：
+```
+.dib-baseline {
+  display: inline-block; width: 150px; height: 150px;
+  border: 1px solid #cad5eb; background-color: #f0f3f9;
+}
+
+<span class="dib-baseline"></span>
+<span class="dib-baseline">x-baseline</span>
+```
+
+会发现，明明尺寸、display水平都是一样的，结果呢，两个却不在一个水平线上对齐，为什么呢？哈哈，上面的规范已经说明了一切。第一个框框里面没有内联元素，因此，基线就是容器的margin下边缘，也就是下边框下面的位置；而第二个框框里面有字符，纯正的内联元素，因此，第二个框框就是这些字符的基线，也就是字母x的下边缘了。于是，我们就看到了框框1下边缘和框框2里面字符x底边对齐的好戏。框框2有个小彩蛋，点击可以toggle其innerHTML，会发现，如果框框2里面没文字，就和框框1举案齐眉了。
+
+
+
+
+
+
+
+
+
+
+

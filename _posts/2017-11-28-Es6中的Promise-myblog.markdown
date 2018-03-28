@@ -547,4 +547,42 @@ try {
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 
+
+
+
+
+
+
+### 补充
+
+
+#### Promise的执行时机
+Promise 新建后就会立即执行。
+
+```
+let promise = new Promise(function(resolve, reject) {
+  console.log('Promise');
+  resolve();
+});
+
+promise.then(function() {
+  console.log('resolved.');
+});
+
+console.log('Hi!');
+
+// Promise
+// Hi!
+// resolved
+```
+
+上面代码中，Promise 新建后立即执行，所以首先输出的是Promise。然后，then方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以resolved最后输出。
+
+
+
+
+
+
+
+
   [1]: https://mdn.mozillademos.org/files/8633/promises.png
