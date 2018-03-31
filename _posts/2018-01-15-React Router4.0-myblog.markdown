@@ -69,7 +69,7 @@ const supportsHistory = 'pushState' in window.history
 
 **children: node**
 作用：渲染唯一子元素。
-使用场景：作为一个 Reac t组件，天生自带 children 属性。
+使用场景：作为一个 React组件，天生自带 children 属性。
 
 
 
@@ -95,9 +95,17 @@ props 分别是：
 在 Route component 中，以 this.props.location 的方式获取，
 在 Route render 中，以 ({ location }) => () 的方式获取，
 在 Route children 中，以 ({ location }) => () 的方式获取，
+
+
 History 和 match的获取方式类似。
 
+如果当前的地址是 `/char/123`
+那么match.path是 `/char/:user`
+那么match.url是 `/chat/123`
 
+>**match.url是指向实际的url**
+
+>ps：在这个例子中，match.params.user为123
 
 #### component
 
@@ -133,4 +141,129 @@ const FadingRoute = ({ component: Component, ...rest }) => (
 链接：https://www.jianshu.com/p/e3adc9b5f75c
 來源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+### 嵌套路由
+[http://www.ruanyifeng.com/blog/2016/05/react_router.html?utm_source=tool.lu](http://www.ruanyifeng.com/blog/2016/05/react_router.html?utm_source=tool.lu)
+Route组件还可以嵌套。
+
+```
+    <Router history={hashHistory}>
+      <Route path="/" component={App}>
+        <Route path="/repos" component={Repos}/>
+        <Route path="/about" component={About}/>
+      </Route>
+    </Router>
+```
+上面代码中，用户访问/repos时，会先加载App组件，然后在它的内部再加载Repos组件。
+```
+<App>
+  <Repos/>
+</App>
+```
+App组件要写成下面的样子。
+
+```
+    export default React.createClass({
+      render() {
+        return <div>
+          {this.props.children}
+        </div>
+      }
+    })
+```
+上面代码中，App组件的this.props.children属性就是子组件。
+
+
+子路由也可以不写在Router组件里面，单独传入Router组件的routes属性。
+
+```
+    let routes = <Route path="/" component={App}>
+      <Route path="/repos" component={Repos}/>
+      <Route path="/about" component={About}/>
+    </Route>;
+
+    <Router routes={routes} history={browserHistory}/>
+```
+
+### 通配符
+path属性可以使用通配符。
+
+```
+    <Route path="/hello/:name">
+    // 匹配 /hello/michael
+    // 匹配 /hello/ryan
+
+    <Route path="/hello(/:name)">
+    // 匹配 /hello
+    // 匹配 /hello/michael
+    // 匹配 /hello/ryan
+
+    <Route path="/files/*.*">
+    // 匹配 /files/hello.jpg
+    // 匹配 /files/hello.html
+
+    <Route path="/files/*">
+    // 匹配 /files/ 
+    // 匹配 /files/a
+    // 匹配 /files/a/b
+
+    <Route path="/**/*.jpg">
+    // 匹配 /files/hello.jpg
+    // 匹配 /files/path/to/file.jpg
+```
+
+
+
+1. :paramName匹配URL的一个部分，直到遇到下一个/、?、#为止。这个路径参数可以通过this.props.params.paramName取出。
+2. ()表示URL的这个部分是可选的。
+3. *匹配任意字符，直到模式里面的下一个字符为止。匹配方式是非贪婪模式。
+4. ** 匹配任意字符，直到下一个/、?、#为止。匹配方式是贪婪模式。
+
+**URL的查询字符串/foo?bar=baz，可以用this.props.location.query.bar获取。**
+
+
+
+
+
+### histroy 属性
+Router组件的history属性，用来监听浏览器地址栏的变化，并将URL解析成一个地址对象，供 React Router 匹配。
+
+history属性，一共可以设置三种值。
+
+
+* browserHistory
+* hashHistory
+* createMemoryHistory
+
+如果设为hashHistory，路由将通过URL的hash部分（#）切换，URL的形式类似`example.com/#/some/path`。
+
+```
+import { hashHistory } from 'react-router'
+
+render(
+  <Router history={hashHistory} routes={routes} />,
+  document.getElementById('app')
+)
+```
+
+
+如果设为browserHistory，浏览器的路由就不再通过Hash完成了，而显示正常的路径`example.com/some/path`，背后调用的是浏览器的History API。
+
+
+```
+import { browserHistory } from 'react-router'
+
+render(
+  <Router history={browserHistory} routes={routes} />,
+  document.getElementById('app')
+)
+```
+
+createMemoryHistory主要用于服务器渲染。它创建一个内存中的history对象，不与浏览器URL互动。
+
+
+
+
+
 
