@@ -12,7 +12,7 @@ tags:
 > “Yeah It's on. ”
 
 
-## 开发中使用
+## 不需要翻墙
 
 ### 工具大全
 [https://tool.lu/](https://tool.lu/)
@@ -26,7 +26,6 @@ tags:
 ### ES6转ES5
 [ES6转ES5](http://babeljs.io/repl/#?babili=false&evaluate=true&lineWrap=false&presets=es2015,react,stage-2&targets=&browsers=&builtIns=false&code=const%20fetchPosts%20=%20reddit%20=%3E%20dispatch%20=%3E%20%7B%0A%20%20dispatch%28requestPosts%28reddit%29%29%0A%20%20return%20fetch%28%60https://www.reddit.com/r/)
 
-## 其他
 
 ### pdf转换器
 [https://pdfcandy.com/](https://pdfcandy.com/)
@@ -58,10 +57,19 @@ tags:
 ### 生成展示GitHub信息的iframe 
 [https://ghbtns.com/](https://ghbtns.com/)
 
+
+
+### CSS3动画帧数计算器
+[http://tid.tenpay.com/labs/css3_keyframes_calculator.html](http://tid.tenpay.com/labs/css3_keyframes_calculator.html)
+
+
 ## 需要翻墙
 
 ### 图标库
 [https://dribbble.com/](https://dribbble.com/)
+
+### clip-path: polygon(x1 y1, x2 y2, x3 y3, …)
+[https://bennettfeely.com/clippy/](https://bennettfeely.com/clippy/)
 
 
 

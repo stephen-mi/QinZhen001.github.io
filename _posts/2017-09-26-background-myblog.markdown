@@ -84,8 +84,17 @@ background-position:center;
 }
 ```
 
+#### **background-position负值定位**
+[http://www.php230.com/1411189681.html](http://www.php230.com/1411189681.html)
 
 
+1. 原点位置，即外层块元素的左上角
+2. background-position 位置设定是指图片与坐标原点的偏移量
+3. 原点是不会动的，移动的是图片 X坐标为正则图片左上角向右平移，为负则图片左上角向左平移
+4. Y坐标为正则图片左上角向下平移，为负则左上角向上平移
+5. 百分比的计算是有公式的：X轴( container宽度 – 图片宽度 )*含符号百分比
+6. Y轴( container高度 – 图片高度)*含符号百分比
 
+**所以在雪碧图或者扣图时background-position都用负值**
 
 

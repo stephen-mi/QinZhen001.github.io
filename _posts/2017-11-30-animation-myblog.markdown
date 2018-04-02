@@ -120,3 +120,144 @@ animation-play-state:paused;
 商业转载请联系作者获得授权,非商业转载请注明出处。
 
 原文: https://www.w3cplus.com/css3/understanding-css-animation-fill-mode-property.html © w3cplus.com
+
+
+## 补充
+
+
+### animation-timing-function
+规定动画的速度曲线。
+速度曲线定义动画从一套 CSS 样式变为另一套所用的时间。
+
+
+
+
+| linear                | 动画从头到尾的速度是相同的。                                 |
+| --------------------- | ------------------------------------------------------------ |
+| ease                  | 默认。动画以低速开始，然后加快，在结束前变慢。               |
+| ease-in               | 动画以低速开始。                                             |
+| ease-out              | 动画以低速结束。                                             |
+| ease-in-out           | 动画以低速开始和结束。                                       |
+| cubic-bezier(n,n,n,n) | 在 cubic-bezier 函数中自己的值。可能的值是从 0 到 1 的数值。 |
+
+
+**但是漏掉一个很重要的 steps**
+
+steps 函数指定了一个**阶跃函数**
+
+第一个参数指定了时间函数中的间隔数量（必须是正整数）
+
+第二个参数可选，接受 start 和 end 两个值，指定在每个间隔的起点或是终点发生阶跃变化，默认为 end。
+
+step-start等同于steps(1,start)，动画分成1步，动画执行时为开始左侧端点的部分为开始；
+
+step-end等同于steps(1,end)：动画分成一步，动画执行时以结尾端点为开始，默认值为end。
+
+
+#### steps第一个参数的错误的理解
+steps(5，start)
+
+steps() 第一个参数 number 为指定的间隔数，即把动画分为 n 步阶段性展示，估计大多数人理解就是keyframes写的变化次数
+
+例如:
+```
+@-webkit-keyframes circle {
+        0% {}
+        25%{}
+        50%{}
+        75%{}
+        100%{}
+ }
+```
+之前也一直认为steps(5，start）中的5 就是指的keyframes中的0% 25% 50% 75% 100% 分成5个间隔等分
+ 
+ 
+ 
+为什么会出现这种理解错误，我们看一个例子
+
+keyframes的关键帧是只有2个规则的时候，假如我们有一张400px长度的雪碧图
+```
+@-webkit-keyframes circle {
+        0% {background-position-x: 0;}
+        100%{background-position-x: -400px;}
+ }
+```
+此刻设置steps(5，start）那么会发现5张图会出现帧动画的效果，因为steps中的5把 0% – 100%的规则，内部分成5个等分
+
+实际内部会执行这样一个关键帧效果
+
+```
+@-webkit-keyframes circle {
+        0% {background-position-x: 0;}
+        25% {background-position-x: -100px;}
+        50% {background-position-x:-200px;}
+        75%{background-position-x: -300px;}
+        100%{background-position-x: -400px;}
+ }
+```
+
+
+将这个规则稍微修改下，加入一个50%的状态
+```
+@-webkit-keyframes circle {
+        0% {background-position-x: 0;}
+        50% {background-position-x: -200px;}
+        100%{background-position-x: -400px;}
+ }
+```
+
+那么同样用steps(5，start）效果就会乱套
+
+此刻你会很迷惑，所以关键要理解第一个参数的针对点，首先引入一个核心点：
+ 
+ 
+**timing-function 作用于每两个关键帧之间，而不是整个动画**
+ 
+那么第一个参数很好理解了，steps的设置都是针对两个关键帧之间的，而非是整个keyframes，所以第一个参数对 - 次数对应了每次steps的变化 
+ 
+换句话说也是 0-25 之间变化5次，  25-50之间 变化5次 ，50-75 之间变化5次，以此类推 
+ 
+ 
+ 第二个参数可选，接受 start 和 end 两个值，指定在每个间隔的起点或是终点发生阶跃变化，默认为 end
+
+通过案例看下 step-start，step-end 的区别
+```
+@-webkit-keyframes circle {
+        0% {background: red}
+        50%{background: yellow}
+        100% {background: blue}
+    }
+```
+step-start ： 黄色与蓝色相互切换
+
+step-end  ： 红色与黄色相互切换
+ 
+ 
+2个参数都会选择性的跳过前后部分，start跳过0%，end跳过100% 
+step-start在变化过程中，都是以下一帧的显示效果来填充间隔动画，所以0% 到 50%  直接就显示了黄色yellow
+
+step-end与上面相反，都是以上一帧的显示效果来填充间隔动画，所以0% 到 50% 直接就显示了红色red 
+ 
+ 
+![enter description here][1] 
+ 
+ 
+ 
+总结：
+steps函数，它可以传入两个参数，第一个是一个大于0的整数，他是将间隔动画等分成指定数目的小间隔动画，然后根据第二个参数来决定显示效果。
+
+第二个参数设置后其实和step-start，step-end同义，在分成的小间隔动画中判断显示效果。可以看出：steps(1, start) 等于step-start，steps(1,end)等于step-end
+
+最核心的一点就是：timing-function **作用于每两个关键帧之间，而不是整个动画** 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+  [1]: https://www.w3.org/TR/2012/WD-css3-transitions-20120403/step.png
