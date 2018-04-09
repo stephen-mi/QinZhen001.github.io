@@ -1,6 +1,4 @@
-# QinZhen001.github.io
-
-## 我的博客
+# 我的博客
 * 基于GitHub Pages + Jekyll 的个人博客站点
 * [套用了huxpro大大模版](https://github.com/huxpro/huxpro.github.io/)
 
