@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "reactV16错误处理(componentDidCatch)"
+title:      "react-v16错误处理(componentDidCatch)"
 date:       2018-03-30 23:39:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - react
+    - React
 ---
 
 > “Yeah It's on. ”

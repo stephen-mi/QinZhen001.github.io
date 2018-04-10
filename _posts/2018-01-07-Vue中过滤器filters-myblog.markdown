@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Vue中过滤器filters-myblog"
+title:      "Vue中过滤器filters"
 date:       2018-01-07 13:33:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
