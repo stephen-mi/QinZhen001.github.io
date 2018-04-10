@@ -19,7 +19,7 @@ tags:
 
 >**使函数理解并处理部分应用**
 
-http://www.zhangxinxu.com/wordpress/2013/02/js-currying/
+[http://www.zhangxinxu.com/wordpress/2013/02/js-currying/](http://www.zhangxinxu.com/wordpress/2013/02/js-currying/)
 
 ### 柯里化有3个常见作用
 1. 参数复用
