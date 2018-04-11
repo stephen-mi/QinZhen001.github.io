@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/img/default-cursor.cur" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_posts/2018-01-11-ES6中扩展spread与剩余rest运算-myblog.markdown" afterPath="$PROJECT_DIR$/_posts/2018-01-11-ES6中扩展spread与剩余rest运算-myblog.markdown" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/hux-blog.css" afterPath="$PROJECT_DIR$/css/hux-blog.css" />
-    </list>
+    <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -443,7 +438,7 @@
       <workItem from="1523266498575" duration="219000" />
       <workItem from="1523275089007" duration="101000" />
       <workItem from="1523275601049" duration="918000" />
-      <workItem from="1523453132515" duration="90000" />
+      <workItem from="1523453132515" duration="685000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -792,7 +787,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66532000" />
+    <option name="totallyTimeSpent" value="67127000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="468" y="139" width="1175" height="951" extended-state="1" />
