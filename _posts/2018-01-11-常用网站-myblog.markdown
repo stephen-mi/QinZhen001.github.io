@@ -63,6 +63,14 @@ tags:
 [http://tid.tenpay.com/labs/css3_keyframes_calculator.html](http://tid.tenpay.com/labs/css3_keyframes_calculator.html)
 
 
+### 印记中文(翻译的文档)
+[https://www.docschina.org/](https://www.docschina.org/)
+
+
+
+### vue SSR
+[https://ssr.vuejs.org/zh/](https://ssr.vuejs.org/zh/)
+
 ## 需要翻墙
 
 ### 图标库
