@@ -60,3 +60,19 @@ border-1px($color)
           border-1px(rgba(7, 17, 27, 0.1))
 ```
 
+
+
+## 其他实现方式
+
+
+### border-img
+[https://www.w3cplus.com/css/fix-1px-for-retina.html](https://www.w3cplus.com/css/fix-1px-for-retina.html)
+
+
+### postcss-write-svg
+使用border-image每次都要去调整图片，总是需要成本的。基于上述的原因，我们可以借助于PostCSS的插件postcss-write-svg来帮助我们。如果你的项目中已经有使用PostCSS，那么只需要在项目中安装这个插件
+
+
+
+
+

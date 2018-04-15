@@ -13,9 +13,26 @@ tags:
 
 
 ## 正文
-[网页链接](http://www.css88.com/archives/8506)
+[5分钟学会Grid布局](http://www.css88.com/archives/8506)
+
+[Grid布局完全指南](http://www.css88.com/archives/8510)
 
 CSS Grid 布局由两个核心组成部分是 wrapper（父元素）和 items（子元素）。 wrapper 是实际的 grid(网格)，items 是 grid(网格) 内的内容。
+
+
+
+
+
+>注意：在 网格容器(Grid Container) 上使用column，float，clear， vertical-align 不会产生任何效果。
+
+
+
+
+
+
+
+
+
 
 
 ```

@@ -264,6 +264,37 @@ const isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge
 ```
 
 
+### hasClass
+
+```
+function hasClass(el, className) {
+  let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
+  return reg.test(el.className)
+}
+```
+
+\s在正则里就表示空白符
+
+用`\\s`是因为所使用的工具`\`本身就具有转义的功能，比如`\b`表示退格符，在正则中\b(不在中括号中)表示单词边界,要将字符串\b传给正则就得首先对\转义 ，用`\\`表示 `\`, `\\b`表示`\b`
+
+同理在这些\本身具有转义作用的工具中，要将字符串\s传给正则用要`\\s` 
+
+
+
+### addClass
+```
+function addClass(el, className) {
+  if (hasClass(el, className)) {
+    return
+  }
+
+  let newClass = el.className.split(' ')
+  newClass.push(className)
+  el.className = newClass.join(' ')
+}
+```
+
+
 ### isObject
 ```
 function isObject (obj) {
