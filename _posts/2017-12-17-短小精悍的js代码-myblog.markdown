@@ -184,13 +184,6 @@ let unique = [...new Set(arr)];
 
 
 
-### isObject
-``` 
-function isObject(obj) {
-    return obj !== null && typeof obj === 'object';
-}
-```
-
 
 ### isJson
 ```
@@ -293,6 +286,13 @@ function addClass(el, className) {
   el.className = newClass.join(' ')
 }
 ```
+
+
+### 判断是否为移动端
+```
+/AppleWebKit.*Mobile/i.test(navigator.userAgent) || /Android|iPhone|Windows Phone|webOS|iPod|BlackBerry/i.test(navigator.userAgent)
+```
+
 
 
 ### isObject

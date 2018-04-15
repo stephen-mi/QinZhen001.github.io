@@ -20,12 +20,9 @@ tags:
 要解决此问题，我们可以给包裹层(包裹了float元素)添加一个类，叫做clearfix，下面是clearfix的实现形式（之一）：
 ```
 .clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
+   content:""; 
+   display: block; 
+   clear:both; 
 }
 ```
 上述代码通过伪类 :after 在container后添加内容（content），来实现清除浮动。
