@@ -302,6 +302,13 @@ function isObject (obj) {
 }
 ```
 
+### isFunction 
+```
+function isFunction(source) {
+     return '[object Function]' === Object.prototype.toString.call(source);
+ };
+```
+
 ### 如何判定一个脚本已经执行完毕
 暂无很好方法 有空在寻找
 

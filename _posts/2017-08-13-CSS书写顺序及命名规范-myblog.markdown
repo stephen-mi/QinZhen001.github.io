@@ -56,22 +56,22 @@ id在JS是唯一的，不能多次使用，而使用class类选择器却可以�
 能良好区分JavaScript变量命名（JS变量命名是用“_”）
 
 
+![enter description here][7]
+
+
+
+
 
 ### 老司机经验
 **设置宽度或者margin和padding**
 
- “我的经验法则是，如果设置了一个宽度，就不设置margin或padding。同样，如果设置了一个margin或padding，就不设置宽度。处理盒模型是就是会有如此的痛苦，特别是当你处理百分比的那种。所以，我设置外部容器的宽度，然后对其中的元素设置margin和padding。如此一来一切都会顺利。”
+“我的经验法则是，如果设置了一个宽度，就不设置margin或padding。同样，如果设置了一个margin或padding，就不设置宽度。处理盒模型是就是会有如此的痛苦，特别是当你处理百分比的那种。所以，我设置外部容器的宽度，然后对其中的元素设置margin和padding。如此一来一切都会顺利。”
 
 
 
 
 
-
-
- 
-![enter description here][7]
-
-常用的CSS命名规则
+### 常用的CSS命名规则
 
 头：header
 内容：content/container
