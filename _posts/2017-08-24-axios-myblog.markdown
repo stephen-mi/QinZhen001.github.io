@@ -28,7 +28,7 @@ axios 是一个基于Promise 用于浏览器和 nodejs 的 HTTP 客户端，它�
 * 转换请求和响应数据
 * 取消请求
 * 自动转换JSON数据
-* 客户端支持防止 CSRF/XSRF
+* **客户端支持防止 CSRF/XSRF**
 
 
 执行 GET 请求
@@ -315,8 +315,16 @@ axios.get（'/ user / 12345'，{
 }）
 ```
 
-
-
+### 客户端支持防止 CSRF/XSRF
+原理:
+axios默认在Request Config里已经设置了
+```
+ //  ``xsrfCookieName`是用作xsrf标记值的cookie的名称
+  xsrfCookieName ：' XSRF-TOKEN '，//  默认  
+ 
+  //  ``xsrfHeaderName`是携带xsrf标记值的http标头的名称
+  xsrfHeaderName ：' X-XSRF-TOKEN '，//  默认  
+```
 
 
 
