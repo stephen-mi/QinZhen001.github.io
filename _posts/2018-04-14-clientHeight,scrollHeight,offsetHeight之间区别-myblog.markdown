@@ -58,6 +58,11 @@ el.offsetLeft = 子元素的外边框到父元素的内边框的水平距离距�
 * **page[X|Y] 是相对于整个页面左上角和鼠标之间的距离；**
 
 
+**pageX/Y：相对于文档边缘,包含滚动条距离
+clientX/Y：相对于当前页面且不包含滚动条距离** 
+
+
+
 ### 滚动移位 Scrolling offset
 window.pageX/YOffset
 

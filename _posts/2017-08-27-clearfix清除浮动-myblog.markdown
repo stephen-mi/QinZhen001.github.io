@@ -18,10 +18,13 @@ tags:
 通常我们在写html+css的时候，如果一个父级元素内部的子元素是浮动的（float），那么常会发生父元素不能被子元素正常撑开的情况
 
 要解决此问题，我们可以给包裹层(包裹了float元素)添加一个类，叫做clearfix，下面是clearfix的实现形式（之一）：
+
+
+**最好的方式**
 ```
 .clearfix:after {
    content:""; 
-   display: block; 
+   display: table; 
    clear:both; 
 }
 ```

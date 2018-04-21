@@ -16,102 +16,88 @@ var msgs = msgs = ["你会不会喜欢上我呀?(｡･ω･)ﾉﾞ",
     "喵.喵..喵... \\(•ㅂ•)/♥ "];
 
 var spig_top = 0;
-var cur_scrollTop = 0;
+var recordedScrollTop = 0;
+
+var initMove = false; //初始化移动
+var isMove = false; //移动标记
+var _x, _y; //鼠标离控件左上角的相对位置
 
 //鼠标在消息上时
 jQuery(document).ready(function ($) {
-    $("#message").hover(function () {
-        $("#message").fadeTo("100", 1);
-    });
-});
+
+    var spig = $('#spig')
+
+    spig_top = parseInt(spig.css("top"));
+    recordedScrollTop = $(window).scrollTop();
+
+    var wx = $(window).width() - spig.width();
+    var dy = $(document).height() - spig.height();
 
 
-//鼠标在上方时
-jQuery(document).ready(function ($) {
+    //鼠标在上方时
     //$(".mumu").jrumble({rangeX: 2,rangeY: 2,rangeRot: 1});
-    $("#spig").mouseenter(function () {
-        $("#spig>.mumu").fadeTo("300", 0.8);
+    spig.mouseenter(function () {
+        spig.find(".mumu").fadeTo("300", 0.8);
         var i = Math.floor(Math.random() * msgs.length);
         showMessage(msgs[i]);
-    });
-    $("#spig").mouseleave(function () {
-        $("#spig>.mumu").fadeTo("300", 1)
-    });
-});
+    }).mouseleave(function () {
+        spig.find(".mumu").fadeTo("300", 1)
+    })
 
-
-//滚动条移动
-jQuery(document).ready(function ($) {
+    //滚动条移动
     $(window).scroll(function (e) {
-        $("#spig").animate({
-            top: parseInt($(window).scrollTop() - cur_scrollTop + spig_top)
+        console.log()
+        spig.animate({
+            top: parseInt($(window).scrollTop() - recordedScrollTop + spig_top)
         }, {
             queue: false,
             duration: 1000
-        }, function () {
-            cur_scrollTop = $(window).scrollTop()
         });
     });
-});
 
 
-//鼠标点击时
-jQuery(document).ready(function ($) {
-    $("#spig").click(function (e) {
+    spig.mousedown(function (e) {
+        // console.log('mousedown')
+        initMove = true;
+        _x = e.pageX - parseInt(spig.css("left"));
+        _y = e.pageY - parseInt(spig.css("top"));
         e.stopPropagation()
-    });
+    }).mousemove(function (e) {
+        if (initMove) {
+            // console.log('mousemove')
+            isMove = true;
+            var x = e.pageX - _x;
+            var y = e.pageY - _y;
+            if (x > 0 && x < wx && y > 0 && y < dy) {
+                //控件新位置
+                spig
+                    .css({
+                        top: y,
+                        left: x
+                    })
+                    .find(".mumu").fadeTo(0, 0.5);
+            }
+        }
+        e.stopPropagation()
+    }).mouseup(function (e) {
+        // console.log('mouseup')
+        spig.find(".mumu").fadeTo("300", 1);
+        spig_top = parseInt(spig.css("top"));
+        recordedScrollTop = $(window).scrollTop()
+        initMove = false;
+        isMove = false;
+        e.stopPropagation()
+    })
+
+
 });
 
 
 //显示消息函数
 function showMessage(a, b) {
     if (b == null) b = 10000;
-    jQuery("#message").hide().stop();
-    jQuery("#message").html(a);
-    jQuery("#message").fadeIn();
-    jQuery("#message").fadeTo("1", 1);
-    jQuery("#message").fadeOut(b);
+    jQuery("#message").hide().stop().html(a).fadeIn().fadeTo("1", 1).fadeOut(b);
 };
 
-//拖动
-var initMove = false;
-var isMove = false; //移动标记
-var _x, _y; //鼠标离控件左上角的相对位置
-jQuery(document).ready(function ($) {
-    spig_top = parseInt($(".spig").css("top"));
-    cur_scrollTop = $(window).scrollTop();
-    $("#spig").mousedown(function (e) {
-        initMove = true;
-        _x = e.pageX - parseInt($("#spig").css("left"));
-        _y = e.pageY - parseInt($("#spig").css("top"));
-        $("#spig>.mumu").fadeTo(0, 0.5)
-        e.stopPropagation()
-    });
-    $(document).mousemove(function (e) {
-        if (initMove) {
-            isMove = true;
-            var x = e.pageX - _x;
-            var y = e.pageY - _y;
-            var wx = $(window).width() - $('#spig').width();
-            var dy = $(document).height() - $('#spig').height();
-            if (x > 0 && x < wx && y > 0 && y < dy) {
-                //控件新位置
-                $("#spig").css({
-                    top: y,
-                    left: x
-                });
-                $("#spig>.mumu").fadeTo(0, 0.5)
-                spig_top = parseInt($(".spig").css("top"));
-                cur_scrollTop = $(window).scrollTop()
-            }
-        }
-        e.stopPropagation()
-    }).mouseup(function (e) {
-        if (isMove) {
-            $("#spig>.mumu").fadeTo("300", 1);
-        }
-        initMove = false;
-        isMove = false;
-        e.stopPropagation()
-    });
-});
+
+
