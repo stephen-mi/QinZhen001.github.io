@@ -25,29 +25,29 @@ var _x, _y; //鼠标离控件左上角的相对位置
 //鼠标在消息上时
 jQuery(document).ready(function ($) {
 
-    var spig = $('#spig')
+    var $spig = $('#spig')
 
-    spig_top = parseInt(spig.css("top"));
+    spig_top = parseInt($spig.css("top"));
     recordedScrollTop = $(window).scrollTop();
 
-    var wx = $(window).width() - spig.width();
-    var dy = $(document).height() - spig.height();
+    var wx = $(window).width() - $spig.width();
+    var dy = $(document).height() - $spig.height();
 
 
     //鼠标在上方时
     //$(".mumu").jrumble({rangeX: 2,rangeY: 2,rangeRot: 1});
-    spig.mouseenter(function () {
-        spig.find(".mumu").fadeTo("300", 0.8);
+    $spig.mouseenter(function () {
+        $spig.find(".mumu").fadeTo("300", 0.8);
         var i = Math.floor(Math.random() * msgs.length);
         showMessage(msgs[i]);
     }).mouseleave(function () {
-        spig.find(".mumu").fadeTo("300", 1)
+        $spig.find(".mumu").fadeTo("300", 1)
     })
 
     //滚动条移动
     $(window).scroll(function (e) {
         console.log()
-        spig.animate({
+        $spig.animate({
             top: parseInt($(window).scrollTop() - recordedScrollTop + spig_top)
         }, {
             queue: false,
@@ -56,11 +56,11 @@ jQuery(document).ready(function ($) {
     });
 
 
-    spig.mousedown(function (e) {
+    $spig.mousedown(function (e) {
         // console.log('mousedown')
         initMove = true;
-        _x = e.pageX - parseInt(spig.css("left"));
-        _y = e.pageY - parseInt(spig.css("top"));
+        _x = e.pageX - parseInt($spig.css("left"));
+        _y = e.pageY - parseInt($spig.css("top"));
         e.stopPropagation()
     }).mousemove(function (e) {
         if (initMove) {
@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
             var y = e.pageY - _y;
             if (x > 0 && x < wx && y > 0 && y < dy) {
                 //控件新位置
-                spig
+                $spig
                     .css({
                         top: y,
                         left: x
@@ -81,7 +81,7 @@ jQuery(document).ready(function ($) {
         e.stopPropagation()
     }).mouseup(function (e) {
         // console.log('mouseup')
-        spig.find(".mumu").fadeTo("300", 1);
+        $spig.find(".mumu").fadeTo("300", 1);
         spig_top = parseInt(spig.css("top"));
         recordedScrollTop = $(window).scrollTop()
         initMove = false;
