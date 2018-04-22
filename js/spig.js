@@ -82,7 +82,7 @@ jQuery(document).ready(function ($) {
     }).mouseup(function (e) {
         // console.log('mouseup')
         $spig.find(".mumu").fadeTo("300", 1);
-        spig_top = parseInt(spig.css("top"));
+        spig_top = parseInt($spig.css("top"));
         recordedScrollTop = $(window).scrollTop()
         initMove = false;
         isMove = false;
