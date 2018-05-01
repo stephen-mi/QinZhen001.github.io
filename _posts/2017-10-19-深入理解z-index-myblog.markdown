@@ -39,11 +39,11 @@ HTML中的每一元素都是在其他元素的前面或者后面。这是众所�
 
 每一个层都有唯一的根节点。当一个元素创建一个层，那么它的所有子元素都会受到父元素的堆叠顺序影响。意味着**如果一个元素位于一个最低位置的层，那你z-index设置得再大，它也不会出现在其它层元素的上面。**
 
-现在我们来说说什么情况下会产生新的层：
+现在我们来说说什么情况下会产生新的堆叠上下文：
 
 1. 当一个元素位于HTML文档的最外层`（<html>元素）`
 2. 当一个元素被定位了并且拥有一个z-index值（不为auto）
-3. 当一个元素被设置了opacity，transforms, filters, css-regions, paged media等属性。
+3. 当一个元素被设置了opacity，transform, filter, css-regions, paged media,perspective,clip-path,mask / mask-image / mask-border等属性。
 
 一二条规则，Web开发者都知道，虽然他们不一定知道怎么描述
 
@@ -180,5 +180,69 @@ div {
 原文: http://www.w3cplus.com/css/what-no-one-told-you-about-z-index.html
 
 
+
+
+
+
+## 补充
+[https://zhuanlan.zhihu.com/p/33984503](https://zhuanlan.zhihu.com/p/33984503)
+
+
+
+
+![enter description here][3]
+
+**设置了 position: relative 属性后，元素 z-index:auto 生效导致层叠水平提升，比普通内联元素来的高**
+
+
+### z-index 基础
+**z-index 的默认值为 auto**
+
+**只有定位元素(position:relative/absolute/fixed)的 z-index 才有作用**
+
+**如果你的 z-index 作用于一个非定位元素(一些 CSS3 也会生效)，是不起任何作用的**
+
+
+
+#### 元素层叠水平相当
+那么当两个元素层叠水平相同的时候，这时候就要遵循下面两个准则：
+
+1. 后来居上原则
+2. 谁 z-index 大，谁在上的准则
+
+
+
+#### 不同的层叠上下文
+这个就比较复杂了，可以总结成一句话：打狗还得看主人
+
+
+
+## 最佳实践
+1. 不犯二准则：对于非浮层元素，避免设置 z-index 值，z-index 值没有任何道理需要超过 2
+2. 对于浮层元素，可以通过 JS 获取 body 下子元素的最大 z-index 值，然后在此基础上加 1 作为浮层元素的 z-index 值
+
+
+对于非浮层元素，不要过多地去运用 z-index 去调整显示顺序，要灵活地去运用层叠水平和后来居上的准则去让元素获得正确的显示，如果是在要设置 z-index 去调整，不建议非浮层元素 z-index 数值超过 2，对于 DOM 元素，-1, 0, 1, 2 足够让元素有正确的显示顺序。
+
+对于浮层元素，往往是第三方组件开发，当你无法确认你的浮层是否会百分百覆盖在 DOM 树上的时候，你可以去动态获取页面 body 元素下所有子元素 z-index 的最大值，在此基础加一作为浮层元素 z-index 值，用于保证该浮层元素能够显示在最上方。
+
+
+
+### 网页层次结构（css也会对网页的分层策略产生重要影响）
+
+对于一个html文件webkit会为某些元素和它的子节点建立新层，这样webkit可以单独对某层操作提升性能，下列情况会产生新层。
+
+1. video标签 – webkit在新层中有效的处理视频解码器和浏览器之间的交互和渲染问题。
+2. div、p等普通标签 – 涉及到3D变换时。
+3. canvas标签 – 复杂的2D和3D绘图操作。
+
+
+
+
+
+
+
+
   [1]: https://cdn.tutsplus.com/webdesign/uploads/2013/11/stacking-order1.png
   [2]: https://cdn.tutsplus.com/webdesign/uploads/2013/11/stacking1.png
+  [3]: https://pic3.zhimg.com/80/v2-1ec9491a660c0e11b7272633976da869_hd.jpg

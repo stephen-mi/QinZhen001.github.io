@@ -38,12 +38,33 @@ scrollHeight返回元素的完整的高度，以像素为单位.
 > 一般来说一个元素 clientHeight<offsetHeight<scrollHeight
 
 四、具体
-window.screen.availWidth     返回当前屏幕宽度(空白空间)  
-window.screen.availHeight     返回当前屏幕高度(空白空间)  
-window.screen.width     返回当前屏幕宽度(分辨率值)  
-window.screen.height     返回当前屏幕高度(分辨率值)  
-window.document.body.offsetHeight;     返回当前网页高度  
-window.document.body.offsetWidth;     返回当前网页宽度 
+* window.screen.availWidth     返回当前屏幕宽度(空白空间)  
+* window.screen.availHeight     返回当前屏幕高度(空白空间)  
+* window.screen.width     返回当前屏幕宽度(分辨率值)  
+* window.screen.height     返回当前屏幕高度(分辨率值)  
+
+
+----------
+
+
+* 网页可见区域宽： document.body.clientWidth
+* 网页可见区域高： document.body.clientHeight
+* 网页可见区域宽： document.body.offsetWidth (包括边线的宽)
+* 网页可见区域高： document.body.offsetHeight (包括边线的高)
+* 网页正文全文宽： document.body.scrollWidth
+* 网页正文全文高： document.body.scrollHeight
+* 网页被卷去的高： document.body.scrollTop
+* 网页被卷去的左： document.body.scrollLeft
+
+----------
+
+对应的dom元素的宽高有以下几个常用的：
+
+* 元素的实际高度：document.getElementById("div").offsetHeight
+* 元素的实际宽度：document.getElementById("div").offsetWidth
+* 元素的实际距离左边界(**HTMLElement.offsetParent 节点**)的距离：document.getElementById("div").offsetLeft
+* 元素的实际距离上边界(**HTMLElement.offsetParent 节点**)的距离：document.getElementById("div").offsetTop
+
 
 ----------
 
