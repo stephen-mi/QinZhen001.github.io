@@ -20,7 +20,7 @@ tags:
 property 和 attribute非常容易混淆，两个单词的中文翻译也都非常相近（property：属性，attribute：特性），但实际上，二者是不同的东西，属于不同的范畴。
 
 * property是DOM中的属性，是JavaScript里的对象；
-* attribute是HTML标签上的特性，它的值只能够是字符串；
+* Attribute就是dom节点自带的属性，例如html中常用的id、class、title、align等，它的值只能够是字符串；
 
 
  html中有这样一段代码：
@@ -47,7 +47,7 @@ console.log(in1.id);		// 'in_1'
 console.log(in1.value);		// 1
 console.log(in1.sth);		// undefined
 ```
-可以发现，标签中的三个属性，只有“id”和“value”会在in1上创建，而“sth”不会被创建。这是由于，每一个DOM对象都会有它默认的基本属性，而在创建的时候，它只会创建这些基本属性，我们在TAG标签中自定义的属性是不会直接放到DOM中的。
+可以发现，标签中的三个属性，只有“id”和“value”会在in1上创建，而“sth”不会被创建。这是由于，每一个DOM对象都会有它默认的基本属性，而在创建的时候，它只会创建这些基本属性，**我们在TAG标签中自定义的属性是不会直接放到DOM中的**。
 
 * DOM有其默认的基本属性，而这些属性就是所谓的“property”，无论如何，它们都会在初始化的时候再DOM对象上创建。
 * 如果在TAG对这些属性进行赋值，那么这些值就会作为初始值赋给DOM的同名property。
@@ -180,7 +180,7 @@ attribute中的id从property中的id发生了同步，数据方向变成了prope
 * DOM对象初始化时会在创建默认的基本property；
 * 只有在HTML标签中定义的attribute才会被保存在property的attributes属性中；
 * attribute会初始化property中的同名属性，但自定义的attribute不会出现在property中；
-* attribute的值都是字符串；
+* **attribute的值都是字符串**；
 
 
 ### 数据绑定
@@ -195,7 +195,110 @@ attribute中的id从property中的id发生了同步，数据方向变成了prope
 * 大多数情况（除非有浏览器兼容性问题），jQuery.attr是通过setAttribute实现，而jQuery.prop则会直接访问DOM对象的property；
 
 
-**最关键的两句话：**
+----------
+
+
 * **attribute（特性），是我们赋予某个事物的特质或对象。**
 * **property（属性），是早已存在的不需要外界赋予的特质。**
+
+
+----------
+
+* **特性和属性两者的存储方式不同；**
+* **“脚踏两只船”要了解；**
+* **DOM属性可能会导致循环引用内存泄漏。**
+
+
+
+
+## 补充
+
+### Attribute取值&赋值
+
+getAttribute()可以取得任何特性，不管是标准的还是自定义的。
+
+但是这个方法的浏览器兼容性有问题，有些浏览器可能会获取属性Property的值，因此jQuery要做一个测试，看getAttribute()是否是绝对获取特性Attribute的值。
+```
+div1.className = 'a';
+var judge = div1.getAttribute("className") === 'a';
+```
+
+**如果以上代码成立，说明getAttribute()方法出现了问题，将不再使用。**
+
+
+
+
+用setAttrbute()赋值，任何Attribute都可以，包括自定义的。而且，赋值的Attribute会立刻表现到DOM元素上。
+
+
+**最后注意，setAttribute()的两个参数，都必须是字符串**。即对特性Attribute职能赋值字符串，而对属性Property就可以赋任何类型的值了。
+
+
+### Property取值&赋值
+属性取值很简单。取任何属性的只，用“.”就可以：
+```
+var id = div1.id;
+var className = div1.className;
+var childNodes = div1.childNodes;
+var attrs = div1.attributes;
+```
+赋值和基本的js对象属性赋值一样，用“.”即可：
+```
+div1.className = 'a';
+div1.align = 'center';
+div1.AAAAA = true;
+div1.BBBBB = [1, 2, 3];
+```
+
+
+
+再次强调：
+**class特性在变成属性时，名字改成了“className”，因此div1.className和div1.getAttrbute('class')相同。**
+
+
+**上面代码中的div1.attributes是取的attributes这一属性，取出来保存到attrs变量中，attrs就成了一个NamedNodeList类型的对象，里面存储了若干个Attr类型。**
+
+
+>对于属性Property的赋值在IE中可能会引起循环引用，内存泄漏。为了防止这个问题，jQuery.data()做了特殊处理，解耦了数据和DOM对象
+
+
+### style和onclick
+用“.”获取Style：
+```
+<div id="div1" class="divClass" style="width:100%; padding:10px;">100</div>
+
+console.log(div1.style);
+```
+以上代码中，返回了一个CSSStyleDeclaration对象，这个对象中包含着样式的所有信息
+
+
+
+用getAttribute()获取style
+```
+<div id="div1" class="divClass" style="width:100%; padding:10px;">100</div>
+
+console.log(div1.getAttribute("style"));
+```
+以上代码返回的就是一个简单的字符串：“width:100%; padding:10px;”
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
