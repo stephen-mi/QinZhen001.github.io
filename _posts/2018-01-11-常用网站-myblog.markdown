@@ -58,6 +58,10 @@ tags:
 [https://ghbtns.com/](https://ghbtns.com/)
 
 
+### easy-mock
+[https://easy-mock.com/](https://easy-mock.com/)
+Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久化服务。
+
 
 ### CSS3动画帧数计算器
 [http://tid.tenpay.com/labs/css3_keyframes_calculator.html](http://tid.tenpay.com/labs/css3_keyframes_calculator.html)
