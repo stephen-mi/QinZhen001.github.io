@@ -90,7 +90,13 @@ Compared to the extract-text-webpack-plugin:
 NoEmitOnErrorsPlugin(现已弃用)
 在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误。对于所有资源，统计资料(stat)的 emitted 标识都是 false。
 
-**使用splitChunks**
+
+
+### 使用splitChunks
+[https://mp.weixin.qq.com/s/oOHDsuGnkPXnJNTNXQ0Zqw](https://mp.weixin.qq.com/s/oOHDsuGnkPXnJNTNXQ0Zqw)
+
+
+
 在webpack.config.js中的module.exports加入
 ```
     optimization: {
