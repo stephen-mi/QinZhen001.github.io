@@ -41,7 +41,7 @@ vertical-align “垂直的”+“对齐”的意思
 ### 为什么我的vertical-align属性不起作用
 vertical-align 称之为“inline-block依赖型元素
 
-只有一个元素属于inline或是inline-block（table-cell也可以理解为inline-block水平）水平，其身上的vertical-align属性才会起作用。所以，类似下面的代码就不会起作用：
+**只有一个元素属于inline或是inline-block（table-cell也可以理解为inline-block水平）水平，其身上的vertical-align属性才会起作用**。所以，类似下面的代码就不会起作用：
 
 div{vertical-align:middle;}
 
@@ -90,7 +90,8 @@ vertical-align默认值是baseline, 也就是基线对齐.
 
 
 
-
+### 补充
+[http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf](http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf)
 
 
 
