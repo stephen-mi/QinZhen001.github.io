@@ -30,10 +30,10 @@ tags:
 
 flex-direction: row | row-reverse | column | column-reverse
 
-*　row：横向从左到右排列（左对齐），默认的排列方式。
-*　row-reverse：反转横向排列（右对齐，从后往前排，最后一项排在最前面。
-*　column：纵向排列。
-*　column-reverse：反转纵向排列，从后往前排，最后一项排在最上面。
+* row：横向从左到右排列（左对齐），默认的排列方式。
+* row-reverse：反转横向排列（右对齐，从后往前排，最后一项排在最前面。
+* column：纵向排列。
+* column-reverse：反转纵向排列，从后往前排，最后一项排在最上面。
 
 
 ----------
@@ -52,7 +52,7 @@ flex-wrap: nowrap | wrap | wrap-reverse
 **flex-flow (适用于父类容器上)**
 复合属性。设置或检索伸缩盒对象的子元素排列方式。
 
-flex-flow: `<‘flex-direction’>` || `<‘flex-wrap’>`
+flex-flow: `<‘flex-direction’>` 和 `<‘flex-wrap’>`
 
 * [ flex-direction ]：定义弹性盒子元素的排列方向。
 * [ flex-wrap ]：定义弹性盒子元素溢出父容器时是否换行
@@ -64,7 +64,7 @@ flex-flow: `<‘flex-direction’>` || `<‘flex-wrap’>`
 
 
 **justify-content (适用于父类容器上)**
-设置或检索弹性盒子元素在主轴（横轴）方向上的对齐方式。
+设置或检索弹性盒子元素在**主轴（横轴）方向上**的对齐方式。
 
 当弹性盒里一行上的所有子元素都不能伸缩或已经达到其最大值时，这一属性可协助对多余的空间进行分配。当元素溢出某行时，这一属性同样会在对齐上进行控制。
 
@@ -83,7 +83,9 @@ justify-content: flex-start | flex-end | center | space-between | space-around
 
 ----------
 **align-items (适用于父类容器上)**
-设置或检索弹性盒子元素在侧轴（纵轴）方向上的对齐方式。
+设置或检索弹性盒子元素在**侧轴（纵轴）方向**上的对齐方式。
+
+>联想记忆：vertical-align => 垂直方向对齐方式 => align-items
 
 align-items: flex-start | flex-end | center | baseline | stretch
 
@@ -244,16 +246,62 @@ flex 属性，是 flex-grow 、flex-shrink 和 flex-basis 属性的简写，描�
 
 display:flex; 设置在外层容器父级，表示该容器使用弹性盒布局方式
 
-flex:1; 设置在子项，数值表示占据剩余空间的份数
 
-**如果缩写flex:1, 则其计算值为：1 1 0** 
+----------
 
-flex：none | [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
 
-* none：none关键字的计算值为: 0 0 auto
-* [ flex-grow ]：定义弹性盒子元素的扩展比率。
-* [ flex-shrink ]：定义弹性盒子元素的收缩比率。
-* [ flex-basis ]：定义弹性盒子元素的默认基准值。
+* **如果缩写flex:1,则其计算值为：1 1 0** 
+* **如果缩写flex:none,则计算值为 0 0 auto**
+* **如果缩写flex:auto,则计算值为 1 1 auto**
+
+
+当 flex 取值为一个长度或百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，有如下等同情况（注意 0% 是一个百分比而不是一个非负数字）：
+```
+.item-1 {flex: 0%;}
+.item-1 {
+flex-grow: 1;
+flex-shrink: 1;
+flex-basis: 0%;
+}
+.item-2 {flex: 24px;}
+.item-1 {
+flex-grow: 1;
+flex-shrink: 1;
+flex-basis: 24px;
+}
+```
+
+当 flex 取值为一个非负数字，则**该数字为 flex-grow** 值，flex-shrink 取 1，flex-basis 取 0%，如下是等同的：
+```
+.item {flex: 1;}
+.item {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+}
+```
+
+
+当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%，如下是等同的：
+```
+.item {flex: 2 3;}
+.item {
+    flex-grow: 2;
+    flex-shrink: 3;
+    flex-basis: 0%;
+}
+```
+
+
+当 flex 取值为一个非负数字和一个长度或百分比，则分别视为 flex-grow 和 flex-basis 的值，flex-shrink 取 1，如下是等同的：
+```
+.item {flex: 2333 3222px;}
+.item {
+    flex-grow: 2333;
+    flex-shrink: 1;
+    flex-basis: 3222px;
+}
+```
 
 
 ### align-items 和align-content
