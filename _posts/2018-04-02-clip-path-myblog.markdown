@@ -6,7 +6,7 @@ author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - Other
+    - Css
 ---
 
 > “Yeah It's on. ”
@@ -14,6 +14,8 @@ tags:
 
 ## 正文
 [网页链接](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
+
+
 clip-path属性可以创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如circle().。clip-path属性代替了现在已经弃用的剪切 clip属性。
 
 ```
