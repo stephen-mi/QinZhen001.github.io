@@ -190,6 +190,55 @@ canvas.save();和canvas.restore();是两个相互匹配出现的，作用是用�
 
 
 
+### Canvas 最佳实践(性能篇)
+[http://taobaofed.org/blog/2016/02/22/canvas-performance/](http://taobaofed.org/blog/2016/02/22/canvas-performance/)
+
+
+
+#### Canvas 上下文是状态机
+
+我们需要知道的第一件事就是，context 是一个状态机。你可以改变 context 的若干状态，而几乎所有的渲染操作，最终的效果与 context 本身的状态有关系
+
+
+#### 分层 Canvas
+
+分层 Canvas 在几乎任何动画区域较大，动画较复杂的情形下都是非常有必要的。分层 Canvas 能够大大降低完全不必要的渲染性能开销。分层渲染的思想被广泛用于图形相关的领域：从古老的皮影戏、套色印刷术，到现代电影/游戏工业，虚拟现实领域，等等。而分层 Canvas 只是分层渲染思想在 Canvas 动画上最最基本的应用而已。
+
+![enter description here][2]
+
+
+
+
+分层 Canvas 的出发点是，动画中的每种元素（层），对渲染和动画的要求是不一样的。对很多游戏而言，主要角色变化的频率和幅度是很大的（他们通常都是走来走去，打打杀杀的），而背景变化的频率或幅度则相对较小（基本不变，或者缓慢变化，或者仅在某些时机变化）。很明显，我们需要很频繁地更新和重绘人物，但是对于背景，我们也许只需要绘制一次，也许只需要每隔 200ms 才重绘一次，绝对没有必要每 16ms 就重绘一次。
+
+
+使用上，分层 Canvas 也很简单。我们需要做的，仅仅是生成多个 Canvas 实例，把它们重叠放置，每个 Canvas 使用不同的 z-index 来定义堆叠的次序。然后仅在需要绘制该层的时候（也许是「永不」）进行重绘。
+```
+var contextBackground = canvasBackground.getContext('2d');
+var contextForeground = canvasForeground.getContext('2d');
+
+function render(){
+  drawForeground(contextForeground);
+  if(needUpdateBackground){
+    drawBackground(contextBackground);
+  }
+  requestAnimationFrame(render);
+}
+```
+记住，堆叠在上方的 Canvas 中的内容会覆盖住下方 Canvas 中的内容。
+
+
+
+
+#### 绘制图像
+目前，Canvas 中使用到最多的 API，非 drawImage 莫属了。（当然也有例外，你如果要用 Canvas 写图表，自然是半句也不会用到了）。
+
+drawImage 方法的格式如下所示：
+	
+
+context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+
 
 
 
@@ -199,3 +248,4 @@ canvas.save();和canvas.restore();是两个相互匹配出现的，作用是用�
 
 
   [1]: http://www.w3school.com.cn/i/arc.gif
+  [2]: http://img.alicdn.com/tps/TB1RgLULpXXXXatXVXXXXXXXXXX-667-309.png

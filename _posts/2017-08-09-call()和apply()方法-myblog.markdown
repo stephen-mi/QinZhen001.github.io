@@ -67,4 +67,59 @@ a.call(b,arg1,arg2…)
 apply(b,[arg1,arg2])
 
 //apply只有2个参数，它将call的参数（arg1,arg2…）放在一个数组中作为apply的第二参数
-## 后记
+
+
+
+
+
+
+## 补充
+
+
+### 重写bind()
+
+```
+ Function.prototype.bind = function () {
+        var self = this,
+            context = [].shift.call(arguments),
+            args = [].slice.call(arguments)
+
+        return function () {
+//            arguments是个类数组 所以没法直接用arguments
+//            console.log(arguments)
+//            console.log([].slice.call(arguments))
+            return self.apply(context, [].concat.call(args, [].slice.call(arguments)))
+        }
+
+    }
+
+
+    var obj = {
+        name: 'sebe'
+    }
+
+    var func = function (a, b, c, d) {
+        alert(this.name)
+        alert([a, b, c, d])
+    }.bind(obj, 1, 2)
+
+
+    func(3, 4)
+```
+
+>想把arguments转成正的数的时候，可以借用 Array.prototype.slice 方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
