@@ -81,7 +81,37 @@ camelCase: function( string ) {
 ```
 
 
+### 高阶函数实现AOP 
+AOP（面向面编程）的主要作用是把一些核心业务逻辑模块无关的功能抽离出来，这些跟 业务逻辑无关的功能通常包括日志统计、安全控制、异常处理。这些功能出来之后， 通过“动态”的方式业辑模中。
 
+```
+   Function.prototype.before = function (beforeFn) {
+        var _self = this; //保存原函数的引用
+        return function () {
+            //返回了包含了原函数和新函数的"代理"函数
+            beforeFn.apply(this, arguments) //执行新函数，修正this
+            return _self.apply(this, arguments) //执行原函数
+        }
+    }
+
+    Function.prototype.after = function (afterFn) {
+        var _self = this
+        return function () {
+            var ret = _self.apply(this, arguments)
+            afterFn.apply(this, arguments)
+            return ret
+        }
+    }
+
+    var func = function () {
+        console.log(2)
+    }
+
+
+    func = func.before(() => console.log(1)).after(() => console.log(3))
+
+    func()  //输出1 2 3
+```
 
 
 
