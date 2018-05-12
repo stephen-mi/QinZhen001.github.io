@@ -118,3 +118,40 @@ function getDocumentPort () {
 }
 ```
 
+
+
+## 补充
+element.style.width 获取的是元素内容的宽度 **只能取到元素行内样式的宽度值，内嵌样式和外部样式取不到**
+
+element.offsetWidth 获取的是整个元素的宽度**包括边框和内边距**
+
+
+扩展：那么offsetLeft和offsetTop呢?
+
+答： offsetLeft = left + marginLeft
+     offsetTop = top +marginTop
+     
+     
+     
+### jquery中的offset()
+
+offset() 方法返回或设置匹配元素相**对于文档的偏移**（位置）。
+     
+>这个跟document.getElementById("xxx").offsetLeft不一样
+
+**offset()其实相当于原生js的getBoundingClientRect()**
+
+
+### js 获取对象相对于页面四边的距离
+
+getBoundingClientRect()
+这个方法返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示元素各边与页面上边和左边的距离。
+
+* var box=document.getElementById('box');         // 获取元素
+* alert(box.getBoundingClientRect().top);         // 元素上边距离页面上边的距离
+* alert(box.getBoundingClientRect().right);       // 元素右边距离页面左边的距离
+* alert(box.getBoundingClientRect().bottom);      // 元素下边距离页面上边的距离
+* alert(box.getBoundingClientRect().left);        // 元素左边距离页面左边的距离
+
+
+

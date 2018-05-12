@@ -31,8 +31,15 @@ getBoundingClientRect().width获取到的其实是父级的右边距离浏览器
 
 **If you need to know the total amount of space an element occupies, including the width of the visible content, scrollbars (if any), padding, and border**
 
+一般情况 getBoundingClientRect等于对应offset属性
 
+例如：
+**getBoundingClientRect().width === offsetWidth**
+
+但是
 In case of transforms, the `offsetWidth` and `offsetHeight` returns the element's layout width and height, while `getBoundingClientRect()` returns the rendering width and height.
+
+
 
 #### example
 if the element has width: 100px; and transform: scale(0.5); the getBoundingClientRect() will return 50 as the width, while offsetWidth will return 100.
