@@ -17,4 +17,12 @@
 * 加入canvas动态背景
 
 
+## 2018-05-16
+解决mumu人物拖拽时选中文字的问题
+
+**解决方案**
+
+使用return false阻止浏览器的默认行为
+
+
   [1]: https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/website-QR%20-code.png
