@@ -46,7 +46,6 @@ jQuery(document).ready(function ($) {
 
     //滚动条移动
     $(window).scroll(function (e) {
-        console.log()
         $spig.animate({
             top: parseInt($(window).scrollTop() - recordedScrollTop + spig_top)
         }, {
@@ -57,11 +56,12 @@ jQuery(document).ready(function ($) {
 
 
     $spig.mousedown(function (e) {
-        // console.log('mousedown')
         initMove = true;
         _x = e.pageX - parseInt($spig.css("left"));
         _y = e.pageY - parseInt($spig.css("top"));
         e.stopPropagation()
+        //chrome、ff、IE9下阻止默认行为
+        return false;
     }).mousemove(function (e) {
         if (initMove) {
             // console.log('mousemove')
