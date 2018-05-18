@@ -87,7 +87,8 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 [http://www.bootcss.com/p/lesscss/#docs](http://www.bootcss.com/p/lesscss/#docs)
 
 
-
+### 缓动函数查表
+[https://easings.net/zh-cn](https://easings.net/zh-cn)
 
 
 
