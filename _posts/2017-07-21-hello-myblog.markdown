@@ -52,43 +52,12 @@ tags:
 
 
 
-```javascript
-Url {
-<html>
-aaaaaaa
-</html>
-  protocol: null,
-  slashes: null,
-  auth: null,
-  host: null,
-  port: null,
-  hostname: null,
-  hash: null,
-  search: '?act=reg&user=aaa',
-  query: 'act=reg&user=aaa',
-  pathname: '/user',
-  path: '/user?act=reg&user=aaa',
-  href: '/user?act=reg&user=aaa' }
-```
 
 
 
 
-```
-Url {
-  protocol: null,
-  slashes: null,
-  auth: null,
-  host: null,
-  port: null,
-  hostname: null,
-  hash: null,
-  search: '?act=reg&user=aaa',
-  query: 'act=reg&user=aaa',
-  pathname: '/user',
-  path: '/user?act=reg&user=aaa',
-  href: '/user?act=reg&user=aaa' }
-```
+
+
 
 
 
