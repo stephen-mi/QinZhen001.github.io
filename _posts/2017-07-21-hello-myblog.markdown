@@ -48,3 +48,47 @@ tags:
 学习之路漫漫，一直没有写博客记录学习情况的习惯，之前有个博客几个月就放弃了，不知道这个会坚持多久。编程有时候真的挺枯燥的，有个地方记录一下也挺好的，这样应该可以保持住学习兴趣吧。
 
 
+
+
+
+
+```javascript
+Url {
+<html>
+aaaaaaa
+</html>
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '?act=reg&user=aaa',
+  query: 'act=reg&user=aaa',
+  pathname: '/user',
+  path: '/user?act=reg&user=aaa',
+  href: '/user?act=reg&user=aaa' }
+```
+
+
+
+
+```
+Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '?act=reg&user=aaa',
+  query: 'act=reg&user=aaa',
+  pathname: '/user',
+  path: '/user?act=reg&user=aaa',
+  href: '/user?act=reg&user=aaa' }
+```
+
+
+

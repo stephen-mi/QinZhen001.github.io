@@ -332,3 +332,45 @@ module.exports = {
 链接：http://www.jianshu.com/p/42e11515c10f
 來源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
+## 补充
+
+
+### chunkFilename
+```
+{
+    entry: {
+        "index": "pages/index.jsx"
+    },
+    output: {
+        filename: "[name].min.js",
+        chunkFilename: "[name].min.js"
+    }
+}
+```
+
+
+filename应该比较好理解，就是对应于entry里面生成出来的文件名。生成出来的文件名为index.min.js
+
+chunkname我的理解是未被列在entry中，却又需要被打包出来的文件命名配置。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
