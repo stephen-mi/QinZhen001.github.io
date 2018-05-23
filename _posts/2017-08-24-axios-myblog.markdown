@@ -315,7 +315,7 @@ axios.get（'/ user / 12345'，{
 }）
 ```
 
-### 客户端支持防止 CSRF/XSRF
+### 客户端支持防止 CSRF
 原理:
 axios默认在Request Config里已经设置了
 ```
