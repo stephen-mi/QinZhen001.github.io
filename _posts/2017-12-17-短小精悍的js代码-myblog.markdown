@@ -397,9 +397,21 @@ unction flattenArray(arr) {
 const arr = [11, [22, 33], [44, [55, 66, [77, [88]], 99]]];
 const flatArr = flattenArray(arr); 
 //=> [11, 22, 33, 44, 55, 66, 77, 88, 99]
+```
 
+```css
 <html>
     <body>11111</body>
+    <h>1111</h>
+    <br>
+</html>
+```
+
+```
+<html>
+    <body>11111</body>
+    <h>1111</h>
+    <br>
 </html>
 ```
 
