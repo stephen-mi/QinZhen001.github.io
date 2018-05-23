@@ -364,6 +364,43 @@ slice有两个用法，一个是String.slice,一个是Array.slice，第一个返
 ```
 
 
+### await多个async函数
+`await Promise.all([anAsyncCall(), thisIsAlsoAsync(), oneMore()])`
 
+
+### 创建一个纯(pure)对象
+你可以创建一个100%的纯对象，他不从Object中继承任何属性或则方法（比如，constructor，toString()等等）。
+```
+const pureObject = Object.create(null);
+console.log(pureObject); //=> {}
+console.log(pureObject.constructor); //=> undefined
+console.log(pureObject.toString); //=> undefined
+console.log(pureObject.hasOwnProperty); //=> undefined
+```
+
+### 平铺多维数组
+使用Spread操作，可以很容易去平铺嵌套多维数组：
+```
+const arr = [11, [22, 33], [44, 55], 66];
+const flatArr = [].concat(...arr); //=> [11, 22, 33, 44, 55, 66]
+```
+
+
+可惜，上面的方法仅仅适用于二维数组。不过，通过递归，我们可以平铺任意维度的嵌套数组。
+```javascript
+unction flattenArray(arr) {
+  const flattened = [].concat(...arr);
+  return flattened.some(item => Array.isArray(item)) ? 
+    flattenArray(flattened) : flattened;
+}
+
+const arr = [11, [22, 33], [44, [55, 66, [77, [88]], 99]]];
+const flatArr = flattenArray(arr); 
+//=> [11, 22, 33, 44, 55, 66, 77, 88, 99]
+
+<html>
+    <body>11111</body>
+</html>
+```
 
   [1]: https://pic1.zhimg.com/50/fa4f6a40ff9696dc2453d6b30ddc1838_hd.jpg

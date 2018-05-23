@@ -15,6 +15,9 @@ tags:
 ## 正文
 [网页链接](http://www.w3school.com.cn/cssref/pr_dim_line-height.asp)
 
+[CSS:line-height:150%与line-height:1.5的真正区别是什么？](CSS:line-height:150%与line-height:1.5的真正区别是什么？)
+
+
 
 line-height 属性设置行间的距离（行高）。
 该属性会影响行框的布局。在应用到一个块级元素时，它定义了该元素中基线之间的最小距离而不是最大距离。
@@ -32,7 +35,7 @@ line-height 与 font-size 的计算值之差（在 CSS 中成为“行间距”�
 
 ### 深入理解line-height
 
-http://www.zhangxinxu.com/wordpress/2009/11/css%E8%A1%8C%E9%AB%98line-height%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8F%8A%E5%BA%94%E7%94%A8/
+[http://www.zhangxinxu.com/wordpress/2009/11/css%E8%A1%8C%E9%AB%98line-height%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8F%8A%E5%BA%94%E7%94%A8/](http://www.zhangxinxu.com/wordpress/2009/11/css%E8%A1%8C%E9%AB%98line-height%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8F%8A%E5%BA%94%E7%94%A8/)
 
 <strong>撑开div高度的是line-height不是文字内容</strong>
 
@@ -47,6 +50,42 @@ http://www.zhangxinxu.com/wordpress/2009/11/css%E8%A1%8C%E9%AB%98line-height%E7%
 
 
 ![enter description here][2]
+
+
+
+### line-height属性的细节
+**有单位（包括百分比）**与无单位之间的区别
+
+**有单位时，子元素继承了父元素计算得出的行距；无单位时继承了系数，子元素会分别计算各自行距（推荐使用）。**
+
+>计算方式:子元素font-size*line-height数字
+
+
+##补充
+
+[深入了解css的行高Line Height属性](http://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html)
+
+
+4种boxes
+1. containing boxes
+2. inline boxes(不会让内容显示成块形式，而是排成一行)
+3. line boxes(inline boxes 在containing box里一个接一个 组成了line boxes)
+4. content area(是围绕着文字的看不见的一种box 它的高度取决于font-size)
+
+
+半行间距会被应用在content area的顶部和底部
+
+
+content box包裹着inline box，而半行间距位于content box的上部和下部
+
+
+如果line-height小于font-size,inline box会优先于行高
+
+
+
+
+
+
 
 
   [1]: http://image.zhangxinxu.com/image/blog/200911/2009-11-28_002310.png
