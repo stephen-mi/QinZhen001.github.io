@@ -84,7 +84,9 @@ background-position:center;
 }
 ```
 
-#### **background-position负值定位**
+**background-position负值定位**
+
+
 [http://www.php230.com/1411189681.html](http://www.php230.com/1411189681.html)
 
 
@@ -96,5 +98,21 @@ background-position:center;
 6. Y轴( container高度 – 图片高度)*含符号百分比
 
 **所以在雪碧图或者扣图时background-position都用负值**
+
+
+### background-clip 属性
+background-clip: border-box|padding-box|content-box;
+
+| border-box  | 背景被裁剪到边框盒。   |
+| ----------- | ---------------------- |
+| padding-box | 背景被裁剪到内边距框。(默认值) |
+| content-box | 背景被裁剪到内容框。   |
+
+
+
+
+
+
+
 
 
