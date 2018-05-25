@@ -13,6 +13,8 @@ tags:
 
 
 ## 正文
+[http://www.ruanyifeng.com/blog/2014/10/event-loop.html](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)
+
 Node.js也是单线程的Event Loop，但是它的运行机制不同于浏览器环境。
 
 

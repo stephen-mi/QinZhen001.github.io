@@ -415,7 +415,9 @@ const flatArr = flattenArray(arr);
     console.log(country, ' --- ', state)  //US  ---  New York
 ```
 
-
+### Array.prototype.slice.call(arguments)
+可以将 类数组 转化为真正的数组
+**面试中常常问到此**
 
 
 
