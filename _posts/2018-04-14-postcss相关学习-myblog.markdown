@@ -15,6 +15,15 @@ tags:
 ## 正文
 [网页链接](https://segmentfault.com/a/1190000011595620#articleHeader5)
 
+**一个后处理器**
+
+PostCSS 可以直观的理解为：它就是一个平台
+
+PostCSS 它需要一个插件系统才能够发挥作用。我们可以通过“插件”来传递AST，然后再把AST转换成一个串，最后再输出到目标文件中去
+
+[https://segmentfault.com/a/1190000003909268](https://segmentfault.com/a/1190000003909268)
+
+
 
 ### postcss-loader
 [https://www.npmjs.com/package/postcss-loader](https://www.npmjs.com/package/postcss-loader)
@@ -40,6 +49,31 @@ module.exports = {
 
 
 >When postcss-loader is used standalone (without css-loader) don't use @import in your CSS, since this can lead to quite bloated bundles
+
+
+
+
+
+
+### .postcssrc.js 
+在vue项目中.postcssrc.js 的默认配置
+```
+// https://github.com/michael-ciniawsky/postcss-load-config
+
+module.exports = {
+  "plugins": {
+    "postcss-import": {},
+    "postcss-url": {},
+    // to edit target browsers: use "browserslist" field in package.json
+    "autoprefixer": {}
+  }
+}
+```
+
+
+
+
+
 
 
 ### postcss-import
@@ -97,17 +131,8 @@ postcss-cssnext其实就是cssnext。该插件可以让我们使用CSS未来的�
 A modular minifier, built on top of the PostCSS ecosystem.
 
 
-
 cssnano主要用来压缩和清理CSS代码。在Webpack中，cssnano和css-loader捆绑在一起，所以不需要自己加载它。不过你也可以使用postcss-loader显式的使用cssnano
 
-
-著作权归作者所有。
-商业转载请联系作者获得授权,非商业转载请注明出处。
-原文: https://www.w3cplus.com/mobile/vw-layout-in-vue.html © w3cplus.com
-
-
-
-### 
 
 ```
 @svg square {
@@ -129,20 +154,27 @@ cssnano主要用来压缩和清理CSS代码。在Webpack中，cssnano和css-load
 }
 ```
 
-### .postcssrc.js 
-在vue项目中.postcssrc.js 的默认配置
-```
-// https://github.com/michael-ciniawsky/postcss-load-config
 
-module.exports = {
-  "plugins": {
-    "postcss-import": {},
-    "postcss-url": {},
-    // to edit target browsers: use "browserslist" field in package.json
-    "autoprefixer": {}
-  }
-}
-```
+### postcss-mpvue-wxss
+专门为 wxss 格式化处理的的一个 postcss 插件，特别是在做 css 转 wxss 的时候好用到爆。
+
+实现的功能
+* 清理 wxss 不支持的选择器。
+* 清理 wxss 不支持的注释。
+* 转换 rem 单位到 rpx。
+* 转换 Web 的标签选择器到小程序的 class 选择器。
+* style scoped（postcss插件部分）。
+
+
+
+### postcss-px2rem
+This is a postcss plugin of px2rem.
+
+
+
+ **"autoprefixer": {remUnit: 75}**
+
+
 
 
   [1]: https://www.w3cplus.com/sites/default/files/blogs/2018/1801/vw-layout-4.png
