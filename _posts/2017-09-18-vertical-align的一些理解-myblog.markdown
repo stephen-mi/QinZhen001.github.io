@@ -53,6 +53,14 @@ div{vertical-align:middle;}
 
 虽然vertical-align属性只会在inline-block水平的元素上期作用，但是其影响到的元素涉及到inline属性的元素，这里千万记住，inline水平元素受vertical-align属性而位置改变等不是因为其对vertical-align属性敏感或起作用，而是受制于整个line box的变化而不得不变化的
 
+
+
+### vertical-align:middle
+[测试vertical-align:middle](http://www.zhangxinxu.com/study/201005/verticle-align-test-demo.html)
+
+**vertical-align:middle属性的表现与否，仅仅与其父标签有关，至于我们通常看到的与后面的文字垂直居中显示那都是假象！**
+
+
 ### Tip
 元素浮动之后就会变为块元素，即 display 属性为 block ，所以 vertical-align 属性就会不起作用。
 

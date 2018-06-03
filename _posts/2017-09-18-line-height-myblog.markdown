@@ -19,6 +19,33 @@ tags:
 
 
 
+[http://www.zhangxinxu.com/wordpress/](http://www.zhangxinxu.com/wordpress/2009/11/css%e8%a1%8c%e9%ab%98line-height%e7%9a%84%e4%b8%80%e4%ba%9b%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3%e5%8f%8a%e5%ba%94%e7%94%a8/)
+
+
+**“行高”顾名思意指一行文字的高度。具体来说是指两行文字间基线之间的距离**
+
+
+先说一个大家都熟知的现象，有一个空的div，<div></div>，如果没有设置至少大于1像素高度height值时，该div的高度就是个0。如果该div里面打入了一个空格或是文字，则此div就会有一个高度。那么您思考过没有，为什么div里面有文字后就会有高度呢？
+
+这是个看上去很简单的问题，是理解line-height非常重要的一个问题。可能有人会跟认为是：文字撑开的！文字占据空间，自然将div撑开。我一开始也是这样理解的，但是事实上，深入理解inline模型后，我发现，**根本不是文字撑开了div的高度，而是line-height**！
+
+### 行高的垂直居中性
+
+line-height的最终表现是通过line boxes实现的，而无论line boxes所占据的高度是多少（无论比文字大还是比文字小），其占据的空间都是与文字内容公用水平中垂线的。
+
+
+**这一重要的特性可以用来实现文字或图片的垂直居中对齐。**
+
+
+#### 单行文字的垂直居中对齐
+line-height值设置为height一样大小的值可以实现单行文字的垂直居中
+
+
+#### 多行文字的垂直居中
+
+
+
+
 line-height 属性设置行间的距离（行高）。
 该属性会影响行框的布局。在应用到一个块级元素时，它定义了该元素中基线之间的最小距离而不是最大距离。
 
@@ -80,7 +107,9 @@ content box包裹着inline box，而半行间距位于content box的上部和下
 
 
 如果line-height小于font-size,inline box会优先于行高
-
+```
+font-size:16px
+line
 
 
 

@@ -110,6 +110,59 @@ background-clip: border-box|padding-box|content-box;
 
 
 
+## 补充
+
+### background-size设置为百分比
+有时候我们需要利用background-size 让精灵图实现自适应缩放。
+```css
+ background-size: 300% 100%;
+```
+
+
+### background-position设置为百分比
+[http://www.zhangxinxu.com/wordpress/2015/03/background-object-position-value-percent/](http://www.zhangxinxu.com/wordpress/2015/03/background-object-position-value-percent/)
+
+background-position中的百分比单位是个很有意思的东西。其表现与CSS中其他的百分比单位表现都不一样。
+
+
+**这就是为何background-position:100% 100%是定位在容器右下角的原因。**
+
+
+那position值对应的容器坐标位置该如何计算呢？
+
+
+实际上是有一个公式的：
+```
+positionX = (容器的宽度-图片的宽度) * percentX;
+positionY = (容器的高度-图片的高度) * percentY;
+```
+
+
+因此，当background-position:100% 100%时候，实际定位值就是容器尺寸和图片尺寸的差异，于是，就有了右下角定位效果。
+
+
+
+有个这个公式，我们也能理解百分比负值的一些表现了，比方说你觉得下面两行CSS对应图片的表现是？
+
+```css
+background-position: -50% -50%;
+
+object-position: -50% -50%
+```
+
+深受传统百分比定位迷惑的我们可能一时间会想不通，明明是个负值百分比定位，怎么会是一个正值效果呢？这不科学啊！
+
+因为:
+(容器的宽度-图片的宽度) * -50% 的结果是个正值；
+(容器的高度-图片的高度) * -50% 的结果也是个正值;
+
+
+
+
+
+
+
+
 
 
 
