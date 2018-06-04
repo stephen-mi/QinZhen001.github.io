@@ -90,8 +90,20 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 ### 缓动函数查表
 [https://easings.net/zh-cn](https://easings.net/zh-cn)
 
+### Webpack分析打包结果
+[http://webpack.github.io/analyse/](http://webpack.github.io/analyse/)
 
 
+
+You can generate the required JSON file for this tool by running
+
+**webpack --profile --json > stats.json**
+
+
+会生成stats.json文件，把这个文件扔到analyse分析网站就可以了。
+
+
+>详情https://github.com/webpack/analyse
 
 
 ## 需要翻墙
@@ -104,8 +116,8 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 
 
+### loading动画设计
+[https://loading.io/](https://loading.io/)
 
 
-
-
-
+  [1]: ./images/1528097378216.jpg "1528097378216.jpg"

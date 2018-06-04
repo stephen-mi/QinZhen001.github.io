@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "常用的loader"
+title:      "webpack常用的loader"
 date:       2018-03-21 16:29:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -51,6 +51,15 @@ The css-loader interprets @import and url() like import/require() and will resol
 
 Good loaders for requiring your assets are the file-loader and the url-loader which you should specify in your config (see below).
 
+
+#### 注意点
+For URLs that start with a /, the default behavior is to not translate them.
+
+以“/”开始的url，默认行为是不翻译它们
+
+```javascript
+url(/image.png) => url(/image.png)
+```
 
 
 ### file-loader
@@ -252,49 +261,6 @@ Options can also be passed by specifying properties matching each optimizer in y
 ```
 
 
-### postcss-loader
-[网页链接](https://www.npmjs.com/package/postcss-loader)
-
-**Loader for webpack to process CSS with PostCSS**
-
-**Use it after css-loader and style-loader, but before other preprocessor loaders like e.g sass|less|stylus-loader**
-
-
-
-postcss.config.js
-```
-module.exports = {
-  parser: 'sugarss',
-  plugins: {
-    'postcss-import': {},
-    'postcss-cssnext': {},
-    'cssnano': {}
-  }
-}
-```
-
-
-**webpack.config.js (recommended)**
-
-When postcss-loader is used standalone (without css-loader) don't use @import in your CSS, since this can lead to quite bloated bundles
-
-
-```
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          'postcss-loader'
-        ]
-      }
-    ]
-  }
-}
-```
 
 
 
@@ -375,6 +341,56 @@ style-loader!css-loader!sass-loader
   ]
 ```
 上面是vue默认配置
+
+
+#### postcss-loader
+[网页链接](https://www.npmjs.com/package/postcss-loader)
+
+
+>由于postcss-loader东西太多这里只是简单介绍，详情见postcss-loader的blog
+
+
+**Loader for webpack to process CSS with PostCSS**
+
+**Use it after css-loader and style-loader, but before other preprocessor loaders like e.g sass|less|stylus-loader**
+
+
+
+postcss.config.js
+```
+module.exports = {
+  parser: 'sugarss',
+  plugins: {
+    'postcss-import': {},
+    'postcss-cssnext': {},
+    'cssnano': {}
+  }
+}
+```
+
+
+**webpack.config.js (recommended)**
+
+When postcss-loader is used standalone (without css-loader) don't use @import in your CSS, since this can lead to quite bloated bundles
+
+
+```
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
+        ]
+      }
+    ]
+  }
+}
+```
+
 
 
 

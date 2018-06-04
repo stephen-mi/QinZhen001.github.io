@@ -354,9 +354,12 @@ module.exports = {
 
 filename应该比较好理解，就是对应于entry里面生成出来的文件名。生成出来的文件名为index.min.js
 
-chunkname我的理解是未被列在entry中，却又需要被打包出来的文件命名配置。
+**chunkname我的理解是未被列在entry中，却又需要被打包出来的文件命名配置。**
 
 
+**chunk就是代码块的意思**
+
+多个chunk合在一起就是bundle，一个bundle可以理解为一个大的js打包之后生成的文件，而多个bundle里可能有公共的部分，或者一个bundle里的东西并不需要一次性加载，需要按照路由按需加载，这个时候就需要按需加载，拆分成不同的chunk
 
 
 

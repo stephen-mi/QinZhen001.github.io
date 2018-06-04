@@ -70,6 +70,145 @@ CommonsChunkPlugin 插件，是一个可选的用于建立一个独立文件(又
 }
 ```
 
+### extract-text-webpack-plugin
+Extract text from a bundle, or bundles, into a separate file.(提取文本到单独的文件)
+
+```javascript
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+ 
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin("styles.css"),
+  ]
+}
+```
+
+它将*.css输入块中的所有必需模块移动到单独的CSS文件中。所以你的样式不再被内联到JS包中，而是在一个单独的CSS文件（styles.css）中。如果您的样式表总量很大，那么它会更快，因为CSS包与JS包并行加载。
+
+
+
+#### Options
+**allChunks 	{Boolean}** 
+
+Extract from all additional chunks too (by default it extracts only from the initial chunk(s))
+When using CommonsChunkPlugin and there are extracted chunks (from ExtractTextPlugin.extract) **in the commons chunk, allChunks must be set to true**
+
+
+----------
+
+
+**filename	{String\|Function}**
+
+
+结果文件的名称。可能含有[name]，[id]和[contenthash]
+
+* [name] name of the chunk
+* [id] number of the chunk
+* [contenthash] hash of the content of the extracted file(提取文件内容的散列)
+* [<hashType>:contenthash:<digestType>:<length>] 您可以选择配置
+  * other hashTypes, e.g. sha1, md5, sha256, sha512
+  * ther digestTypes, e.g. hex, base26, base32, base36, base49, base52, base58, base62, base64
+  * and length, the length of the hash in chars
+
+
+
+#### #extract
+ExtractTextPlugin.extract(options: loader | object)
+
+Creates an extracting loader from an existing loader
+
+
+----------
+
+
+options.use	  **{String}/ {Array}/{Object}**
+
+应该用于将资源转换为CSS导出模块的加载程序（必需）
+
+
+----------
+
+
+options.fallback	**{String}/ {Array}/{Object}**
+
+加载器（例如'style-loader'），当CSS没有被提取时应该被使用（例如在一个额外的块中allChunks: false）
+
+
+----------
+
+
+options.publicPath	{String}
+
+覆盖publicPath此加载器的设置
+
+
+----------
+
+
+### html-webpack-plugin
+Plugin that simplifies creation of HTML files to serve your bundles(简化创建HTML文件)
+
+这是一个webpack插件，它可以简化创建HTML文件来为你的webpack包提供服务。这对于webpack在文件名中包含散列的bundle 来说尤其有用，它可以改变每个编译。您可以让插件为您生成一个HTML文件，使用lodash模板提供您自己的模板或使用您自己的加载器。
+
+
+
+The html-webpack-plugin provides **hooks** to extend it to your needs.
+
+
+The plugin will generate an HTML5 file for you that includes all your webpack bundles in the body using script tags. Just add the plugin to your webpack config as follows:
+
+
+
+webpack.config.js
+```
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+ 
+module.exports = {
+  entry: 'index.js',
+  output: {
+    path: __dirname + '/dist',
+    filename: 'index_bundle.js'
+  },
+  plugins: [
+    new HtmlWebpackPlugin()
+  ]
+}
+```
+This will generate a file dist/index.html containing the following
+```css
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Webpack App</title>
+  </head>
+  <body>
+    <script src="index_bundle.js"></script> 
+  </body>
+</html>
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
