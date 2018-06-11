@@ -61,8 +61,22 @@ div{vertical-align:middle;}
 **vertical-align:middle属性的表现与否，仅仅与其父标签有关，至于我们通常看到的与后面的文字垂直居中显示那都是假象！**
 
 
+
+
+
+
+## 补充
+[http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf](http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf)
+
+
+
+
 ### Tip
 元素浮动之后就会变为块元素，即 display 属性为 block ，所以 vertical-align 属性就会不起作用。
+
+* 一个元素属于inline或是inline-block其身上的vertical-align属性才会起作用
+* 一个元素属于block其身上的text-align才会生效 **(多用于text-align: center)**
+
 
 
 
@@ -95,11 +109,6 @@ vertical-align默认值是baseline, 也就是基线对齐.
 会发现，明明尺寸、display水平都是一样的，结果呢，两个却不在一个水平线上对齐，为什么呢？哈哈，上面的规范已经说明了一切。第一个框框里面没有内联元素，因此，基线就是容器的margin下边缘，也就是下边框下面的位置；而第二个框框里面有字符，纯正的内联元素，因此，第二个框框就是这些字符的基线，也就是字母x的下边缘了。于是，我们就看到了框框1下边缘和框框2里面字符x底边对齐的好戏。框框2有个小彩蛋，点击可以toggle其innerHTML，会发现，如果框框2里面没文字，就和框框1举案齐眉了。
 
 
-
-
-
-### 补充
-[http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf](http://image.zhangxinxu.com/flash/blog/201006/vertical-align-text-top.swf)
 
 
 
