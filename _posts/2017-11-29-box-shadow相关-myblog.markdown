@@ -112,6 +112,12 @@ E {box-shadow:inset x-offset y-offset blur-radius spread-radius color} 换句说
 [https://conceptboard.github.io/box-shadow-spread-examples/](https://conceptboard.github.io/box-shadow-spread-examples/)
 
 
+### box-shadow 内阴影inset
+[http://demo.doyoe.com/css3/box-shadow/box-shadow-inset.htm](http://demo.doyoe.com/css3/box-shadow/box-shadow-inset.htm)
+
+
+**把某个偏移值设置为0，这时阴影的效果就只是单边的**
+
 ### Box-shadow生成器
 [https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Background_and_Borders/Box-shadow_generator](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Background_and_Borders/Box-shadow_generator)
 

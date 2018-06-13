@@ -158,9 +158,10 @@ object-position: -50% -50%
 
 
 
+### background-color和background-image一起用的问题
+可以写成background：color url();
 
-
-
+合并起来写 只有只有这样的顺序才有效，分开写也可以，不过color必须写在前面，image必须写在后面才生效。
 
 
 
