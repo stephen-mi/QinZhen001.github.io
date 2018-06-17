@@ -55,8 +55,14 @@ header 为 application/json，接口传回来的参数要是json 格式的，否
 * 对于 POST 方法且 header['content-type'] 为 application/x-www-form-urlencoded 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
 
 
+### scroll-view横向滚动
 
+scroll-view横向无法滚动
 
+要设置css样式 
+```css
+white-space: nowrap;
+```
 
 
 
