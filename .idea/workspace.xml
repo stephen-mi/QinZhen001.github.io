@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1df0920b-4d77-4945-b0fa-c69b2a76e4b8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_posts/2018-04-11-svg入门-myblog.markdown" afterPath="$PROJECT_DIR$/_posts/2018-04-11-svg入门-myblog.markdown" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/spig.js" afterPath="$PROJECT_DIR$/js/spig.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -31,8 +30,8 @@
       <file leaf-file-name="spig.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/spig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="74" column="35" lean-forward="true" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
+            <state relative-caret-position="-416">
+              <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -365,7 +364,7 @@
       <workItem from="1527166832707" duration="1289000" />
       <workItem from="1527924948482" duration="2316000" />
       <workItem from="1527927951134" duration="5000" />
-      <workItem from="1529298617749" duration="211000" />
+      <workItem from="1529298617749" duration="339000" />
     </task>
     <task id="LOCAL-00001" summary="qz commit">
       <created>1516513364464</created>
@@ -714,7 +713,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82920000" />
+    <option name="totallyTimeSpent" value="83048000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="221" y="21" width="1633" height="959" extended-state="0" />
@@ -1057,8 +1056,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/spig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="74" column="35" lean-forward="true" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
+        <state relative-caret-position="-416">
+          <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
           <folding />
         </state>
       </provider>
