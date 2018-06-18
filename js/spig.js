@@ -61,32 +61,32 @@ jQuery(document).ready(function ($) {
         _y = e.pageY - parseInt($spig.css("top"));
         e.stopPropagation()
         //chrome、ff、IE9下阻止默认行为
-        return false;
-    }).mousemove(function (e) {
-        if (initMove) {
-            // console.log('mousemove')
-            isMove = true;
-            var x = e.pageX - _x;
-            var y = e.pageY - _y;
-            if (x > 0 && x < wx && y > 0 && y < dy) {
-                //控件新位置
-                $spig
-                    .css({
-                        top: y,
-                        left: x
-                    })
-                    .find(".mumu").fadeTo(0, 0.5);
+        document.mousemove(function (e) {
+            if (initMove) {
+                // console.log('mousemove')
+                isMove = true;
+                var x = e.pageX - _x;
+                var y = e.pageY - _y;
+                if (x > 0 && x < wx && y > 0 && y < dy) {
+                    //控件新位置
+                    $spig
+                        .css({
+                            top: y,
+                            left: x
+                        })
+                        .find(".mumu").fadeTo(0, 0.5);
+                }
             }
-        }
-        e.stopPropagation()
-    }).mouseup(function (e) {
-        // console.log('mouseup')
+        })
+        return false;
+    })
+
+    document.mouseup(function (e) {
         $spig.find(".mumu").fadeTo("300", 1);
         spig_top = parseInt($spig.css("top"));
         recordedScrollTop = $(window).scrollTop()
         initMove = false;
         isMove = false;
-        e.stopPropagation()
     })
 
 

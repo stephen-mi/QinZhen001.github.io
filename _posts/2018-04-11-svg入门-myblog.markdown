@@ -77,6 +77,14 @@ svg {
 ```
 
 
+#### svg路径path做的几种效果
+1. 做一个路径动画
+2. 不规则形状的点击
+3. 沿着路径拖拽
+4. 路径的变形动画
+5. clip-path做一些遮罩效果
+
+
 
 ### 使用 `<use>` 来放置组合
 在 `<defs>` 元素内部我们现在有三个图标被定义成组合，我们准备在 SVG 中使用它们。为了使用它们，我们需要做的就是添加一个 `<use>` 元素（确保在 `<defs>` 元素以外且之后的地方添加它），并设置一个 href 属性指向想要的那个图标的 ID。
@@ -94,7 +102,6 @@ svg {
 
 但是我们也需要添加一个叫做 viewBox 的属性。该属性让我们可以定义每个模板的可见部分应该是什么。当浏览器能够访问这些信息时，它就可以正确地缩放和排列模板。
 
-。
 
 ####  viewBox
 所述的值viewBox属性是四个数字的列表min-x，min-y，width和height，由空格和/或逗号，其指定在其中应被映射到由给定元素建立的视口的边界用户空间中的矩形分隔
@@ -181,6 +188,40 @@ stroke-linejoin = bevel
 
 #### stroke-opacity
 描边透明度
+
+
+### clipPathUnits属性
+[https://blog.csdn.net/leo8729/article/details/48374631](https://blog.csdn.net/leo8729/article/details/48374631)
+
+`<clipPath>`元素包括很多个属性，比如id,class,transform和fill和stroke等，其中最有用的是clipPathUnits属性。
+clipPathUnits主要用来给`<clipPath>`元素内容指定一个坐标系统。它具有两个值：
+
+* userSpaceOnUse（默认值）：当clipPath元素是用来当作参考物时，clipPath元素内容是以用户坐标系统作为参考点
+* objectBoundingBox：当你设置了objectBoundingBox值后，`<clipPath>`元素中的内容必须在指定的坐标[0,1]内。
+
+
+`<clipPath>`元素不会直接在页面上呈现，他唯一的作用就是可以通过clip-path来引用。
+display属性不能运用于`<clipPath>`元素上，因此，就算display设置none外的其他值，<clipPath>元素也不会直接呈现。
+
+
+### 获取path的某点坐标和总长度
+```css
+<svg class="volumn-controller" width="580" height="400" xmlns="http://www.w3.org/2000/svg">
+  <path class="volumn-path" stroke="#000" d="m100,247c93,-128 284,-129 388,6" opacity="0.5" stroke-width="1"
+        fill="#fff"/>
+  <circle class="drag-button" r="12" cy="247" cx="100" stroke-width="1" stroke="#000" fill="#fff"/>
+  </g>
+</svg>
+```
+
+```javascript
+  let volumnPath = document.querySelector('.volumn-path')
+    // 输出path在长度为100的位置的点坐标
+    console.log(volumnPath.getPointAtLength(100))
+    // 输出当前path的总长度
+    console.log(volumnPath.getTotalLength());
+```
+
 
 
 
