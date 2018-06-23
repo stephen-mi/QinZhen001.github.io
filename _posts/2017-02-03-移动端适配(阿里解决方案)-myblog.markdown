@@ -130,6 +130,141 @@ PostCSS编译之后就是我们所需要的带vw代码：
 原文: https://www.w3cplus.com/css/vw-for-layout.html © w3cplus.com
 
 
+
+
+## 简单一点的办法
+[https://aotu.io/notes/2017/04/28/2017-4-28-CSS-viewport-units/](https://aotu.io/notes/2017/04/28/2017-4-28-CSS-viewport-units/)
+
+### 做法一：仅使用vw作为CSS单位
+利用视口单位实现适配布局
+
+
+仅使用vw作为CSS单位
+
+1.对于设计稿的尺寸转换为vw单位，我们使用Sass函数编译
+```css
+//iPhone 6尺寸作为设计稿基准
+$vw_base: 375; 
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+```
+2.无论是文本还是布局高宽、间距等都使用 vw 作为 CSS 单位
+```css
+.mod_nav {
+    background-color: #fff;
+    &_list {
+        display: flex;
+        padding: vw(15) vw(10) vw(10); // 内间距
+        &_item {
+            flex: 1;
+            text-align: center;
+            font-size: vw(10); // 字体大小
+            &_logo {
+                display: block;
+                margin: 0 auto;
+                width: vw(40); // 宽度
+                height: vw(40); // 高度
+                img {
+                    display: block;
+                    margin: 0 auto;
+                    max-width: 100%;
+                }
+            }
+            &_name {
+                margin-top: vw(2);
+            }
+        }
+    }
+}
+```
+
+1物理像素线（也就是普通屏幕下 1px ，高清屏幕下 0.5px 的情况）采用 transform 属性 scale 实现。
+```css
+.mod_grid {
+    position: relative;
+    &::after {
+        // 实现1物理像素的下边框线
+        content: '';
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        background-color: #ddd;
+        height: 1px;
+        left: 0;
+        right: 0;
+        top: 0;
+        @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+            -webkit-transform: scaleY(0.5);
+            -webkit-transform-origin: 50% 0%;
+        }
+    }
+    ...
+}
+```
+
+
+
+### **做法二：搭配vw和rem，布局更优化**
+上面的做法，由于它是利用视口单位实现的布局，依赖于视口大小而自动缩放，无论视口过大还是过小，它也随着视口过大或者过小，失去了最大最小宽度的限制。
+
+于是，联想到不如结合rem单位来实现布局
+
+rem 弹性布局的核心在于动态改变根元素大小，那么我们可以通过：
+
+1. 给根元素大小设置随着视口变化而变化的 vw 单位，这样就可以实现动态改变其大小。
+2. 限制根元素字体大小的最大最小值，配合 body 加上最大宽度和最小宽度
+
+
+这样我们就能够实现对布局宽度的最大最小限制。因此，根据以上条件，我们可以得出代码实现如下：
+```css
+// rem 单位换算：定为 75px 只是方便运算，750px-75px、640-64px、1080px-108px，如此类推
+$vw_fontsize: 75; // iPhone 6尺寸的根元素大小基准值
+@function rem($px) {
+     @return ($px / $vw_fontsize ) * 1rem;
+}
+// 根元素大小使用 vw 单位
+$vw_design: 750;
+html {
+    font-size: ($vw_fontsize / ($vw_design / 2)) * 100vw; 
+    // 同时，通过Media Queries 限制根元素最大最小值
+    @media screen and (max-width: 320px) {
+        font-size: 64px;
+    }
+    @media screen and (min-width: 540px) {
+        font-size: 108px;
+    }
+}
+// body 也增加最大最小宽度限制，避免默认100%宽度的 block 元素跟随 body 而过大过小
+body {
+    max-width: 540px;
+    min-width: 320px;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   [1]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-4.png
   [2]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-5.png
   [3]: https://www.w3cplus.com/sites/default/files/blogs/2017/1707/vw-layout-6.png

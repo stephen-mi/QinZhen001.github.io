@@ -580,6 +580,29 @@ console.log('Hi!');
 
 
 
+### promise.all使用问题
+```javascript
+const getRandom = () => +(Math.random()*1000).toFixed(0);
+
+const asyncTask = taskID => new Promise(resolve => {
+    let timeout = getRandom();
+    console.log(`taskID=${taskID} start.`);
+    setTimeout(function() {
+        console.log(`taskID=${taskID} finished in time=${timeout}.`);
+        resolve(taskID)
+    }, timeout);
+});
+
+Promise.all([asyncTask(1),asyncTask(2),asyncTask(3)])
+.then(resultList => {
+    console.log('results:',resultList);
+});
+```
+
+结论:
+
+由此可见，Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]，是按顺序发起的，**由于它们都是异步的，互相之间并不阻塞，每个任务完成时机是不确定的。尽管如此，所有任务结束之后，它们的结果仍然是按顺序地映射到resultList里**，这样就能和Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]一一对应起来。
+
 
 
 

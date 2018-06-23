@@ -66,6 +66,22 @@ white-space: nowrap;
 
 
 
+### 去除border边框
+问题：
+使用传统的用“border:none;来去除边框”，依旧有一条细细的border;
+
+解决:
+使用 button::after{ border: none; } 来去除边框
+
+
+
+### 滑动组件相关
+[http://kuangpf.com/mpvue-weui/#/slider](http://kuangpf.com/mpvue-weui/#/slider)
+
+bindchange和bindchanging 在mpvue框架中的写法为: @change和@changing
+
+类型为事件的属性在完成触发事件后，取值的方式为：event.mp.detail = {value: value}
+
 
 
 

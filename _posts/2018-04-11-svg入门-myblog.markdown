@@ -78,7 +78,7 @@ svg {
 
 
 #### svg路径path做的几种效果
-1. 做一个路径动画
+1. [做一个路径变形动画](https://codepen.io/chriscoyier/pen/NRwANp) (它的实现是hover的时候改变path的d值，然后做d的transition动画)
 2. 不规则形状的点击
 3. 沿着路径拖拽
 4. 路径的变形动画
@@ -203,6 +203,8 @@ clipPathUnits主要用来给`<clipPath>`元素内容指定一个坐标系统。�
 `<clipPath>`元素不会直接在页面上呈现，他唯一的作用就是可以通过clip-path来引用。
 display属性不能运用于`<clipPath>`元素上，因此，就算display设置none外的其他值，<clipPath>元素也不会直接呈现。
 
+[心形遮罩](https://github.com/QinZhen001/animation-demo/blob/master/clip-path/index.html)
+
 
 ### 获取path的某点坐标和总长度
 ```css
@@ -223,5 +225,5 @@ display属性不能运用于`<clipPath>`元素上，因此，就算display设置
 ```
 
 
-
+[svg的path实现的控制音量](https://github.com/QinZhen001/animation-demo/blob/master/svg-path-volumn/index.html)
 
