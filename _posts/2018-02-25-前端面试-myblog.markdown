@@ -77,7 +77,7 @@ tags:
 ## 页面布局类
 
 ### 经典三栏布局
-[代码地址](https://github.com/QinZhen001/front-end-demo/blob/master/three-column-layout/three-column-layout.html)
+[代码地址](https://github.com/QinZhen001/front-end-demo/blob/master/layout/three-column-layout/three-column-layout.html)
 
 出现的问题：
 当屏幕width过小时，中间部分的文字会跑到左边(例如：当采取float解决方案时)
