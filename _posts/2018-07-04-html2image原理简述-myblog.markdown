@@ -6,7 +6,7 @@ author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - SVG
+    - Svg
 ---
 
 > “Yeah It's on. ”
@@ -15,7 +15,7 @@ tags:
 ## 正文
 [网页链接](https://juejin.im/post/5a9de7eff265da238c3a2bbe?utm_medium=be&utm_source=weixinqun)
 
-[SVG <foreignObject>简介与截图等应用](https://www.zhangxinxu.com/wordpress/2017/08/svg-foreignobject/)
+[SVG `<foreignObject>`简介与截图等应用](https://www.zhangxinxu.com/wordpress/2017/08/svg-foreignobject)
 
 使用svg的一个特性，允许在`<foreignobject>`标签中包含任意的html内容。（主要是 XMLSerializer | MDN这个api将dom转为svg） 所以，为了渲染那个dom节点，你需要采取以下步骤：
 
