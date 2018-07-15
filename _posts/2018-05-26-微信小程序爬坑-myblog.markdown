@@ -12,17 +12,8 @@ tags:
 > “Yeah It's on. ”
 
 
-## mpvue相关
 
-[http://mpvue.com/mpvue/](http://mpvue.com/mpvue/)
-
-### 不支持函数
-不支持在 template 内使用 methods 中的函数。
-
-解决方法:写在computed里
-
-
-## 小程序相关
+## 原生小程序相关
 
 ### Content-type问题
 
@@ -75,13 +66,57 @@ white-space: nowrap;
 
 
 
+
+
+### canvas的drawImage
+问题：真机canvas的drawImage无法加载加载网络图片
+
+解决：canvas上绘制的目前只支持本地图片,网页上的图片如果是网络图片，在显示时都会暂存在本地，有的直接在缓存中。所以，我们使用getimageinfo去获取到我们的图片的信息先（主要是缓存在本地的时候，会保存下一个临时文件），接着再去使用这个方式去保存到本地的相册
+
+```javascript
+    //拿到可以在canvas绘制的图片url
+    getImageInfo (url) {
+      return new Promise((resolve, reject) => {
+        /* 获得要在画布上绘制的图片 */
+        const objExp = new RegExp(/^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/)
+        if (objExp.test(url)) {
+          wx.getImageInfo({
+            src: url,
+            complete (res) {
+              if (res.errMsg === 'getImageInfo:ok') {
+                console.log('网络图片', res.path)
+                resolve(res.path)
+              } else {
+                reject(new Error('getImageInfo fail'))
+              }
+            }
+          })
+        } else {
+          console.log('本地图片', url)
+          resolve(url)
+        }
+      })
+    }
+```
+
+
+
+## mpvue相关
+
+[http://mpvue.com/mpvue/](http://mpvue.com/mpvue/)
+
+### 不支持函数
+不支持在 template 内使用 methods 中的函数。
+
+解决方法:写在computed里
+
+
+
 ### 滑动组件相关
 [http://kuangpf.com/mpvue-weui/#/slider](http://kuangpf.com/mpvue-weui/#/slider)
 
 bindchange和bindchanging 在mpvue框架中的写法为: @change和@changing
 
 类型为事件的属性在完成触发事件后，取值的方式为：event.mp.detail = {value: value}
-
-
 
 
