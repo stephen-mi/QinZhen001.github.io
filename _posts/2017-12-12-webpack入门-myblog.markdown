@@ -256,19 +256,6 @@ module.exports = {
 };
 ```
 
-#### 推荐插件
-
-**HtmlWebpackPlugin**
-这个插件的作用是依据一个简单的index.html模板，生成一个自动引用你打包后的JS文件的新index.html。这在每次生成的js文件名称不同时非常有用（比如添加了hash值）。
-
-**Hot Module Replacement**
-Hot Module Replacement（HMR）也是webpack里很有用的一个插件，它允许你在修改组件代码后，自动刷新实时预览修改后的效果。
-
-在webpack中实现HMR也很简单，只需要做两项配置
-
-* 在webpack配置文件中添加HMR插件；
-* 在Webpack Dev Server中添加“hot”参数；
-
 #### 优化插件
 webpack提供了一些在发布阶段非常有用的优化插件，它们大多来自于webpack社区，可以通过npm安装，通过以下插件可以完成产品发布阶段所需的功能
 
@@ -295,6 +282,28 @@ module.exports = {
 ```
 
 
+### Code Splitting
+[https://zhuanlan.zhihu.com/p/26710831?refer=ElemeFE](https://zhuanlan.zhihu.com/p/26710831?refer=ElemeFE)
+
+
+我们把所有代码分成一块一块，需要某块代码的时候再去加载它；利用浏览器的缓存，下次用到它的话，直接从缓存中读取。很显然，这种做法可以加快我们网页的加载速度。
+
+
+**所以说，Code Splitting 其实就是把代码分成很多很多块（ chunk ）**
+
+
+
+Code Splitting 主要有 2 种方式：
+1. 分离业务代码和第三方库（ vendor ）
+2. 按需加载（利用 import() 语法）
+
+之所以把业务代码和第三方库代码分离出来，是因为产品经理的需求是源源不断的，因此业务代码更新频率大，相反第三方库代码更新迭代相对较慢且可以锁版本，所以可以充分利用浏览器的缓存来加载这些第三方库。
+
+
+而按需加载的适用场景，比如说「访问某个路由的时候再去加载对应的组件」，用户不一定会访问所有的路由，所以没必要把所有路由对应的组件都先在开始的加载完；更典型的例子是「某些用户他们的权限只能访问某些页面」，所以没必要把他们没权限访问的页面的代码也加载。
+
+
+### Dynamic Import
 
 
 ## 遇到的问题

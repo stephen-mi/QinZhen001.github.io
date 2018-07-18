@@ -23,52 +23,56 @@ CommonsChunkPlugin 插件，是一个可选的用于建立一个独立文件(又
 
 通过将公共模块拆出来，最终合成的文件能够在最开始的时候加载一次，便存到缓存中供后续使用。这个带来速度上的提升，因为浏览器会迅速将公共的代码从缓存中取出来，而不是每次访问一个新页面时，再去加载一个更大的文件。
 
-`new webpack.optimize.CommonsChunkPlugin(options)`
 
-**配置**
 
+ vendor chunk 里面包含了 webpack 的 runtime 代码（用来解析和加载模块之类的运行时代码）,这样会导致vendor打包的hash值一直在改变，所以要把runtime 代码提取出来
+ 
+```javascript
+    // extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor']
+    })
 ```
-{
-  name: string, // or
-  names: string[],
-  // 这是 common chunk 的名称。已经存在的 chunk 可以通过传入一个已存在的 chunk 名称而被选择。
-  // 如果一个字符串数组被传入，这相当于插件针对每个 chunk 名被多次调用
-  // 如果该选项被忽略，同时 `options.async` 或者 `options.children` 被设置，所有的 chunk 都会被使用，
-  // 否则 `options.filename` 会用于作为 chunk 名。
-  // When using `options.async` to create common chunks from other async chunks you must specify an entry-point
-  // chunk name here instead of omitting the `option.name`.
 
-  filename: string,
-  // common chunk 的文件名模板。可以包含与 `output.filename` 相同的占位符。
-  // 如果被忽略，原本的文件名不会被修改(通常是 `output.filename` 或者 `output.chunkFilename`)。
-  // This option is not permitted if you're using `options.async` as well, see below for more details.
-
-  minChunks: number|Infinity|function(module, count) -> boolean,
-  // 在传入  公共chunk(commons chunk) 之前所需要包含的最少数量的 chunks 。
-  // 数量必须大于等于2，或者少于等于 chunks的数量
-  // 传入 `Infinity` 会马上生成 公共chunk，但里面没有模块。
-  // 你可以传入一个 `function` ，以添加定制的逻辑（默认是 chunk 的数量）
-
-  chunks: string[],
-  // 通过 chunk name 去选择 chunks 的来源。chunk 必须是  公共chunk 的子模块。
-  // 如果被忽略，所有的，所有的 入口chunk (entry chunk) 都会被选择。
-
-  children: boolean,
-  // 如果设置为 `true`，所有公共 chunk 的子模块都会被选择
-
-  deepChildren: boolean,
-  // 如果设置为 `true`，所有公共 chunk 的后代模块都会被选择
-
-  async: boolean|string,
-  // 如果设置为 `true`，一个异步的  公共chunk 会作为 `options.name` 的子模块，和 `options.chunks` 的兄弟模块被创建。
-  // 它会与 `options.chunks` 并行被加载。
-  // Instead of using `option.filename`, it is possible to change the name of the output file by providing
-  // the desired string here instead of `true`.
-
-  minSize: number,
-  // 在 公共chunk 被创建立之前，所有 公共模块 (common module) 的最少大小。
-}
+新版vue-cli中的webpack配置
+```javascript
+    // split vendor js into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        // any required modules inside node_modules are extracted to vendor
+        //模块是来自 node_modules 目录的
+        //都移到 vendor chunk 里去
+        return (
+          module.resource &&
+          /\.(js|vue|styl|ttf|woff)$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, '../node_modules')
+          ) === 0
+        )
+      }
+    }),
+    // extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
+    }),
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'app',
+      async: 'vendor-async',
+      children: true,
+      minChunks: 3
+    }),
 ```
+
+用到 minChunks想把所有 node_modules 目录下的所有 .js 都自动分离到 vendor.js
+
 
 ### extract-text-webpack-plugin
 Extract text from a bundle, or bundles, into a separate file.(提取文本到单独的文件)
@@ -202,14 +206,47 @@ This will generate a file dist/index.html containing the following
 
 
 
+### HashedModuleIdsPlugin 
+[https://zhuanlan.zhihu.com/p/27710902](https://zhuanlan.zhihu.com/p/27710902)
+
+
+![enter description here][1]
+
+keep module.id stable when vender modules does not change
+
+
+webpack 里每个模块都有一个 module id ，module id 是该模块在模块依赖关系图里按顺序分配的序号，如果这个 module id 发生了变化，那么他的 chunkhash 也会发生变化。
+
+
+HashedModuleIdsPlugin是根据模块所在路径来映射其 module id ，这样就算引入了新的模块，也不会影响 module id 的值，只要模块的路径不改变的话。
+
+```javascript
+// webpack.config.js
+
+plugins: [
+  new webpack.HashedModuleIdsPlugin(),
+  // ...
+],
+```
+
+
+
+**这样修改了某个模块的代码，就不会破坏其他模块的缓存，这就是我们想要实现的持久性缓存**
+
+```
+                    Asset       Size  Chunk Names
+common-in-lazy.fbe5ebcb.chunk.js    11.9 kB  common-in-lazy
+    used-twice.166ea824.chunk.js    17.2 kB  used-twice
+        Photos.c2430756.chunk.js    8.66 kB  Photos
+         Emoji.96ddcf33.chunk.js     1.2 kB  Emoji
+                 app.6dd02fc7.js    2.81 kB  app
+              vendor.794774d5.js     103 kB  vendor
+            manifast.31b01d25.js    1.54 kB  manifast
+```
+
+只有正真代码变化的模块hash值才会改变
 
 
 
 
-
-
-
-
-
-
-
+  [1]: https://pic2.zhimg.com/80/v2-5a4b6bef5809e00512873d481a3670e7_hd.jpg
