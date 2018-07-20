@@ -15,6 +15,8 @@ tags:
 ## 正文
 
 ### CommonsChunkPlugin
+[https://zhuanlan.zhihu.com/p/26710831?refer=ElemeFE](https://zhuanlan.zhihu.com/p/26710831?refer=ElemeFE)
+
 CommonsChunkPlugin 插件，是一个可选的用于建立一个独立文件(又称作 chunk)的功能，这个文件包括多个入口 chunk 的公共模块。
 
 >The CommonsChunkPlugin 已经从 webpack v4 legato 中移除。想要了解在最新版本中如何处理 chunk，请查看 SplitChunksPlugin。 
@@ -72,6 +74,36 @@ CommonsChunkPlugin 插件，是一个可选的用于建立一个独立文件(又
 ```
 
 用到 minChunks想把所有 node_modules 目录下的所有 .js 都自动分离到 vendor.js
+
+
+----------
+
+
+为了Dynamic Import时抽取出一些chunk中共有的模块，我们需要用到 CommonsChunkPlugin 的 async  (上面就是一个很好的例子)
+
+```javascript
+// webpack.config.js
+
+new webpack.optimize.CommonsChunkPlugin({
+  async: 'common-in-lazy',  //抽取出来的chunk的名字
+  minChunks: ({ resource } = {}) => (
+    resource &&
+    resource.includes('node_modules') &&
+    /axios/.test(resource)
+  ),
+}),
+```
+
+Webpack在所有的 async chunk 中，找到来自 node_modules ，并且名字带有 axios 的模块。
+
+
+
+>例子Emoji.chunk.js 和 Photos.chunk.js 都包含了 axios ，所以把他移动到名叫 common-in-lazy 的 chunk 中(如果common-in-lazy chunk 并不存在，那就新建一个吧)
+
+
+**所有的 async chunk ，就是 import() 产生的 chunk**
+
+
 
 
 ### extract-text-webpack-plugin
