@@ -457,9 +457,17 @@ var quickExpr = /^[^<]*(<(.|\s)+>)[^>]*$|^#(\w+)$/
 
 
 
+### 多维数组降为一维数组
+```javascript
+  let arr = [1, [2], [3, 5, [12, 6, [123, 34], 123,], 34, [34, 35], [1]]]
+  let flattenDeep = (arr) => Array.isArray(arr) ?
+      arr.reduce((total, curVal) => [...flattenDeep(total), ...flattenDeep(curVal)], []) :
+      [arr]
 
 
-
+  console.log(flattenDeep(arr))
+  //[1, 2, 3, 5, 12, 6, 123, 34, 123, 34, 34, 35, 1]  
+```
 
 
 
