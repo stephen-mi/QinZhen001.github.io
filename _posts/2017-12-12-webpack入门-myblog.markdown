@@ -351,6 +351,19 @@ runtime，以及伴随的 manifest 数据，主要是指：在浏览器运行时
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 
+### windows不支持NODE_ENV
+
+**windows不支持NODE_ENV=development的设置方式。会报错**
+
+
+
+当使用NODE_ENV =production,来设置环境变量时，大多数Windows命令提示将会阻塞(报错)。 （异常是Windows上的Bash，它使用本机Bash。）同样，Windows和POSIX命令如何使用环境变量也有区别。
+
+
+**解决**
+
+安装cross-env使得您可以使用单个命令，而不必担心为平台正确设置或使用环境变量。
+
 
 ## 补充
 

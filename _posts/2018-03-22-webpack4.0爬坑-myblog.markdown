@@ -98,7 +98,7 @@ NoEmitOnErrorsPlugin(现已弃用)
 
 
 在webpack.config.js中的module.exports加入
-```
+```javascript
     optimization: {
         splitChunks: {
             chunks: "initial",         // 必须三选一： "initial" | "all"(默认就是all) | "async"
@@ -125,6 +125,59 @@ NoEmitOnErrorsPlugin(现已弃用)
         }
     }
 ```
+
+CommonChunksPlugin 会找到多数模块中都共有的东西，并且把它提取出来（common.js），也就意味着如果你加载了 common.js，那么里面可能会存在一些当前模块不需要的东西。
+
+
+而 SplitChunksPlugin 采用了完全不同的 heuristics 方法，它会根据模块之间的依赖关系，自动打包出很多很多（而不是单个）通用模块，可以保证加载进来的代码一定是会被依赖到的。
+
+下面是一个简单的例子，假设我们有 4 个 chunk，分别依赖了以下模块：
+
+
+
+| chunk   | 依赖模块                            |
+| ------- | ----------------------------------- |
+| chunk-a | react, react-dom, componentA, utils |
+| chunk-b | react, react-dom, componentB, utils |
+| chunk-c | angular, componentC, utils          |
+| chunk-d | angular, componentD, utils          |
+
+
+如果是以前的 CommonChunksPlugin，那么默认配置会把它们打包成下面这样：
+
+
+
+
+| common  | utils                        |
+| ------- | ---------------------------- |
+| chunk-a | react, react-dom, componentA |
+| chunk-b | react, react-dom, componentB |
+| chunk-c | angular, componentC          |
+| chunk-d | angular, componentD          |
+
+
+显然在这里，react、react-dom、angular 这些公用的模块没有被抽出成为独立的包，存在进一步优化的空间。
+
+
+现在，新的 SplitChunksPlugin 会把它们打包成以下几个包：
+
+
+| 包名                            | 包含的模块       |
+| ------------------------------- | ---------------- |
+| `chunk-a~chunk-b~chunk-c~chunk-d` | utils            |
+| chunk-a~chunk-b                 | react, react-dom |
+| chunk-c~chunk-d                 | angular          |
+| chunk-a                         | componentA       |
+| chunk-b                         | componentB       |
+| chunk-c                         | componentC       |
+| chunk-d                         | componentD       |
+
+
+
+这就保证了所有公用的模块，都会被抽出成为独立的包，几乎完全避免了多页应用中，重复加载相同模块的问题。
+
+
+**虽然 webpack 4.0 提供的 SplitChunksPlugin 非常好用，但截止到写这篇文章的时候（2018年5月），依然存在一个坑，那就是 html-webpack-plugin 还不完全支持 SplitChunksPlugin，生成的公用模块包还无法自动注入到 html 中。**
 
 
 ### 全新的插件系统

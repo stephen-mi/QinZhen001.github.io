@@ -388,7 +388,7 @@ const flatArr = [].concat(...arr); //=> [11, 22, 33, 44, 55, 66]
 
 可惜，上面的方法仅仅适用于二维数组。不过，通过递归，我们可以平铺任意维度的嵌套数组。
 ```javascript
-unction flattenArray(arr) {
+function flattenArray(arr) {
   const flattened = [].concat(...arr);
   return flattened.some(item => Array.isArray(item)) ? 
     flattenArray(flattened) : flattened;
@@ -470,9 +470,103 @@ var quickExpr = /^[^<]*(<(.|\s)+>)[^>]*$|^#(\w+)$/
 ```
 
 
+### 时间格式化
+```javascript
+  function parseTime(time, cFormat) {
+    if (arguments.length === 0) {
+      return null
+    }
+    const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+    let date
+    if (typeof time === 'object') {
+      date = time
+    } else {
+      if (('' + time).length === 10) time = parseInt(time) * 1000
+      date = new Date(time)
+    }
+    const formatObj = {
+      y: date.getFullYear(),
+      m: date.getMonth() + 1,
+      d: date.getDate(),
+      h: date.getHours(),
+      i: date.getMinutes(),
+      s: date.getSeconds(),
+      a: date.getDay()
+    }
+    const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+        // result 匹配模式的字符串 如:{y}
+        // key 模式中的子表达式匹配的字符串 如：y 可以有 0 个或多个这样的参数
+        // 接下来的参数是一个整数，声明了匹配在 stringObject 中出现的位置。  stringObject.replace(regexp/substr,replacement)
+        // 最后一个参数是 stringObject 本身。
+      let value = formatObj[key]
+      if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+      if (result.length > 0 && value < 10) {
+        value = '0' + value
+      }
+      return value || 0
+    })
+    return time_str
+  }
 
 
+  let res = parseTime(new Date())
+  console.log(res) //2018-07-22 22:08:23
 
+```
+
+
+### 深克隆deepclone
+```javascript
+/**
+ * This is just a simple version of deep copy
+ * Has a lot of edge cases bug
+ * If you want to use a perfect deep copy, use lodash's _.cloneDeep
+ */
+export function deepClone(source) {
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments', 'shallowClone')
+  }
+  const targetObj = source.constructor === Array ? [] : {}
+  Object.keys(source).forEach((keys) => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys])
+    } else {
+      targetObj[keys] = source[keys]
+    }
+  })
+  return targetObj
+}
+```
+
+
+### 封装广播 broadcast
+```javascript
+var broadcast = {
+  on: function(name, fn) {
+    var data = broadcast.data
+    if (data.hasOwnProperty(name)) {
+      data[name].push(fn)
+    } else {
+      data[name] = [fn]
+    }
+    return this
+  },
+  fire: function(name, data, thisArg) {
+    var fnList = broadcast.data[name] || []
+    for (i = 0, len = fnList.length; i < len; i++) {
+      fnList[i].apply(thisArg || null, [data, name])
+    }
+    return this
+  },
+  data: {}
+}
+```
+
+```javascript
+  // test
+  broadcast.on('showRiding', ()=>{console.log('showRiding')})
+  broadcast.fire('showRiding') // showRiding
+```
 
 
   [1]: https://pic1.zhimg.com/50/fa4f6a40ff9696dc2453d6b30ddc1838_hd.jpg
