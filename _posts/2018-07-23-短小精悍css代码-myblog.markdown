@@ -16,7 +16,7 @@ tags:
 
 ### 自定义滚动条
 
-```css
+```
 // scss
 scrollBar {
   &::-webkit-scrollbar-track-piece {

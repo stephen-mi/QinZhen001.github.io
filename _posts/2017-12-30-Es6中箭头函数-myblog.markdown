@@ -61,6 +61,24 @@ const headAndTail = ( head, ...tail) => [head, tail];
 headAndTail(1,2,3,4,5,6,7,8,9);// [1, [2,3,4,5,6,7,8,9]]  
 ```
 
+
+
+### 隐式返回值
+
+要返回多行语句（例如对象文本），需要使用( )而不是{ }来包裹函数体。这样可以确保代码以单个语句的形式进行求值。
+
+```javascript
+function calcCircumference(diameter) {
+  return Math.PI * diameter
+}
+// 简写为：
+calcCircumference = diameter => (
+  Math.PI * diameter;
+)
+```
+
+
+
 ## 使用箭头函数注意几点：
 1. **函数体内的this对象就是定义时所在的对象，而不是使用时所在对象(这点很重要)**
 2. 不可以当作构造函数使用，也就是不能用new命令实例化一个对象，否则会抛出一个错误；
@@ -147,6 +165,36 @@ function foo() {
 
 
 所以在定义对象的时候，定义对象属性，里面的this指向的一般是全局，或者这个对象所在的那个环境中的this。
+
+
+----------
+
+
+
+
+```
+var fullname = 'John Doe';
+var obj = {
+   fullname: 'Colin Ihrig',
+   prop: {
+      fullname: 'Aurelio De Rosa',
+      getFullname: function() {
+         return this.fullname;
+      }
+   }
+};
+ 
+console.log(obj.prop.getFullname());
+ 
+var test = obj.prop.getFullname;
+ 
+console.log(test());
+```
+
+
+这段代码打印结果是：Aurelio De Rosa 和 John Doe 。原因是，JavaScript中关键字this所引用的是函数上下文，取决于函数是如何调用的，而不是怎么被定义的。
+
+在第一个console.log()，getFullname()是作为obj.prop对象的函数被调用。因此，当前的上下文指代后者，并且函数返回这个对象的fullname属性。相反，当getFullname()被赋值给test变量时，当前的上下文是全局对象window，这是因为test被隐式地作为全局对象的属性。基于这一点，函数返回window的fullname，在本例中即为第一行代码设置的。
 
 
 

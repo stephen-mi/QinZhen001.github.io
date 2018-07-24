@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "vue命名视图router-view"
+title:      "vue中router-view"
 date:       2017-12-06 16:28:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"

@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "vue-router多个路由地址绑定一个组件造成 created不执行的解决方法"
+title:      "vue-router多个路由地址绑定一个组件"
 date:       2017-08-30 22:15:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -35,45 +35,26 @@ methods: {
 },
 watch: {
   '$route' (to, from) {
-    console.log(this.getStatus(this.$route.path))
+    console.log(this.$route.path)
+    // 观测到router变化 在这里做想要的操作
   }
 }
 ```
-8.30晚
-经过我的测试 进入的这个组件并不会触发这个watch
-当这个组件消失时 才会触发(很奇怪)
-明天 在找办法
 
+### 另一种解决办法
+简单的在 router-view 上加上一个唯一的 key，来保证路由切换时都会重新渲染触发钩子了。这样简单的多了。
 
-----------
-8.31
-另想办法 采用
-路由导航钩子：
-但是beforeRouteUpdate (2.2 新增)在
-/foo/1 和 /foo/2 之间跳转才有用
-目前遇到情况是  /foo => /foo/1 => /foo => /foo/2
-
-
-----------
-
- /too => /foo/1  或 /too => /foo/2  
-导致 /foo/1 这个界面的组件无法正常执行created
-
-
-----------
-
-### 最终最终解决
-在/too下 也维护一个
 ```
-  children: [
-        {
-          path: ':id',
-          component: xxxx
-        }
-      ]
-```
-实际上/too/1 和 /foo/1 是完全相同的界面
-但是/too => /foo/1 或 /foo => /too/1 就会导致created无法执行
+<router-view :key="key"></router-view>
+
+computed: {
+  key() {
+    // 或者 :key="route.fullPath" 只要保证key唯一就可以了
+    return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+  }
+ }
+ ```
+
 
 ## 总结
 看文档要仔细 = = 

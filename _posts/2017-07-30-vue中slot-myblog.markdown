@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "slot标签"
+title:      "vue中slot"
 date:       2017-07-30 22:19:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -13,7 +13,7 @@ tags:
 
 
 ## 正文
-[网页链接]()
+
 
 Slot是用于组件中的占位符，组件标签是成对存在的，被组件的标签包裹的，会被填入到slot的位置，替代slot。也就是说，slot是为了让组件里的内容可变做出的一个手段。
 
