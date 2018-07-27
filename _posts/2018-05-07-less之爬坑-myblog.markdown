@@ -116,9 +116,14 @@ webpack中可以通过resolve.modules字段修改模块目录。
 
 
 
-
-
-
+### 循环
+```
+// less官方文档给的循环实例，其实实际上这就是递归调用
+.loop(@counter) when (@counter > 0) {
+    width: (10px + @counter);
+    .loop((@counter - 1));
+}
+```
 
 
 

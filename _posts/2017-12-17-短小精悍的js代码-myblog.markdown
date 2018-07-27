@@ -643,6 +643,25 @@ console.log(cleanObject);                         // {el1: '1', el2: '2', el3: '
 
 ```
 
+### 将url中query转为一个对象
+实现效果 
+```
+https://www.aaa.com?aaa=111&bbb=222 =》 {aaa: "111", bbb: "222"}
+```
+
+```javascript
+  function param2Obj(url) {
+    const search = url.split('?')[1]
+    if (!search) {
+      return {}
+    }
+    // 将字符串转成json对象
+    return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+  }
+  console.log(param2Obj('https://www.aaa.com?aaa=111&bbb=222'))
+  // {aaa: "111", bbb: "222"}
+```
+
 
 
 

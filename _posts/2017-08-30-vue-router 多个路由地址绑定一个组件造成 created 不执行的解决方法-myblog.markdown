@@ -15,11 +15,10 @@ tags:
 ## 正文
 [网页链接](http://blog.csdn.net/fungleo/article/details/54140095)
 
-### 需求分析
-导航上有2个菜单，指向的是同一个列表，但是是不同的状态。我需要根据不同的状态获取状态参数给接口拿到不同的数据。
+[在vue-admin中的解决方案](https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/router-and-nav.html#%E7%82%B9%E5%87%BB%E4%BE%A7%E8%BE%B9%E6%A0%8F-%E5%88%B7%E6%96%B0%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1)
 
 ### 问题所在
-路由没有发生变化，因此，只有在第一次进入的时候会因为created执行。
+由于路由没有发生变化，因此，切换组件，只有在第一次进入的时候会执行created。
 
 ### 解决方案
 
@@ -42,7 +41,21 @@ watch: {
 ```
 
 ### 另一种解决办法
-简单的在 router-view 上加上一个唯一的 key，来保证路由切换时都会重新渲染触发钩子了。这样简单的多了。
+方法也很简单，通过不断改变 url 的 query 来触发 view 的变化。我们监听侧边栏每个 link 的 click 事件，每次点击都给 router push 一个不一样的 query 来确保会重新刷新 view。
+```javascript
+clickLink(path) {
+  this.$router.push({
+    path,
+    query: {
+      t: +new Date() //保证每次点击路由的query项都是不一样的，确保会重新刷新view
+    }
+  })
+}
+```
+
+
+
+不要忘了在 router-view 上加上一个唯一的 key，来保证路由切换时都会重新渲染触发钩子了。这样简单的多了。
 
 ```
 <router-view :key="key"></router-view>
@@ -55,6 +68,8 @@ computed: {
  }
  ```
 
+
+**但这也有一个弊端就是 url 后面有一个很难看的 query 后缀如 xxx.com/article/list?t=1496832345025**
 
 ## 总结
 看文档要仔细 = = 
