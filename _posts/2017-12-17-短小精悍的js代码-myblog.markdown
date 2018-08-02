@@ -288,6 +288,28 @@ function addClass(el, className) {
 ```
 
 
+### removeClass
+```javascript
+function removeClass (obj, cls) {
+  if (hasClass(obj, cls)) {
+    const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+    obj.className = obj.className.replace(reg, ' ');
+  }
+};
+```
+
+### toggleClass
+```javascript
+function toggleClass(obj, cls) {
+  if (hasClass(obj, cls)) {
+    removeClass(obj, cls);
+  } else {
+    addClass(obj, cls);
+  }
+};
+```
+
+
 ### 判断是否为移动端
 ```javascript
 /AppleWebKit.*Mobile/i.test(navigator.userAgent) || /Android|iPhone|Windows Phone|webOS|iPod|BlackBerry/i.test(navigator.userAgent)
@@ -663,6 +685,36 @@ https://www.aaa.com?aaa=111&bbb=222 =》 {aaa: "111", bbb: "222"}
 ```
 
 
+### 判断是否dom对象
+```javascript
+/**
+ * Checks if the passed element is dom object or not
+ */
+export const isDomElement = function (element) {
+  return element && typeof element === 'object' && 'nodeType' in element;
+};
+```
 
+### 将string转化为Node节点
+```javascript
+/**
+ * Turn a string into a node
+ * @param  {String} htmlString to convert
+ * @return {Node}   Converted node element
+ */
+const createNodeFromString = (htmlString) => {
+  const div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes
+  return div.firstChild;
+};
+```
+
+### 复制类数组对象
+类数组对象没有数组方法 无法调用slice 所以要使用call()
+```javascript
+ const copyArr = [].slice.call(document.querySelectorAll('style'))
+```
 
   [1]: https://pic1.zhimg.com/50/fa4f6a40ff9696dc2453d6b30ddc1838_hd.jpg
