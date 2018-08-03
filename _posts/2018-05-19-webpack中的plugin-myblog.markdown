@@ -281,4 +281,38 @@ common-in-lazy.fbe5ebcb.chunk.js    11.9 kB  common-in-lazy
 
 
 
+
+
+### CopyWebpackPlugin
+将单个文件或整个目录复制到构建目录
+
+webpack.config.js
+```javascript
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+ 
+const config = {
+  plugins: [
+    new CopyWebpackPlugin([ ...patterns ], options)
+  ]
+}
+```
+
+#### Patterns
+
+A simple pattern looks like this
+```
+{ from: 'source', to: 'dest' }
+```
+
+Or, in case of just a from with the default destination, you can also use a {String} as shorthand instead of an {Object}
+
+```
+'source'
+```
+
+
+
+
+
+
   [1]: https://pic2.zhimg.com/80/v2-5a4b6bef5809e00512873d481a3670e7_hd.jpg

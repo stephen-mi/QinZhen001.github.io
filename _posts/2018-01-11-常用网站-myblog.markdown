@@ -116,6 +116,10 @@ You can generate the required JSON file for this tool by running
 [https://www.materialpalette.com/](https://www.materialpalette.com/)
 
 
+### 浏览器的工作原理
+[https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/](https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/)
+
+
 ## 需要翻墙
 
 ### 图标库
