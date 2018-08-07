@@ -144,6 +144,7 @@ var f2 = function() {}
 >注意不要把a跟隐式全局变量混淆。
 
 
+**立即执行函数不存在提升的情况**
 
 ### 块级作用域
 
@@ -184,10 +185,34 @@ undefined
         }
 ```
 
+## 补充
+
+### 词法作用域 
+**词法作用域中是在函数内变量作用域是再定义处(即代码书写处)的作用域**
 
 
+看下面一个例子
 
 
+```javascript
+var bo = 10;
+function foo() {
+// console.log(this) 此处this一直指向window 所以this.bo一直是10
+  console.log(bo);
+}
+(function() {
+  var bo = 20;
+  foo();
+})();
+(function (func) {
+  var bo = 30;
+  func();
+})(foo)
+
+输出结果 10 10
+```
+
+　无论函数在哪里被调用，也无论它如何被调用，它的词法作用域都只由函数被声明时所处的位置决定
 
 
 
