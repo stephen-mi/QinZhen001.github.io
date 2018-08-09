@@ -87,6 +87,100 @@ tags:
 
 **当屏幕width过小时,中间部分挤压变高，如果是flexbox解决方案，左右部分也会跟着变高，这就也是为什么推荐尽可能使用flex布局的原因之一。**
 
+
+### 百分比
+
+#### 子元素height和width的百分比
+子元素的height或width中使用百分比，是相对于子元素的直接父元素，width相对于父元素的width，height相对于父元素的height
+
+```html
+<div class="parent">
+  <div class="child"></div>
+</div>
+```
+
+```css
+.father{
+    width:200px;
+    height:100px;
+}
+.child{
+    width:50%;
+    height:50%;
+}
+```
+
+![][1]
+
+
+#### 子元素top和bottom 、left和right的百分比
+
+* 子元素的top和bottom如果设置百分比，则相对于直接非static定位(默认定位)的父元素的高度
+* 子元素的left和right如果设置百分比，则相对于直接非static定位(默认定位的)父元素的宽度。
+
+
+
+#### **子元素padding的百分比**
+
+**子元素的padding如果设置百分比，不论是垂直方向或者是水平方向，都相对于直接父亲元素的width，而与父元素的height无关。**
+
+```css
+.parent{
+  width:200px;
+  height:100px;
+  background:green;
+}
+.child{
+  width:0px;
+  height:0px;
+  background:blue;
+  color:white;
+  padding-top:50%;
+  padding-left:50%;
+}
+```
+
+展示的效果为：
+
+
+![enter description here][2]
+
+
+**通常我们可以利用这个特性实现自适应的图片或背景(重要)**
+
+
+#### **子元素margin的百分比**
+
+跟padding一样，margin也是如此，子元素的margin如果设置成百分比，不论是垂直方向还是水平方向，都相对于直接父元素的width。
+
+#### **子元素border-radius的百分比**
+
+
+border-radius不一样，如果设置border-radius为百分比，则是相对于自身的宽度，举例来说：
+
+```html
+  <div class="trangle"></div>
+```  
+
+设置border-radius为百分比：
+```css
+.trangle{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:blue;
+  margin-top:10px;
+}
+```
+
+
+![enter description here][3]
+
+**除了border-radius外，还有比如translate、background-size等都是相对于自身的**
+
+
+
+
 ### BFC
 [网站链接](https://zhuanlan.zhihu.com/p/25321647)
 
@@ -125,7 +219,7 @@ div{
 </body>
 ```
 
-![enter description here][1]
+![enter description here][4]
 
 
 从效果上看，因为两个 div 元素都处于同一个 BFC 容器下 (这里指 body 元素) 所以第一个 div 的下边距和第二个 div 的上边距发生了重叠，所以两个盒子之间距离只有 100px，而不是 200px。
@@ -151,7 +245,7 @@ p {
 这时候，两个盒子边距就变成了 200px 
 
 
-![enter description here][2]
+![enter description here][5]
 
 **2.BFC 可以包含浮动的元素（清除浮动）**
 我们都知道，浮动的元素会脱离普通文档流
@@ -161,7 +255,7 @@ p {
     </div>
 </div>
 ```
-![enter description here][3]
+![enter description here][6]
 
 由于容器内元素浮动，脱离了文档流，所以容器只剩下 2px 的边距高度。如果使触发容器的 BFC，那么容器将会包裹着浮动元素。
 
@@ -172,7 +266,7 @@ p {
 </div>
 ```
 
-![enter description here][4]
+![enter description here][7]
 
 
 **3. BFC 可以阻止元素被浮动元素覆盖**
@@ -188,7 +282,7 @@ p {
 
 这时候其实第二个元素有部分被浮动元素所覆盖，(但是文本信息不会被浮动元素所覆盖) 如果想避免元素被覆盖，可触第二个元素的 BFC 特性，在第二个元素中加入 overflow: hidden，就会变成：
 
-![enter description here][5]
+![enter description here][8]
 
 >这个方法可以用来实现两列自适应布局，效果不错，这时候左边的宽度固定，右边的内容自适应宽度(去掉上面右边内容的宽度)。
 
@@ -466,7 +560,7 @@ function A() {
 
 当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的 `__proto__`（即它的构造函数的prototype）中寻找。
 
-![enter description here][6]
+![enter description here][9]
 
 举个栗子:
 ```
@@ -719,6 +813,18 @@ ES6的继承机制完全不同，**实质上是先创建父类的实例对象thi
 >super关键字指代父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键字，否则报错。
 
 ## 通信类
+
+### 三次握手
+
+![enter description here][10]
+
+三次握手可以简化为：**C发起请求连接S确认，也发起连接C确认**
+
+
+我们再看看每次握手的作用：
+1. 第一次握手：S只可以确认 自己可以接受C发送的报文段
+2. 第二次握手：C可以确认 S收到了自己发送的报文段，并且可以确认 自己可以接受S发送的报文段
+3. 第三次握手：S可以确认 C收到了自己发送的报文段
 
 ### 同源
 * 协议
@@ -1409,7 +1515,7 @@ console.log('B')
 3.  一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
 4. 主线程不断重复上面的第三步。
 
-![enter description here][7]
+![enter description here][11]
 
 
 
@@ -1433,7 +1539,7 @@ console.log('B')
 ### Event Loop
 主线程从"任务队列"中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。
 
-![enter description here][9]
+![enter description here][12]
 
 上图中，主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码调用各种外部API，它们在"任务队列"中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取"任务队列"，依次执行那些事件所对应的回调函数。
 
@@ -1543,7 +1649,7 @@ console.log('B')
 >两者的区别：从名字就可以看出，强缓存不与服务器交互，而协商缓存则需要与服务器交互。
 
 
-![enter description here][10]
+![enter description here][13]
 
 
 
@@ -1559,14 +1665,14 @@ console.log('B')
 6. no-store: 绝对禁止缓存。
 7. must-revalidate: 如果页面过期，则去服务器进行获取。
 
-![enter description here][11]
+![enter description here][14]
 
 
 
 1. 查看是否有cache-control 的max-age / s-maxage , 如果有，则用服务器时间date值 + max-age/s-maxage 的秒数计算出新的过期时间，将当前时间与过期时间进行比较，判断是否过期
 2. 查看是否有cache-control 的max-age / s-maxage，没有，则用expires 作为过期时间比较
 
-![enter description here][12]
+![enter description here][15]
 
 
 
@@ -1574,7 +1680,7 @@ console.log('B')
 
 
 
-![enter description here][13]
+![enter description here][16]
 
 
 到这一步的时候，浏览器会向服务器发送请求，同时如果上一次的缓存中有Last-modified 和 Etag 字段，
@@ -1593,7 +1699,7 @@ console.log('B')
 
 最后附上一张，用户行为影响浏览器的缓存行为。
 
-![enter description here][14]
+![enter description here][17]
 
 
 
@@ -1763,17 +1869,20 @@ JD描述(job description)
 **不要一味低头做事，多思考，学会沟通。**
 
 
-  [1]: https://pic4.zhimg.com/80/v2-0a9ca8952c83141250a2d9002e6d2047_hd.jpg
-  [2]: https://pic4.zhimg.com/80/v2-5b8d6e8b2b507352900c1ece00018855_hd.jpg
-  [3]: https://pic1.zhimg.com/80/v2-371eb702274af831df909b2c55d6a14b_hd.jpg
-  [4]: https://pic2.zhimg.com/80/v2-cc8365db5c9cc5ca003ce9afe88592e7_hd.jpg
-  [5]: https://pic2.zhimg.com/80/v2-5ebd48f09fac875f0bd25823c76ba7fa_hd.jpg
-  [6]: http://ww1.sinaimg.cn/large/0060lm7Tly1fjuz4jz285j30s90lmgo7.jpg
-  [7]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100801.jpg
-  [8]: https://user-gold-cdn.xitu.io/2018/3/18/1623523c039e18f5?imageView2/0/w/1280/h/960/format/webp/ignore-error/1
-  [9]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100802.png
-  [10]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925143850526-746597755.png
-  [11]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925154122198-1817891039.png
-  [12]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925155532276-1195130673.png
-  [13]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925160222510-1108792969.png
-  [14]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925162600417-90375901.png
+  [1]: https://user-images.githubusercontent.com/17233651/41773411-91e22044-764e-11e8-8ad4-9066db87166f.png
+  [2]: https://user-images.githubusercontent.com/17233651/41775365-36a0b0da-7656-11e8-8495-bd58f7ab0bf2.png
+  [3]: https://user-images.githubusercontent.com/17233651/41775919-6a41ae42-7658-11e8-8e54-43ad05c12d43.png
+  [4]: https://pic4.zhimg.com/80/v2-0a9ca8952c83141250a2d9002e6d2047_hd.jpg
+  [5]: https://pic4.zhimg.com/80/v2-5b8d6e8b2b507352900c1ece00018855_hd.jpg
+  [6]: https://pic1.zhimg.com/80/v2-371eb702274af831df909b2c55d6a14b_hd.jpg
+  [7]: https://pic2.zhimg.com/80/v2-cc8365db5c9cc5ca003ce9afe88592e7_hd.jpg
+  [8]: https://pic2.zhimg.com/80/v2-5ebd48f09fac875f0bd25823c76ba7fa_hd.jpg
+  [9]: http://ww1.sinaimg.cn/large/0060lm7Tly1fjuz4jz285j30s90lmgo7.jpg
+  [10]: https://user-images.githubusercontent.com/17233651/42496289-1c6d668a-8458-11e8-98b3-65db50f64d48.png
+  [11]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100801.jpg
+  [12]: http://www.ruanyifeng.com/blogimg/asset/2014/bg2014100802.png
+  [13]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925143850526-746597755.png
+  [14]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925154122198-1817891039.png
+  [15]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925155532276-1195130673.png
+  [16]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925160222510-1108792969.png
+  [17]: https://images2017.cnblogs.com/blog/621603/201709/621603-20170925162600417-90375901.png
