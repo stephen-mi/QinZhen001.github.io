@@ -1,0 +1,185 @@
+---
+layout:     post
+title:      "读你不知道的js笔记"
+date:       2018-08-07 17:00:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - Other
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+
+
+### 数字
+
+JavaScript 只有一种数值类型：number （数字），包括“整数”和带小数的十进制数。此处“整数”之所以加引号是因为和其他语 言不同，JavaScript 没有真正意义上的整数，这也是它一直以来为人诟病的地方。这种情况在将来或许会有所改观，但目前只有数字类型。
+
+
+JavaScript 中的“整数”就是没有小数的十进制数。所以 42.0 即等同于“整数”42 。
+
+
+>与大部分现代编程语言（包括几乎所有的脚本语言）一样，JavaScript 中的数字类型是基于 IEEE 754 标准来实现的，该标准通 常也被称为“浮点数”。JavaScript 使用的是“双精度”格式（即 64 位二进制）。
+
+
+#### toFixed返回值是字符串
+
+```javascript
+var a = 42.59;
+a.toFixed( 0 ); // "43" 
+a.toFixed( 1 ); // "42.6"
+a.toFixed( 2 ); // "42.59" 
+```
+
+
+----------
+
+
+对于` . `运算符需要给予特别注意，因为它是一个有效的数字字 符，会被优先识别为数字常量的一部分，然后才是对象属性访问运算符。
+
+
+```javascript
+// 无效语法： 42.toFixed( 3 );    // SyntaxError
+
+
+// 下面的语法都有效：
+(42).toFixed( 3 );  // "42.000"
+0.42.toFixed( 3 );  // "0.420"
+42..toFixed( 3 );   // "42.000"
+```
+
+
+
+
+42.tofixed(3) 是无效语法，因为 . 被视为常量 42. 的一部分（如前所述），所以没有 . 属性访问运算符来调用 tofixed 方法。
+
+
+
+
+#### 0.1 + 0.2 === 0.3  false
+
+二进制浮点数最大的问题（不仅 JavaScript，所有遵循 IEEE 754 规范的语言都是如此
+
+
+
+#### 整数检测 
+要检测一个值是否是整数，可以使用 ES6 中的 Number.isInteger(..) 方法
+
+```javascript
+Number.isInteger( 42 );     // true 
+Number.isInteger( 42.000 ); // true 
+Number.isInteger( 42.3 );   // false
+```
+
+也可以为 ES6 之前的版本 polyfill Number.isInteger(..) 方法
+
+```javascript
+if (!Number.isInteger) {   
+    Number.isInteger = function(num) {   
+         return typeof num == "number" && num % 1 == 0;  
+    };
+}
+```
+### new String
+原生函数可以被当作构造函数来使用，但其构造出来的对象可能会和我们设想的有所出入
+
+```javascript
+var a = new String( "abc" );
+typeof a;                            // 是"object"，不是"String"
+a instanceof String;                 // true
+Object.prototype.toString.call( a ); // "[object String]"
+```
+
+**new String("abc") 创建的是字符串 "abc" 的封装对象，而非基本类型值 "abc"** 
+
+
+
+可以这样来查看封装对象：
+```javascript
+console.log( a );
+```
+
+由于不同浏览器在开发控制台中显示对象的方式不同（对象序列化 , object serialization），所以上面的输出结果也不尽相同
+
+
+　在本书写作期间，Chrome 的最新版本是这 样显示的：String {0: "a", 1: "b", 2: "c", length: 3, [[PrimitiveValue]]: "abc"} ， 而老版本这样显示：String {0: "a", 1: "b", 2: "c"} 。
+　
+　
+　
+### 内部属性 [[ Class ]]
+
+
+所有 typeof 返回值为 "object" 的对象（如数组）都包含一个内部属性 [[Class]] （我们可以把它看作一个内部的分 类，而非传统的面向对象意义上的类）。这个属性无法直接访问，一般通过 Object.prototype.toString(..) 来查 看。例如：
+
+```javascript
+Object.prototype.toString.call( [1,2,3] ); // "[object Array]"
+
+Object.prototype.toString.call( /regex-literal/i ); // "[object RegExp]"
+```
+
+
+### 封装对象释疑 
+
+使用封装对象时有些地方需要特别注意。
+
+比如 Boolean ：
+
+```javascript
+var a = new Boolean( false );
+if (!a) { 
+    console.log( "Oops" ); // 执行不到这里 
+}
+```
+
+我们为 false 创建了一个封装对象，然而该对象是真值（“truthy”，即总是返回 true ），所以这里使用封装对 象得到的结果和使用 false 截然相反
+
+
+
+### JSON 字符串化 
+对大多数简单值来说，JSON 字符串化和 toString() 的效果基本相同，只不过序列化的结果总是字符串：
+
+```javascript
+JSON.stringify( 42 );   // "42" 
+JSON.stringify( "42" ); // ""42"" （含有双引号的字符串） JSON.stringify( null ); // "null"
+JSON.stringify( true ); // "true"
+```
+
+
+不安全的JSON值undefined 、function 、symbol （ES6+）和包含循环引用（对 象之间相互引用，形成一个无限循环）的对象都不符合 JSON 结构标准，支持 JSON 的语言无法处理它们。
+
+
+JSON.stringify(..) 在对象中**遇到 undefined 、function 和 symbol 时会自动将其忽略**，在数组中则会返回 null （以保证单元位置不变）。
+
+```javascript
+JSON.stringify( undefined );      // undefined JSON.stringify( function(){} );   // undefined
+JSON.stringify( 
+    [1,undefined,function(){},4] 
+);                           // "[1,null,null,4]" JSON.stringify( 
+    { a:2, b:function(){} }
+);                           // "{"a":2}"
+```
+
+
+
+**对包含循环引用的对象执行 JSON.stringify(..) 会出错**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
