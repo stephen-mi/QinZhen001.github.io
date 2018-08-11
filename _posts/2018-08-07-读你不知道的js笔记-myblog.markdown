@@ -171,14 +171,40 @@ JSON.stringify(
 
 
 
+### `<script>`
+通常可以在网页中使用`<scriopt src=..></script>` 来加载 这些文件，或者使用 `<script> .. </script>` 来包含内联代码（inline-code）。
 
 
+这些文件和内联代码是相互独立的 JavaScript 程序还是一个整体呢？
+
+答案（也许会令人惊讶）是它们的运行方式更像是相互独立的 JavaScript 程序，但是并非总是如此
+
+它们共享 global 对象（在浏览器中则是 window ），也就是说这些文件中的代码在共享的命名空间中运行，并相互交互。
 
 
+如果某个 script 中定义了函数 foo() ，后面的 script 代码就可以访问并调用 foo() ，就像 foo() 在其内部被声明过一样
 
 
+但是全局变量作用域的提升机制在这些边界中不适 用，因此无论是 `<script> .. </script>` 还是 `<script src=..></script>` ，下面的代码都无法运行（因为 foo() 还未被声明）。
+
+```
+//无法运行
+<script>foo();</script>
+<script>  function foo() { .. } </script>
+```
 
 
+但是下面的两段代码则没问题：
+```
+<script>  foo();  function foo() { .. } </script>
+```
+
+和:
+
+```
+<script>  function foo() { .. } </script>
+<script>foo();</script>
+```
 
 
 
