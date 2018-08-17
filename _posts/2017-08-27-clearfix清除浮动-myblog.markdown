@@ -20,11 +20,14 @@ tags:
 要解决此问题，我们可以给包裹层(包裹了float元素)添加一个类，叫做clearfix，下面是clearfix的实现形式（之一）：
 
 
+**正是由于“块级元素”具有换行特性，因此理论上它都可以配合 clear 属性来清除浮动 带来的影响**
+
+
 **最好的方式**
 ```
 .clearfix:after {
    content:""; 
-   display: table; 
+   display: table;  // 也可以是 block，或者是 list-item 
    clear:both; 
 }
 ```
