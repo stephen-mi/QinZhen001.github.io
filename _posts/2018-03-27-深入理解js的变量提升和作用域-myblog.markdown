@@ -16,7 +16,7 @@ tags:
 [网页链接](https://www.cnblogs.com/kawask/p/6225317.html)
 
 ### 变量提升
-在ES6之前，JavaScript没有块级作用域(一对花括号{}即为一个块级作用域)，只有全局作用域和函数作用域。变量提升即将变量声明提升到它所在作用域的最开始的部分。上个简历的例子如：
+在ES6之前，JavaScript没有块级作用域(一对花括号{}即为一个块级作用域)，只有全局作用域和函数作用域。变量提升即将变量声明提升到它所在作用域的最开始的部分。上个的例子如：
 ```
 console.log(global); // undefined
 var global = 'global';
@@ -49,13 +49,16 @@ fn();
 
 
 ### 函数提升
-　　js中创建函数有两种方式：函数声明式和函数字面量式。只有函数声明才存在函数提升！如:
+　　js中创建函数有两种方式：函数声明式和函数字面量式。**只有函数声明才存在函数提升！**
+　　
+如:
 ```
 console.log(f1); // function f1() {}   
 console.log(f2); // undefined  
 function f1() {}
 var f2 = function() {}
 ```
+
 　只所以会有以上的打印结果，是由于js中的函数提升导致代码实际上是按照以下来执行的：
 
 ```
@@ -146,6 +149,33 @@ var f2 = function() {}
 
 **立即执行函数不存在提升的情况**
 
+
+----------
+
+```javascript
+var x = 21;
+var girl = function () {
+    console.log(x);
+    var x = 20;
+};
+girl ();
+
+
+输出：  undefined
+```
+
+函数内部变量提升。 相当于
+
+```javascript
+var x = 21;
+var girl = function() {
+    var x;
+    console.log(x); // undefined
+    x = 20;
+}
+```
+
+
 ### 块级作用域
 
 
@@ -212,8 +242,6 @@ function foo() {
 输出结果 10 10
 ```
 
-　无论函数在哪里被调用，也无论它如何被调用，它的词法作用域都只由函数被声明时所处的位置决定
-
-
+　**无论函数在哪里被调用，也无论它如何被调用，它的词法作用域都只由函数被声明时所处的位置决定**
 
 
