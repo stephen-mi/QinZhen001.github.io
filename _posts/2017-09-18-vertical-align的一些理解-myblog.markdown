@@ -38,6 +38,11 @@ vertical-align “垂直的”+“对齐”的意思
 .test{vertical-align:-2px;}
 元素相对于基线向下偏移两像素，这个常常用来修复单选框/复选框与12像素文字大小不对齐的问题
 
+
+**vertical- align属性的百分比值是相对于line-height的计算值计算的**
+
+
+
 ### 为什么我的vertical-align属性不起作用
 vertical-align 称之为“inline-block依赖型元素
 
@@ -54,6 +59,102 @@ div{vertical-align:middle;}
 虽然vertical-align属性只会在inline-block水平的元素上期作用，但是其影响到的元素涉及到inline属性的元素，这里千万记住，inline水平元素受vertical-align属性而位置改变等不是因为其对vertical-align属性敏感或起作用，而是受制于整个line box的变化而不得不变化的
 
 
+#### 小例子
+
+
+```css
+.box {   
+    height: 128px;
+} 
+.box > img { 
+    height: 96px; 
+    vertical-align: middle; 
+} 
+```
+
+```html
+<div class="box"> 
+    <img src="1.jpg"> 
+</div>
+```
+
+
+
+
+
+
+此时图片顶着.box元素的上边缘显示，根本没垂直居中，完全没起作用！ 
+
+
+这种情况看上去是 vertical-align:middle 没起作用，实际上，vertical-align 是在努力地渲染的，只是行框盒子前面的“幽灵空白节点”高度太小，如果我们通过设置一个 足够大的行高让“幽灵空白节点”高度足够，就会看到vertical-align:middle起作用了
+
+
+
+```css
+.box {  
+    height: 128px; 
+    line-height: 128px;   /* 关键CSS属性 */
+} 
+.box > img {  
+    height: 96px;  
+    vertical-align: middle;
+} 
+```
+
+
+
+
+### display:table-cell无视行高
+
+对table-cell元素而言，vertical-align起作用的是table-cell 元素自身。
+
+```css
+.cell {  
+    height: 128px;  
+    display: table-cell;
+}
+.cell > img { 
+    height: 96px; 
+    vertical-align: middle; 
+} 
+```
+
+```
+<div class="cell">  
+    <img src="1.jpg">   
+</div> 
+```
+
+
+结果图片并没有要垂直居中的迹象，还是紧贴着父元素的上边缘
+
+
+但是，如果 vertical-align:middle 是设置在 table-cell 元素上，CSS 代码 如下： 
+
+```
+.cell {
+      height: 128px;
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .cell > img {
+      height: 96px;
+    }
+```
+
+那么图片就可以垂直居中了
+
+
+
+虽然就效果而言，table-cell元素设置vertical-align垂 直对齐的是子元素，但是其作用的并不是子元素，而是table-cell元素自 身。就算table-cell元素的子元素是一个块级元素，也一样可以让其有各 种垂直对齐表现。
+
+
+
+
+
+
+
 
 ### vertical-align:middle
 [测试vertical-align:middle](http://www.zhangxinxu.com/study/201005/verticle-align-test-demo.html)
@@ -61,6 +162,41 @@ div{vertical-align:middle;}
 **vertical-align:middle属性的表现与否，仅仅与其父标签有关，至于我们通常看到的与后面的文字垂直居中显示那都是假象！**
 
 
+
+
+
+### vertical-align 和 line-height 之间的关系 
+
+vertical-align和line-height之间的关系很明确，即“朋友”关系。 
+
+只要出现内联元素，这对好朋友一定会同时出现
+
+容器高度不等于行高的例子
+[http://demo.cssworld.cn/5/3-1.php](http://demo.cssworld.cn/5/3-1.php)
+
+为什么会出现这样的现象?
+
+看一下相关的代码： 
+```
+.box { line-height: 32px; }
+.box > span { font-size: 24px; }
+
+<div class="box">  
+    <span>文字</span>
+</div> 
+```
+
+
+其中有一个很关键的点，那就是24px的font-size大小是设置在`<span>`元素上的，这就导 致了外部`<div>`元素的字体大小和`<span>`元素有较大出入
+
+
+`<span>`标签前面实际上有一个看不见的类似 字符的“幽灵空白节点”。看不见的东西不利于理解，因此我们不妨使用一个看得见的字符 x 占位，同时“文字”后面也添加一个 x，便于看出基线位置，于是就有如下 HTML： 
+
+```
+<div class="box">   
+    x<span>文字x</span>
+</div> 
+```
 
 
 
