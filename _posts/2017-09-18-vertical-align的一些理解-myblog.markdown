@@ -203,9 +203,9 @@ vertical-align和line-height之间的关系很明确，即“朋友”关系。
 
 由于都受 line- height:32px影响，因此，这两个“内联盒子”的高度都是32px。下面关键的来了，对字符 而言，font-size 越大字符的基线位置越往下，因为文字默认全部都是基线对齐，所以当字 号大小不一样的两个文字在一起的时候，彼此就会发生上下位移，如果位移距离足够大，就会 超过行高的限制，而导致出现意料之外的高度
 
-如图 5-25 所示
 
-![enter description here][1]
+
+[如图 5-25 所示](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/line-height.png)
 
 
 非常直观地说明了为何后容器的高度会是 36px，而非 line-height 设置的 32px。 
@@ -267,6 +267,88 @@ vertical-align和line-height之间的关系很明确，即“朋友”关系。
 
 为了直观演示原理，我们可以在图片前面辅助一个字符 x 代替“幽灵空白节点”，并想办法通过 背景色显示其行高范围，于是，大家就会看到如图 5-27 所示的现象。 
 
+[图 5-27](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/pic-gap.png)
+
+
+当前line-height计算值是20px，而 font-size只有14px，因此，字母 x 往下一定 有至少3px的半行间距（具体大小与字体有关），而图片作为替换元素其基线是自身的下边缘。根据定义，默认和基线（也就是这里字母 x 的下边缘）对齐，字母 x 往下的行高产生的多余的 间隙就嫁祸到图片下面，让人以为是图片产生的间隙，实际上，是“幽灵空白节点”、 line-height和vertical-align属性共同作用的结果。  
+
+
+
+知道了原理，要清除该间隙，就知道如何对症下药了。方法很多，具体如下
+
+1. 图片块状化。可以一口气干掉“幽灵空白节点” 、line-height 和 vertical- align
+2. 容器line-height足够小。只要半行间距小到字母 x 的下边缘位置或者再往上，自 然就没有了撑开底部间隙高度空间了。比方说，容器设置line-height:0。 
+3. 容器font-size足够小。此方法要想生效，需要容器的line-height属性值和当 前font-size相关，如line-height:1.5或者line-height:150%之类；否则只会让下 面的间隙变得更大，因为基线位置因字符 x 变小而往上升了。 
+4. 图片设置其他vertical-align属性值。间隙的产生原因之一就 是基线对齐，所以我们设置 vertical-align 的值为 top、middle、 bottom中的任意一个都是可以的。 
+
+
+
+
+
+## 深入理解 vertical-align 线性类属性值 
+
+
+
+### inline-block 与 baseline 
+
+vertical-align属性的默认值baseline在文本之类的内联元素那里就是字符 x 的下 边缘，对于替换元素则是替换元素的下边缘
+
+
+**但是，如果是 inline-block 元素，则规则要 复杂了：一个inline-block元素，如果里面没有内联元素，或者overflow不是visible， 则该元素的基线就是其margin底边缘；否则其基线就是元素里面最后一行内联元素的基线。** 
+
+举个例子:
+
+
+两个同尺寸的 inline-block 水平元素，唯一区别就是一个是空的，一个里面有字符， 代码如下： 
+
+
+```
+.dib-baseline {  
+    display: inline-block;   
+    width: 150px; height: 150px;  
+    border: 1px solid #cad5eb; 
+    background-color: #f0f3f9;
+}
+```
+
+```
+<span class="dib-baseline"></span> 
+<span class="dib-baseline">x-baseline</span> 
+```
+
+
+你会发现，明明尺寸、display水平都是一样的，结果两个却不在一个水平线上对齐
+
+
+第一个框里面没有内联元素，因此基线就是容器的margin 下边缘，也就是下边框下面的位置；而第二个框里面有字符，纯正的内联元素，因此 第二个框就是这些字符的基线，也就是字母 x 的下边缘了。于是，我们就看到了左边框框下边 缘和右边框框里面字符 x 底边对齐的好戏。 
+
+
+
+### vertial-align:top/bottom 
+
+vertial-align:top
+
+用通俗的话解释就是：如果是内联元素，则和这一行位置高的内联元素的顶部对齐； 如果 display 计算值是 table-cell 的元素，我们不妨脑补成`<td>`元素，则和`<tr>`元素上边缘对齐。 
+
+
+
+vertial-align:bottom 声明与此类似，只是把“顶部”换成“底部”，把“上边缘” 换成“下边缘”。
+
+
+
+需要注意的是，内联元素的上下边缘对齐的这个“边缘”是当前“行框盒子”的上下边缘， 并不是块状容器的上下边缘。 
+
+### vertial-align:text-top/text-bottom 
+[http://demo.cssworld.cn/5/3-9.php](http://demo.cssworld.cn/5/3-9.php)
+
+
+* vertical-align:text-top：盒子的顶部和父级内容区域的顶部对齐。 
+* vertical-align:text-bottom：盒子的底部和父级内容区域的底部对齐
+
+其中，理解的难点在于“父级内容区域”，这是个什么东西呢？ 
+
+
+可以看成是 Firefox/IE 浏览器文本选中 的背景区域，或者默认状态下的内联文本的背景色区域。而所谓“父级内容区域”指的就是在父级元素当前font-size和font-family下应有的内容区域大小。 
 
 
 
@@ -316,4 +398,4 @@ vertical-align默认值是baseline, 也就是基线对齐.
 会发现，明明尺寸、display水平都是一样的，结果呢，两个却不在一个水平线上对齐，为什么呢？哈哈，上面的规范已经说明了一切。第一个框框里面没有内联元素，因此，基线就是容器的margin下边缘，也就是下边框下面的位置；而第二个框框里面有字符，纯正的内联元素，因此，第二个框框就是这些字符的基线，也就是字母x的下边缘了。于是，我们就看到了框框1下边缘和框框2里面字符x底边对齐的好戏。框框2有个小彩蛋，点击可以toggle其innerHTML，会发现，如果框框2里面没文字，就和框框1举案齐眉了。
 
 
-  [1]: https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/line-height.png
+

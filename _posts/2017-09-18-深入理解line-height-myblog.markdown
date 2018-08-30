@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "line-height 属性"
+title:      "深入理解line-height"
 date:       2017-09-18 12:48:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"

@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "css中line boxes盒子模型-myblog"
+title:      "css中line boxes盒子模型"
 date:       2018-06-03 22:00:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"

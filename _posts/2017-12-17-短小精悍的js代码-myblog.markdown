@@ -331,6 +331,12 @@ function isFunction(source) {
  };
 ```
 
+
+### isFirefox
+```
+const isFirefox = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+```
+
 ### 如何判定一个脚本已经执行完毕
 暂无很好方法 有空在寻找
 

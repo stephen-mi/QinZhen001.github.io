@@ -68,3 +68,151 @@ overflow:hidden属性相当于是让父级紧贴内容，这样即可紧贴其�
 ```
 
 
+
+
+### overflow:hidden 剪裁界线 
+[http://demo.cssworld.cn/6/4-1.php](http://demo.cssworld.cn/6/4-1.php)
+
+
+
+
+一个设置了overflow:hidden声明的元素，假设同时存在border属性和padding属 性，类似于下面的 CSS 代码
+
+
+```css
+ .box { 
+     width: 200px;
+     height: 80px;   
+     padding: 10px;  
+     border: 10px solid; 
+     overflow: hidden; 
+ } 
+```
+
+
+**则当子元素内容超出容器宽度高度限制的时候，剪裁的边界是border box的内边缘，而非padding box 的内边缘**
+
+
+
+
+
+如果想实现元素剪裁同时四周留有间隙的效果的话，可以试试使用透明边框，此时内间距 padding 属性是无能为力的
+
+
+，深入探讨一下overflow属性的一个很经典的不兼容问题，即 Chrome 浏览器下，如果容 器可滚动（假设是垂直滚动），则 padding-bottom也算在滚动尺寸之内，IE 和 Firefox 浏览器 忽略padding-bottom。例如，上面的.box，我们把 overflow属性值改成auto（亦可点击 实例页面图片），滚动到底部会发现，Chrome 浏览器下面是有 10 像素的空白的,Firefox 和 IE 却没有
+
+
+
+所以我们在实际项目开发的时候，要尽量避免滚动容器设置 padding-bottom 值，除 了样式表现不一致外，还会导致 scrollHeight 值不一样，这往往会给开发带来难以察觉的 麻烦，需要引起注意。 
+
+
+
+
+### 关于滚动条
+
+
+在 PC 端，无论是什么浏览器，默认滚动条均来自`<html>`，而不是`<body>`标签。
+
+
+所以，如果我们想要去除页面默认滚动条，只需要： 
+
+```
+html { overflow: hidden; }
+```
+
+>注：此方法在移动端基本上无效
+
+
+
+在 PC 端， 窗体滚动高度可以使用 document.documentElement.scrollTop 获取，但是在移动端， 可能就要使用document.body.scrollTop获取。
+
+
+----------
+
+
+**滚动条会占用容器的可用宽度或高度**
+
+
+
+
+假设一个元素的宽度是400px，CSS 代码如下：
+ 
+``` 
+.box {  
+    width: 400px; 
+    height: 100px;  
+    overflow: auto; 
+} 
+```
+
+
+当子元素高度超过100px出现滚动条的时候，子元素可用的实际宽度实际上要小于400px，因为滚 动条（准确地说应该是滚动栏）占据了一定的宽度
+
+
+在移动端就不会 有这样的问题，因为移动端的屏幕尺寸本身就有限，滚动条一般都是悬浮模式，不会占据可用宽度， 但是在 PC 端，尤其 Windows 操作系统下，几乎所有浏览器的滚动栏都会占据宽度，而且这个宽度大 小是固定的。
+
+
+IE7 及以上版本 IE、Chrome、Firefox 浏览器滚动栏所占据的宽度均是**17px**
+
+
+### 自定义滚动条
+
+滚动条是可以自定义的。因为 IE 浏览器的自定义效果实在是比原生的还要难看，就不浪费 大家时间了，就此打住。 
+
+
+倒是支持-webkit-前缀的浏览器可以说说。例如，对于 Chrome 浏览器：
+
+* 整体部分，::-webkit-scrollbar；
+* 两端按钮，::-webkit-scrollbar-button； 
+* 外层轨道，::-webkit-scrollbar-track  
+* 内层轨道，::-webkit-scrollbar-track-piece；   
+* 滚动滑块，::-webkit-scrollbar-thumb；
+* 边角，::-webkit-scrollbar-corner
+
+
+
+
+
+但是我们平时开发中只用下面 3 个属性： 
+
+
+```css
+    ::-webkit-scrollbar { /* 血槽宽度 */
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb { /* 拖动条 */
+      background-color: rgba(0, 0, 0, .3);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-track { /* 背景槽 */
+      background-color: #ddd;
+      border-radius: 6px;
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
