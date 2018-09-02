@@ -42,12 +42,20 @@ HTML中的每一元素都是在其他元素的前面或者后面。这是众所�
 现在我们来说说什么情况下会产生新的堆叠上下文：
 
 1. 当一个元素位于HTML文档的最外层`（<html>元素）`
-2. 当一个元素被定位了并且拥有一个z-index值（不为auto）
-3. 当一个元素被设置了opacity，transform, filter, css-regions, paged media,perspective,clip-path,mask / mask-image / mask-border等属性。
+2. **当一个元素被定位了并且拥有一个z-index值（不为auto）**
+3. 当一个元素被设置了opacity(不为1)，transform, filter, css-regions, paged media,perspective,clip-path,mask / mask-image / mask-border等属性。
 
 一二条规则，Web开发者都知道，虽然他们不一定知道怎么描述
 
 最后一条，是很多非w3c规范里面的文章很少提到的。通常来讲，如果一个CSS属性需要做一些特效的话，它都会创建一个新的层。
+
+
+
+#### CSS3 与新时代的层叠上下文 
+元素为 flex 布局元素（父元素 display:flex|inline-flex），同时 z-index 值不是 auto。 
+
+元素的 filter 值不是 none。 
+
 
 ### 同一层里面的堆叠顺序
 
@@ -203,6 +211,20 @@ div {
 **如果你的 z-index 作用于一个非定位元素(一些 CSS3 也会生效)，是不起任何作用的**
 
 
+为什么定位元素会层叠在普通元素的上面了？
+
+其根本原因就是：元素 一旦成为定位元素，其 z-index 就会自动生效，此时其 z-index 就是默认的 auto，也就是 0级别，根据上面的层叠顺序表，就会覆盖inline或block或float元素
+
+
+。而不支持z-index 的层叠上下文元素天然是 z-index:auto 级别，也就意味着，层叠上下文元素和定位元素是 一个层叠顺序的，于是当它们发生层叠的时候，遵循的是“后来居上”准则。 
+
+我们可以看一个例子：
+```
+<img src="1.jpg" style="position:relative"> 
+<img src="2.jpg" style="transform:scale(1);"> 
+```
+
+图片2在图片1的上面
 
 #### 元素层叠水平相当
 那么当两个元素层叠水平相同的时候，这时候就要遵循下面两个准则：

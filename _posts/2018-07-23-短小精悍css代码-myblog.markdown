@@ -182,6 +182,36 @@ CSS 世界默认的流方向是水平方向，因此，对于普通流体元素�
 ```
 
 
+### display:table-cell实现垂直居中
+
+在父元素设置
+
+```css
+.container {
+            display: table-cell;
+            vertical-align: middle;
+            width: 240px;
+            height: 180px;
+        }
+```
+
+这样子元素就可以垂直居中了
+
+
+特别提醒
+
+**table-cell不感知margin，在父元素上设置table-row等属性，也会使其不感知height。**
+
+
+>与其他一些display属性类似，table-cell同样会被其他一些CSS属性破坏，例如float, position:absolute，所以，在使用display:table-cell与float:left或是position:absolute属性尽量不用同用。设置了display:table-cell的元素对宽度高度敏感，响应padding属性，基本上就是活脱脱的一个td标签元素了。
+
+
+
+
+
+
+
+
 
 
 

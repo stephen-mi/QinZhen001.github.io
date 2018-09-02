@@ -41,7 +41,7 @@ tags:
 ### 图片定高|不定高水平垂直居中
 >了解了table的一些属性，当我们遇到一些水平垂直居中的布局时，就会变得so easy了。
 
-图片本身就是inline-block元素，那么我们只要给它的父级元素加个display:table-cell就好了
+图片本身就是inline-block元素，那么我们只要给它的父级元素加个display:table-cell和 vertical-align: middle就好了
 ```
 .box{
     height: 200px;
@@ -78,12 +78,6 @@ tags:
 3. 多个table-cell元素会占满被设置了display: table的元素的宽度，如果一个元素被设置了宽度，那么其他剩余的table-cell元素会占满剩下的宽度。当然，如果只有一个table-cell元素，就算设置了宽度也会占满table元素的宽度。
 4. 对设置了float、absolute的元素不起作用。且IE6、7不支持
 
-
-### display: inline-block
-
-
-* inline-block元素把自己变成特殊的inline元素，对于相邻的元素来说表现出inline的特点，允许空格。对于内部元素来说表现出block元素的特点，可以设置高度和宽度。
-* 空格是两个标签中存在换行符or制表符or空格符（其实就是缩进）的原因生产的，只需要给设置了inline-block属性的父元素设置font-size:0,就可以使标签中的空格失去宽度
 
 
 
