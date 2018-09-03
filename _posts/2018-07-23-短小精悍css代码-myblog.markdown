@@ -207,13 +207,126 @@ CSS 世界默认的流方向是水平方向，因此，对于普通流体元素�
 
 
 
+### 绝对定位结合margin: auto实现垂直居中
+
+```css
+    .container {
+      position: relative;
+      margin: 20px;
+      width: 300px;
+      height: 300px;
+      background: red;
+    }
+
+    .cell {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 100px;
+      height: 100px;
+      text-align: center;
+      background: rebeccapurple;
+    }
+```
+
+
+```html
+<div class="container">
+  <div class="cell">
+    asdasd
+    asdlfkkljl
+  </div>
+</div>
+```
+
+这种实现方式的两个核心是：把要垂直居中的元素相对于父元素绝对定位，top和bottom设为相等的值，我这里设成了0，当然你也可以设为99999px或者-99999px无论什么，只要两者相等就行，这一步做完之后再将要居中元素的margin设为auto，这样便可以实现垂直居中了。
+
+
+### 三维闪动 bug 处理
+
+```css
+.transform-fix() { 
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+```
+
+
+transform-style 属性 让转换的子元素保留3D转换：
+
+
+transform--style属性指定嵌套元素是怎样在三维空间中呈现。
+
+
+>注意： 使用此属性必须先使用 transform 属性.
+
+
+| 值          | 描述                           |
+| ----------- | ------------------------------ |
+| flat        | 表示所有子元素在2D平面呈现。   |
+| preserve-3d | 表示所有子元素在3D空间中呈现。 |
 
 
 
 
+### Animation的Mixin封装
+```
+.ani(@name, @time: 1s, @ease: ease-in-out, @fillmode: forwards) {
+  animation-name: @name;
+  animation-duration: @time;
+  animation-timing-function: @ease;
+  animation-fill-mode: @fillmode;
+}
+```
+
+
+### 禁止文本被选择
+
+```css
+.user-select() { 
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+```
+
+
+### 隐藏鼠标手势
+
+```css
+.hide-cursor() { 
+    cursor: none !important; 
+}
+```
 
 
 
+
+### backface-visibility 属性
+
+**常用  backface-visibility: hidden;**
+
+backface-visibility 属性定义当元素不面向屏幕时是否可见。
+
+如果在旋转元素不希望看到其背面时，该属性很有用。
+
+
+### transform-style 属性
+
+**常用 transform-style: preserve-3d;**
+
+| 值          | 描述                       |
+| ----------- | -------------------------- |
+| flat        | 子元素将不保留其 3D 位置。 |
+| preserve-3d | 子元素将保留其 3D 位置。   |
+
+
+
+**当为元素定义 perspective 属性时，其子元素会获得透视效果，而不是元素本身。**
 
 
 
