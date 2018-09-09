@@ -37,11 +37,8 @@ jQuery(document).ready(function ($) {
   //鼠标在上方时
   //$(".mumu").jrumble({rangeX: 2,rangeY: 2,rangeRot: 1});
   $spig.mouseenter(function () {
-    $spig.find(".mumu").fadeTo("300", 0.8);
     var i = Math.floor(Math.random() * msgs.length);
     showMessage(msgs[i]);
-  }).mouseleave(function () {
-    $spig.find(".mumu").fadeTo("300", 1)
   })
 
   //滚动条移动
