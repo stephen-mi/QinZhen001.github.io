@@ -71,12 +71,10 @@ jQuery(document).ready(function ($) {
       var y = e.pageY - _y;
       if (x > 0 && x < wx && y > 0 && y < dy) {
         //控件新位置
-        $spig
-            .css({
-              top: y,
-              left: x
-            })
-            .find(".mumu").fadeTo(0, 0.5);
+        $spig.css({
+          top: y,
+          left: x
+        })
       }
     }
     e.stopPropagation()
