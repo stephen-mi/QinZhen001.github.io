@@ -80,7 +80,6 @@ jQuery(document).ready(function ($) {
     e.stopPropagation()
   }).mouseup(function (e) {
     if (initMove && isMove) {
-      $spig.find(".mumu").fadeTo("300", 1);
       spig_top = parseInt($spig.css("top"));
       recordedScrollTop = $(window).scrollTop()
       initMove = false;
