@@ -179,6 +179,25 @@ id在JS是唯一的，不能多次使用，而使用class类选择器却可以�
 友情链接：link
 版权：copyright
 
+
+
+
+
+
+
+
+
+
+## 补充
+
+### 事件命名
+
+事件命名应该以动词（如 client-api-load） 或是 名词（如 drive-upload-success）结尾。
+
+
+
+
+
   [1]: http://images.shejidaren.com/wp-content/uploads/2013/09/css-written-order.png
   [2]: http://images.shejidaren.com/wp-content/uploads/2013/09/abbreviation.png
   [3]: http://images.shejidaren.com/wp-content/uploads/2013/09/del-zero.png
