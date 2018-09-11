@@ -311,6 +311,60 @@ Or, in case of just a from with the default destination, you can also use a {Str
 ```
 
 
+### BundleAnalyzerPlugin 
+
+使用交互式可缩放树形图可视化webpack输出文件的大小。
+
+```javascript
+if (config.build.bundleAnalyzerReport) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+}
+```
+
+This module will help you:
+
+1. Realize what's really inside your bundle
+2. Find out what modules make up the most of its size
+3. Find modules that got there by mistake
+4. Optimize it!
+
+
+
+
+And the best thing is it supports minified bundles! It parses them to get real size of bundled modules. And it also shows their gzipped sizes!
+
+
+
+
+### HashedModuleIdsPlugin
+
+
+
+```javascript
+ // keep module.id stable when vendor modules does not change
+    new webpack.HashedModuleIdsPlugin(),
+```
+
+
+增加、删除一些模块，可能会导致不相关文件的 hash 发生变化，这是因为 webpack 打包时，按照导入模块的顺序，module.id 自增，会导致某些模块的 module.id 发生变化，进而导致文件的 hash 变化。
+
+
+解决方式： 使用 webpack 内置的 HashedModuleIdsPlugin，该插件基于导入模块的相对路径生成相应的 module.id，这样如果内容没有变化加上 module.id 也没变化，则生成的 hash 也就不会变化了。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
