@@ -329,8 +329,39 @@ backface-visibility 属性定义当元素不面向屏幕时是否可见。
 **当为元素定义 perspective 属性时，其子元素会获得透视效果，而不是元素本身。**
 
 
+###  压扁弹起动画
 
+```css
+@keyframes rubberBand {
+    from {
+        transform: scale3d(1,1,1);
+    }
 
+    30% {
+        transform: scale3d(1.25,0.75,1);
+    }
+
+    40% {
+        transform: scale3d(0.75,1.25,1);
+    }
+
+    50% {
+        transform: scale3d(1.15,0.85,1);
+    }
+
+    65% {
+        transform: scale3d(0.95,1.05,1);
+    }
+
+    75% {
+        transform: scale3d(1.05,0.95,1);
+    }
+
+    to {
+        transform: scale3d(1,1,1);
+    }
+}
+```
 
 
 
