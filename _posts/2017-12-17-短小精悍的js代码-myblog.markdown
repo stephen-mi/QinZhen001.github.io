@@ -748,7 +748,15 @@ Array.prototype.reverse.call( a );
 
 
 
+### 检查string是否中文
 
+[\u4e00-\u9fa5 ]
+这两个unicode值正好是Unicode表中的汉字的头和尾
+
+```javascript
+ let str = 'xxx'
+ /^[\u4E00-\u9FA5]+$/.test(str)
+```
 
 
 

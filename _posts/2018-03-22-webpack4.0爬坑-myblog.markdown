@@ -263,8 +263,58 @@ windows下，NODE_ENV被设置成 'dev '，末尾带有一个空格
 
 
 
+### 图片地址引用错误
+
+webpack 的别名好处大家也都了解, 但是 vue 的模板中, 对图片地址使用别名时总出现问题
+
+```
+alias: {
+  'src': path.resolve(__dirname, '../src'),
+  'assets': path.resolve(__dirname, '../src/assets'),
+  'components': path.resolve(__dirname, '../src/components')
+}
+```
+
+```
+<template>
+  <img src="assets/images/logo.jpg" />
+</template>
+<script>
+import 'assets/css/style.css'
+</script>
+<style>
+.logo {
+  background: url(asset/images/bg.jpg)
+}
+</style>
+```
 
 
 
+上面的代码, 你会发现只有引入style.css是成功的, 图片地址和背景图片地址都会解析失败...
+
+经过各种搜索找原因(这时候, 你会发现百度搜索这些技术型的内容, 真是垃圾中的战斗机), 最终还是找到原因了...
+
+**vue-html-loader and css-loader translates non-root URLs to relative paths. In order to treat it like a module path, prefix it with ~**
+
+**就是要在别名前面加一个~**
 
 
+改成这样:
+```
+<template>
+    <img src="~assets/images/logo.jpg" />
+</template>
+<script>
+import 'assets/css/style.css'
+</script>
+<style>
+.logo {
+    background: url(~asset/images/bg.jpg)
+}
+</style>
+```
+
+意思就是: 告诉加载器它是一个模块，而不是相对路径
+
+注意: 只有在template中的静态文件地址和style中的静态文件地址需要加~, 在script里的, 别名定义成什么就写什么.
