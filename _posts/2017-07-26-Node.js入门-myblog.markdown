@@ -324,6 +324,81 @@ __filename 表示当前正在执行的脚本的文件名。它将输出文件所
 4. Signal 事件
 当进程接收到信号时就触发。信号列表详见标准的 POSIX 信号名，如 SIGINT、SIGUSR1 等。
 
+
+
+#### process.argv
+process.argv返回命令行脚本的各个参数组成的数组
+
+```
+// print process.argv
+process.argv.forEach(function(val, index, array) {
+  console.log(index + ': ' + val);
+});
+$ node process.js one two=three four
+0: node
+1: /Users/node/process.js
+2: one
+3: two=three
+4: four
+```
+
+
+可以看出，会将bat命令以空格为标记，拆成一个数组。索引0是node命令，索引1是运行路径。索引2开始就是参数了。
+
+
+
+这个用处挺多的。例如你在bat的文件这样写。node app 127.0.0.1 7001 这时候通过.argv [2] 得到IP，argv[3]得到端口，更方便我们修改配置。
+
+
+----------
+
+
+再看个例子：
+
+```javascript
+/**
+ * 通过process.argv读取命令行参数，其构造如下
+ * 1.process.argv返回为是一个数组形式
+ * 2.process.argv[0] 当前命令,一般为node，因为通过node执行
+ * 3.process.argv[1] 当前命令执行的脚本完整路径
+ * 4.process.argv[2,n] 命令参数
+ */
+//这里要实现通过命令行传参数进行求和的算法
+console.log("1.当前执行的命令为：",process.argv[0]);
+console.log("2.执行的脚本地址为：",process.argv[1]);
+//这里截取参数数组中有效的参数列表
+var params = process.argv.slice(2);
+console.log("3.执行的命令参数为：",params);
+var result = 0;
+for(var i = 0;i<params.length;i++){
+    //由于传入的参数都是字符串，所以要通过parseFloat进行转换
+    var v = parseFloat(params[i]);
+    //在转换后的值，可能存在非法的非数值的结果，
+    //所以通过isNaN进行判断是否为非数值，如果为非数值，则跳过
+    if(isNaN(v)) continue;
+    result += v;
+}
+console.log("4.计算后的有效值的和为：",result);
+```
+
+
+执行
+
+
+
+```javascript
+node process-argv.js 1 2 H 3 4
+1.当前执行的命令为： node
+2.执行的脚本地址为： /home/code/workspace/node/core/process-argv.js
+3.执行的命令参数为： [ '1', '2', 'H', '3', '4' ]
+4.计算后的有效值的和为： 10
+```
+
+
+
+
+
+
 ### 常用工具
 util 是一个Node.js 核心模块，提供常用函数的集合，用于弥补核心JavaScript 的功能 过于精简的不足。 
 

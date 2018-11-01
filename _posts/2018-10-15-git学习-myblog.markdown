@@ -77,5 +77,34 @@ git branch --set-upstream-to origin/addFile
 
 
 ### 撤销本地分支与远程分支的映射关系
-
+```
 git branch --unset-upstream
+```
+
+### 删除本地分支 
+```
+命令行 : $ git branch -a
+```
+
+
+### 删除远程分支 
+```
+命令行 : $ git push origin --delete <BranchName>
+```
+
+### 丢弃所有本地修改的方法
+```
+git checkout .
+```
+
+### 解决.gitignore文件不起作用
+
+原因是新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的，这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了
+
+
+
+```
+git rm -r --cached .
+git add .
+git commit -m 'update .gitignore'
+```
