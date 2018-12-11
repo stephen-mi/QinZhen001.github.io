@@ -20,3 +20,12 @@ tags:
 
 npm unpublish 包名 --force
 
+### npm link
+[https://docs.npmjs.com/cli/link](https://docs.npmjs.com/cli/link)
+
+First, npm link in a package folder will create a symlink in the global folder `{prefix}/lib/node_modules/<package>`  that links to the package where the npm link command was executed. 
+
+
+
+这个命令的作用就是在全局环境下，生成一个符号链接文件，该文件的名字就是package.json文件中指定的模块名。同时我们对此模块的修改会实时反馈在全局目录下。
+

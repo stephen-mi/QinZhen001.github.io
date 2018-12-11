@@ -47,6 +47,17 @@ git fetch origin 远程分支名x:本地分支名x
 **重要：采用此种方法建立的本地分支不会和远程分支建立映射关系。**
 
 
+### 将远程git仓库里的指定分支拉取到本地（本地不存在的分支）
+
+当我想从远程仓库里拉取一条本地不存在的分支时：
+
+```javascript
+git checkout -b 本地分支名 origin/远程分支名
+```
+
+这个将会自动创建一个新的本地分支，并与指定的远程分支关联起来。
+
+
 
 ### 查看本地分支与远程分支的映射关系
 [https://blog.csdn.net/tterminator/article/details/78108550](https://blog.csdn.net/tterminator/article/details/78108550)

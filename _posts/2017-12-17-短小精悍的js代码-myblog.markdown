@@ -318,6 +318,7 @@ function toggleClass(obj, cls) {
 
 
 ### isObject
+**注意此方法没有仔细区分是数组还是对象**
 ```javascript
 function isObject (obj) {
   return obj !== null && typeof obj === 'object'
@@ -759,6 +760,21 @@ Array.prototype.reverse.call( a );
 ```
 
 
+
+
+### 格式化数据生成key,value形式
+将数组或对象数据转换成 [{key: "xxx", val: "xxx"},{key: "xxx", val: "xxx"}]  形式
+
+```javascript
+function normalizeMap (map) {
+    return Array.isArray(map)
+      ? map.map(key => ({key, val: key}))
+      : Object.keys(map).map(key => ({key, val: map[key]}))
+  }
+
+  normalizeMap(['a', 'b']) //[{key: "a", val: "a"},{key: "b", val: "b"}]
+  normalizeMap({a: 'aaa', b: 'bbb'}) //[{key: "a", val: "aaa"},{key: "b", val: "bbb"}]
+```
 
 
 
