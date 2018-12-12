@@ -158,3 +158,103 @@ if(program.remove) {
 
 
 
+### promisify
+**注意: Node.js 8 中在util中已经集成了promisify**
+
+
+虽然 Promise 已经普及，但是 Node.js 里仍然有大量的依赖回调的异步函数，如果我们每个函数都封装一次，也是麻烦
+
+
+所以 Node8 就提供了 util.promisify() 这个方法，方便我们快捷的把原来的异步回调方法改成返回 Promise 实例的方法，接下来，想继续用队列，还是 await 就看需要了。
+
+
+```javascript
+const util = require('util');
+const fs = require('fs');
+ 
+const stat = util.promisify(fs.stat);
+stat('.')
+ .then((stats) => {
+  // Do something with `stats`
+ })
+ .catch((error) => {
+  // Handle the error.
+ });
+ ```
+ 
+ 
+ 只要符合 Node.js 的回调风格，所有函数都可以这样转换。也就是说，满足下面两个条件即可。
+ 
+ 1. 后一个参数是函数
+ 2. 回调函数的参数为 (err, result)，前面是可能的错误，后面是正常的结果
+
+
+
+#### 自定义 Promise 化处理函数
+
+那如果函数不符合这个风格，还能用 util.promisify() 么？答案也是肯定的。我们只要给函数增加一个属性，util.promisify.custom ，指定一个函数作为 Promise 化处理函数，即可。请看下面的代码：
+
+```javascript
+const util = require('util');
+ 
+function doSomething(foo, callback) {
+ // ...
+}
+ 
+doSomething[util.promisify.custom] = function(foo) {
+ return getPromiseSomehow();
+};
+ 
+const promisified = util.promisify(doSomething);
+console.log(promisified === doSomething[util.promisify.custom]);
+// prints 'true'
+```
+
+如此一来，任何时候我们对目标函数 doSomething 进行 Promise 化处理，都会得到之前定义的函数。运行它，就会按照我们设计的特定逻辑返回 Promise 实例。
+
+我们就可以升级以前所有的异步回调函数了。
+
+
+
+### ora 
+[https://www.npmjs.com/package/ora](https://www.npmjs.com/package/ora)
+
+Elegant terminal spinner
+
+
+```javascript
+const ora = require('ora');
+ 
+const spinner = ora('Loading unicorns').start();
+ 
+setTimeout(() => {
+    spinner.color = 'yellow';
+    spinner.text = 'Loading rainbows';
+}, 1000);
+```
+
+
+
+### Inquirer
+[https://www.npmjs.com/package/inquirer](https://www.npmjs.com/package/inquirer)
+
+A collection of common interactive command line user interfaces.
+
+```javascript
+var inquirer = require('inquirer');
+inquirer
+  .prompt([
+    /* Pass your questions in here */
+  ])
+  .then(answers => {
+    // Use user feedback for... whatever!!
+  });
+```
+
+
+
+### download-git-repo
+[https://www.npmjs.com/package/download-git-repo](https://www.npmjs.com/package/download-git-repo)
+
+Download and extract a git repository (GitHub, GitLab, Bitbucket) from node.
+
