@@ -258,3 +258,77 @@ inquirer
 
 Download and extract a git repository (GitHub, GitLab, Bitbucket) from node.
 
+
+### async
+[https://www.npmjs.com/package/sync](https://www.npmjs.com/package/sync)
+
+node-sync is a simple library that allows you to call any asynchronous function in synchronous way
+
+处理异步操作
+
+[https://blog.csdn.net/sxyizhiren/article/details/18240435](https://blog.csdn.net/sxyizhiren/article/details/18240435)
+
+[https://blog.csdn.net/momDIY/article/details/73604678](https://blog.csdn.net/momDIY/article/details/73604678)
+
+
+
+
+#### async.eachSeries
+
+async.eachSeries(coll,iteratee,callback)
+
+**简单地说，是用来异步执行一系列的操作,保证每次遍历都执行完毕后再执行下一次的操作，非常有用。**
+
+
+* 第一个参数可以是一个数组或一个对象（用来遍历）。 
+* 第二个参数是每次遍历执行的函数。 
+* 第三个参数是回调函数，当遍历中出错会立刻执行回调函数并返回错误信息，若没有发生错误则会等遍历结束后将正确的结果返回。
+
+如果概念不好理解那就请对比下面的两段代码.
+
+第一段代码，foreach里面嵌套save方法，触发异步陷阱，并且mongoose的数据库锁机制（每次操作数据库时会锁定这个库直到本次操作结束）会，出现逻辑错误。
+
+```javascript
+books.foreach(book,function(){
+book.price = parseFloat(book.listPrice) || book.price || 0;
+    book.listPrice = undefined;
+    book.save(function (err, book) {
+    console.log(book.name);
+    });
+});
+```
+
+第二段代码，利用async.eachSeries巧妙地完成了异步流程控制，也就是每一个save操作完成后再进行下一次遍历。
+
+
+
+```javascript
+async.eachSeries(books, function (book, callback) {
+    book.price = parseFloat(book.listPrice) || book.price || 0;
+    book.listPrice = undefined;
+    book.save(function (err, book) {
+    console.log(book.name);
+    callback(err);
+    });
+}, function (err) {
+    if(err){
+      config.error(err);
+      done(err);
+     }else{
+      config.info('update price successful');
+      done(null);
+       }
+   });
+}
+```
+
+
+
+### linebyline
+[https://www.npmjs.com/package/linebyline](https://www.npmjs.com/package/linebyline)
+
+Read a file line by line.
+
+
+一行一行读取文件
+
