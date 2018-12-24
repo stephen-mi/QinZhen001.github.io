@@ -137,6 +137,10 @@ You can generate the required JSON file for this tool by running
 [https://contrast-ratio.com/](https://contrast-ratio.com/)
 
 
+
+### svg背景
+[https://philiprogers.com/svgpatterns/#argyle](https://philiprogers.com/svgpatterns/#argyle)
+
 ## 需要翻墙
 
 ### 图标库

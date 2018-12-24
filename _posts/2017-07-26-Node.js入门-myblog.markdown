@@ -468,7 +468,29 @@ depth 表示最大递归的层数，如果对象很复杂，你可以指定层�
 
 
 
+## 爬坑
 
+
+###  禁止favicon.ico请求
+
+
+在做node爬虫时，发现会不断地发送 avicon.ico 请求，导致不断console输出，不断写入logger日志
+
+
+可以在页面的 `<head>` 区域，加上如下代码实现屏蔽：
+
+```javascript
+<link rel="icon" href="data:;base64,=">
+```
+
+
+或者详细一点
+
+```javascript
+<link rel="icon" href="data:image/ico;base64,aWNv">
+```
+
+>当然，既然是 dataURL 方式，IE < 8 等 old browser 就不适用了
 
 ## 后记
 

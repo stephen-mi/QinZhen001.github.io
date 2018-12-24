@@ -15,6 +15,50 @@ tags:
 
 ## 原生小程序相关
 
+
+
+### app的onLaunch和页面onShow同时发出请求
+
+写wepy框架的时候遇到个坑，要在app的onLaunch中发出一些请求，并把结果保存在本地，然而在页面中onShow也发出了这些请求，**也就造成了多余不必要的请求**
+
+**最终解决：做了一个缓存队列，在一个请求发送的过程中，如果还有同样的一些请求发送，就将这些请求缓存在队列中，共享第一个请求的回调，不必要发送请求**
+
+```javascript
+// 具体做法
+// global.singleton 为一个全局对象
+// 一个请求对应多个resolve
+
+function getAbTestByRequest(data = {}) {
+  return new Promise(async (resolve, reject) => {
+    // console.log('singleton start', '2');
+    global.singleton = global.singleton || {};
+    if (global.singleton[AB_TEST_KEY]) {
+      global.singleton[AB_TEST_KEY].push(resolve);
+    } else {
+      global.singleton[AB_TEST_KEY] = [resolve];
+	  //发起请求
+      _getAbTestForPure(data).then((output) => {
+        let func = {};
+        // eslint-disable-next-line
+        while (func = global.singleton[AB_TEST_KEY].shift()) {
+          func(output.data.data);
+          if (!hasAbTest()) {
+            _saveAbTest(output.data.data);
+          }
+          // console.log('singleton end', output);
+        }
+      }, rej => {
+        reject(rej);
+      });
+    }
+  });
+}
+
+```
+
+
+>app的onLaunch和页面onShow几乎是同时触发的
+
 ### Content-type问题
 
 官网里面的示例代码中content-type是设置为'application/json'的，然而……！！！
@@ -98,6 +142,7 @@ white-space: nowrap;
       })
     }
 ```
+
 
 
 
