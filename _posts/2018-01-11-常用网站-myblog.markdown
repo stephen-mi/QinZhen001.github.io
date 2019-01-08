@@ -141,6 +141,24 @@ You can generate the required JSON file for this tool by running
 ### svg背景
 [https://philiprogers.com/svgpatterns/#argyle](https://philiprogers.com/svgpatterns/#argyle)
 
+
+
+### record a terminal session
+
+[https://asciinema.org/](https://asciinema.org/)
+
+
+
+### ascii art(字符画)
+[https://asciiart.website//index.php?art=animals/bats](https://asciiart.website//index.php?art=animals/bats)
+
+
+#### 文字转ascii画
+[http://patorjk.com/software/taag/#p=display&h=2&v=0&f=Big&t=xhw%20](http://patorjk.com/software/taag/#p=display&h=2&v=0&f=Big&t=xhw%20)
+
+
+[http://www.network-science.de/ascii/](http://www.network-science.de/ascii/)
+
 ## 需要翻墙
 
 ### 图标库

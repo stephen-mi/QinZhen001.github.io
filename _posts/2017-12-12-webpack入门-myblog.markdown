@@ -314,6 +314,82 @@ runtime，以及伴随的 manifest 数据，主要是指：在浏览器运行时
 当编译器(compiler)开始执行、解析和映射应用程序时，它会保留所有模块的详细要点。这个数据集合称为 "Manifest"，当完成打包并发送到浏览器时，会在运行时通过 Manifest 来解析和加载模块。无论你选择哪种模块语法，那些 import 或 require 语句现在都已经转换为 `__webpack_require__` 方法，此方法指向模块标识符(module identifier)。通过使用 manifest 中的数据，runtime 将能够查询模块标识符，检索出背后对应的模块。
 
 
+
+### libraryTarget
+
+```
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'index.js',
+        library: 'xhwSdk',
+        libraryTarget: "umd"
+    },
+```
+
+https://webpack.js.org/configuration/output/#expose-via-object-assignment
+
+libraryTarget: 'amd' - 这会将您的库作为AMD模块公开。
+
+
+
+
+AMD模块要求`<script>`使用特定属性定义条目块（例如，由标签加载的第一个脚本），例如define并且require通常由RequireJS或任何兼容的加载器（例如杏仁）提供。否则，直接加载生成的AMD包将导致错误，如define is not defined。
+
+所以，通过以下配置......
+```
+module.exports = {
+  //...
+  output: {
+    library: 'MyLibrary',
+    libraryTarget: 'amd'
+  }
+};
+```
+生成的输出将使用名称“MyLibrary”定义，即
+```
+define('MyLibrary', [], function() {
+  return _entry_return_;
+});
+```
+
+---
+
+
+libraryTarget: 'umd' - 这会在所有模块定义下公开您的库，允许它与CommonJS，AMD和全局变量一起使用
+
+
+在这种情况下，您需要使用library属性来命名模块：
+```javascript
+module.exports = {
+  //...
+  output: {
+    library: 'MyLibrary',
+    libraryTarget: 'umd'
+  }
+};
+```
+最后输出是：
+
+```javascript
+(function webpackUniversalModuleDefinition(root, factory) {
+  if(typeof exports === 'object' && typeof module === 'object')
+    module.exports = factory();
+  else if(typeof define === 'function' && define.amd)
+    define([], factory);
+  else if(typeof exports === 'object')
+    exports['MyLibrary'] = factory();
+  else
+    root['MyLibrary'] = factory();
+})(typeof self !== 'undefined' ? self : this, function() {
+  return _entry_return_;
+});
+```
+
+
+
+
+
+
 ## 遇到的问题
 
 ### webpack安装出错,webpack不是内部或者外部命令

@@ -145,6 +145,20 @@ white-space: nowrap;
 
 
 
+### e.target.dataset的问题
+　在微信开发中我们经常会用到标签中属性的属性值，有时候我们通过 data-* 和 e.target.dateset 来获取属性值会出现一点小bug，即是调用出来的数据是undefined。
+ 
+ ```
+ <--HTML写法：-->
+<button binTap="buy" data-textId="101"></button>
+```
+
+很多人可能会像我我一样卡在这里了，怎么找都找不到原因，怎么更改都是undefined。 
+　
+ 那就是data后面的属性名写得不规范！**在data后面的属性名是不能按照驼峰式的写法，只要把定义的属性名全部换成小写就没有问题了！**
+
+
+
 
 ## mpvue相关
 

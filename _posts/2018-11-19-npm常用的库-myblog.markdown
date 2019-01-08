@@ -332,3 +332,84 @@ Read a file line by line.
 
 一行一行读取文件
 
+### browserify
+[https://www.npmjs.com/package/browserify](https://www.npmjs.com/package/browserify)
+
+
+
+
+**可以把nodejs的模块编译成浏览器可用的模块**
+
+Browserify是目前最常用的CommonJS格式转换的工具
+
+
+----------
+
+```javascript
+var math = require('math');
+math.add(2, 3);
+```
+
+第二行math.add(2, 3)，在第一行require('math')之后运行，因此必须等math.js加载完成。也就是说，如果加载时间很长，整个应用就会停在那里等。这对服务器端不是一个问题，因为所有的模块都存放在本地硬盘，可以同步加载完成，等待时间就是硬盘的读取时间。但是，对于浏览器，这却是一个大问题，因为模块都放在服务器端，等待时间取决于网速的快慢，可能要等很长时间，浏览器处于"假死"状态
+
+　　而browserify这样的一个工具，可以把nodejs的模块编译成浏览器可用的模块，解决上面提到的问题。
+  
+  
+  
+```javascript
+// a.js
+var a = 100;
+module.exports.a = a;
+
+// b.js
+var result = require('./a');
+console.log(result.a);
+```
+
+index.html直接引用b.js会报错，提示require没有被定义
+
+```javascript
+//index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script src="b.js"></script>    
+</body>
+</html>
+```
+
+这时，就要使用Browserify了
+
+```
+npm install -g browserify
+```
+
+使用下面的命令，就能将b.js转为浏览器可用的格式bb.js
+ 
+ ```
+ browserify b.js > bb.js
+ ```
+ 
+查看bb.js，browserify将a.js和b.js这两个文件打包为bb.js，使其在浏览器端可以运行
+ 
+ #### 原理
+ 
+Browserify到底做了什么？安装一下browser-unpack，就能清楚原理了
+  
+```
+npm install browser-unpack -g
+```
+
+然后，使用下列命令，将前面生成的bb.js解包
+
+```
+browser-unpack < bb.js
+```
+
+
+可以看到，browerify将所有模块放入一个数组，id属性是模块的编号，source属性是模块的源码，deps属性是模块的依赖
+

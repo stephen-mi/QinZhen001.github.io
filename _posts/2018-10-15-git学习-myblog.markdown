@@ -130,3 +130,133 @@ git rm -r --cached .
 git add .
 git commit -m 'update .gitignore'
 ```
+
+
+
+
+### git log (查看commit hash值)
+查看commit日志 执行下面命令
+```
+git log
+```
+
+
+### 回滚、取消之前的提交
+```
+git reset --hard commit_id    
+
+//退到/进到 指定commit的sha码 commit_id:239afed0857cc2e77c17c01014077808619af64d
+```
+
+
+
+### git stash
+现在你想切换分支，但是你还不想提交你正在进行中的工作；所以你储藏这些变更。为了往堆栈推送一个新的储藏，只要运行 git stash：
+
+```
+$ git stash
+Saved working directory and index state \
+  "WIP on master: 049d078 added the index file"
+HEAD is now at 049d078 added the index file
+(To restore them type "git stash apply")
+```
+
+你的工作目录就干净了：
+
+```
+$ git status
+# On branch master
+nothing to commit, working directory clean
+```
+
+
+这时，你可以方便地切换到其他分支工作；你的变更都保存在栈上。要查看现有的储藏，你可以使用 git stash list：
+
+```
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+```
+
+
+
+在这个案例中，之前已经进行了两次储藏，所以你可以访问到三个不同的储藏。你可以重新应用你刚刚实施的储藏，所采用的命令就是之前在原始的 stash 命令的帮助输出里提示的：git stash apply。如果你想应用更早的储藏，你可以通过名字指定它，像这样：git stash apply stash@{2}。如果你不指明，Git 默认使用最近的储藏并尝试应用它：
+
+
+```
+$ git stash apply
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#
+#      modified:   index.html
+#      modified:   lib/simplegit.rb
+```
+
+
+
+要移除它，你可以运行 git stash drop，加上你希望移除的储藏的名字：
+```
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+$ git stash drop stash@{0}
+Dropped stash@{0} (364e91f3f268f0900bc3ee613f9f733e82aaed43)
+```
+
+### git submodule
+
+Git对于Submodule有特殊的处理方式，在一个主项目中引入了Submodule其实Git做了3件事情：
+
+* 记录引用的仓库
+* 记录主项目中Submodules的目录位置
+* 记录引用Submodule的commit id
+
+
+---
+
+**更新子模块**
+
+**更新子模块的时候要注意子模块的分支默认不是master。**
+
+
+方法一，先pull父项目，然后执行git submodule update，注意moduleA的分支始终不是master。
+
+```
+cd project2
+git pull
+git submodule update
+cd ..
+```
+
+
+方法二，先进入子模块，然后切换到需要的分支，这里是master分支，然后对子模块pull，这种方法会改变子模块的分支。
+
+```
+cd project3/moduleA
+git checkout master
+cd ..
+git submodule foreach git pull
+cd ..
+```
+
+---
+
+
+**删除子模块**
+
+删除子模块较复杂，步骤如下：
+
+* rm -rf 子模块目录 删除子模块目录及源码
+* vi .gitmodules 删除项目目录下.gitmodules文件中子模块相关条目
+* vi .git/config 删除配置项中子模块相关条目
+* rm .git/module/* 删除模块下的子模块目录，每个子模块对应一个目录，注意只删除对应的子模块目录即可
+
+
+执行完成后，再执行添加子模块命令即可，如果仍然报错，执行如下：
+
+git rm --cached 子模块名称
+
+完成删除。

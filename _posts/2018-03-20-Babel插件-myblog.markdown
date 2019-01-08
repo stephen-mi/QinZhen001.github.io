@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "babel-preset-env Babel插件"
+title:      "Babel插件"
 date:       2018-03-20 18:36:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -16,7 +16,7 @@ tags:
 [网页链接](https://segmentfault.com/p/1210000008466178)
 
 
-
+### babel-preset-env
 
 
 babel-preset-env 是一个新的 preset，可以根据配置的目标运行环境（environment）自动启用需要的 babel 插件。
@@ -46,4 +46,12 @@ babel-preset-env 的工作方式类似 babel-preset-latest，唯一不同的就�
   ]
 },
 ```
+
+
+
+### babel-plugin-transform-runtime
+
+外部引用辅助函数和内置函数，自动填充代码而不会污染全局变量。（建议在库/工具中使用此插件）
+
+## 补充
 
