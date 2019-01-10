@@ -444,6 +444,16 @@ const flatArr = flattenArray(arr);
     console.log(country, ' --- ', state)  //US  ---  New York
 ```
 
+
+```javascript
+const ADDRESS = 'One Infinite Loop, Cupertino 95014';
+const CITY_ZIP_CODE_REGEX = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/;
+const [, city, zipCode] = ADDRESS.match(CITY_ZIP_CODE_REGEX) || [];
+saveCityZipCode(city, zipCode);
+
+```
+
+
 ### Array.prototype.slice.call(arguments)
 可以将 类数组 转化为真正的数组
 **面试中常常问到此**

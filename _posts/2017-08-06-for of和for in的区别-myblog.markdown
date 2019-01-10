@@ -24,6 +24,33 @@ tags:
 3. 使用for in会遍历数组所有的可枚举属性，包括原型。例如上栗的原型方法method和name属性
 
 
+
+那么我们只想循环对应的对象该怎么做呢，这里引入hasOwnProperty()方法，hasOwnProperty()函数用于指示一个对象自身(不包括原型链)是否具有指定名称的属性。如果有，返回true，否则返回false。
+
+```javascript
+var obj = {
+    name:"echolun",
+    age:"24",
+    sex:"male"
+},
+objName=[], //用来装对象属性名
+objVal=[];  //用来装对象属性值
+Object.prototype.game="lastgame";
+for(var i in obj){
+    if(obj.hasOwnProperty(i)) {
+        objName.push(i);
+        objVal.push(obj[i]);
+    }
+}
+console.log(objName,objVal);
+}
+```
+
+
+
+
+
+
 例如：
 ```
 let arr = ["a","b"];
