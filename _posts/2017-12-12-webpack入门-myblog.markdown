@@ -468,18 +468,54 @@ filename应该比较好理解，就是对应于entry里面生成出来的文件�
 多个chunk合在一起就是bundle，一个bundle可以理解为一个大的js打包之后生成的文件，而多个bundle里可能有公共的部分，或者一个bundle里的东西并不需要一次性加载，需要按照路由按需加载，这个时候就需要按需加载，拆分成不同的chunk
 
 
+### require.context
+
+
+```javascript
+const filename = 'first-level';
+const func = require('./dir/' + filename + '.js'); // => Success
+
+```
+
+结构：成功获取文件中的内容。
 
 
 
+这时 webpack 自动创建了一个 context，引入了所有路径符合 `./dir ^\.\/.*\.js$ `的文件。生成的 bundle.js 中打包了所有的文件的内容。
+
+---
+
+
+在刚才的过程中，webpack 会创建一个 require.context，通过正则匹配到可能的文件，全部引入。如果我们想自定义这个正则规则的话，可以自己写一个 require.context。
 
 
 
+```javascript
+const context = require.context('./dir', true, /\.js$/);
+const keys = context.keys(); // => ["./another-first-level.js", "./first-level.js", "./sub-dir/second-level.js"]
+const filename = './first-level.js';
+const func = context(); // => Success
+```
+
+结果：成功获取文件中的内容。
+
+其中第一个参数表示相对的文件目录，第二个参数表示是否包括子目录中的文件，第三个参数表示引入的文件匹配的正则表达式。
+
+---
 
 
+```javascript
+const context = require.context('./dir', false, /\.js$/);
+const keys = context.keys(); // => ["./another-first-level.js", "./first-level.js"]
+const filename = './first-level.js';
+const func = context(filename); // => Success
+```
 
 
+结果：成功获取第一层目录中的文件内容，但是不能拿到子目录中的文件。
 
 
+通过这个方式就可以解决引入不必要的 node_modules 中的文件的问题
 
 
 

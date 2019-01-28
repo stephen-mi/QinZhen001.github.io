@@ -17,6 +17,7 @@ tags:
 
 ### 共同点
 都是动态显示DOM元素
+
 ### 区别
 1. 手段：v-if是动态的向DOM树内添加或者删除DOM元素；v-show是通过设置DOM元素的display样式属性控制显隐；
 2. 编译过程：v-if切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；
@@ -26,7 +27,17 @@ tags:
 
 
 ###  Tips：
+
 **如果v-show作用的元素，相当于css文件中display:none**
 
 
 原因：v-show控制显隐，是通过js代码去修改元素的element style，如果value为false，设置display:none;如果value为true，设置display: ''；于是value为true时，只能将element style中的display效果清除，并不能覆盖css中的display效果；
+
+
+
+### 总结 
+
+除以下情况使用v-show，其他情况尽量使用v-if
+
+* **有预渲染需求**
+* **需要频繁切换显示状态**

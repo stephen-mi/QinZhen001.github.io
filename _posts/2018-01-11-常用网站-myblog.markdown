@@ -54,6 +54,10 @@ tags:
 ### 很多css效果
 [https://codepen.io/](https://codepen.io/)
 
+
+### 常用的css效果 
+[https://chokcoco.github.io/CSS-Inspiration/#/](https://chokcoco.github.io/CSS-Inspiration/#/)
+
 ### 生成展示GitHub信息的iframe 
 [https://ghbtns.com/](https://ghbtns.com/)
 
