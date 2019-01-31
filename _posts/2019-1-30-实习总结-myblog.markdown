@@ -20,7 +20,13 @@ tags:
 
 ## 基于wepy的小程序sdk
 
-先写下最重要的这个sdk，一开始本来是打算在wepy框架基础上，进行再次封装，做成一个内部使用的框架，但由于框架太散，对业务代码的阅读有一定的影响，而且容易被人修改，和老大讨论后做成了sdk的形式(如同一个黑盒)，减少对业务代码的侵入(不用到处import)。另外，我这边是从零开始写需要频繁迭代更新，导致sdk使用者频繁地去pull，所以最终决定将sdk做成了一个git submodule去管理。同时，将sdk的配置项抽离出来，由外部的配置文件(baseConfig.js, reqConfig.js)决定。一开始写sdk是采取面向对象的思想，但写到后面发现sdk的通用性存在一定的局限性，经老大指导，最终选择采取[IoC依赖倒置模式设计](https://juejin.im/post/5c2c47dcf265da616d544a53)，但考虑到团队的编程习惯，更倾向使用配置文件，所以并没有采用IoC模式的use方法去加载模块，而采用去读配置文件来选择使用什么模块，所以只能算是伪IoC模式。
+先写下最重要的这个sdk，一开始本来是打算在wepy框架基础上，进行再次封装，做成一个内部使用的框架，但由于框架太散，对业务代码的有一定的侵入性，而且容易被人修改，和老大讨论后做成了sdk的形式(如同一个黑盒)，这样使用无需关心内部实现，也不用到处去import。
+
+
+另外，因为我这边是从零开始写需要频繁迭代更新，导致sdk使用者频繁地去pull代码，所以最终决定将sdk做成了一个git submodule去管理。同时，将sdk的配置项抽离出来，由外部的配置文件(baseConfig.js, reqConfig.js)决定。
+
+
+一开始写sdk是采取面向对象的思想，但写到后面发现sdk的通用性存在一定的局限，经老大指导，最终选择采取[IoC依赖倒置模式设计](https://juejin.im/post/5c2c47dcf265da616d544a53)，但考虑到团队的编程习惯，更倾向使用配置文件，所以并没有完全采用IoC模式，没有使用use方法去加载模块，而采用去读配置文件的形式来选择使用什么模块，所以只能算是伪IoC模式。
 
 ![enter description here](https://raw.githubusercontent.com/QinZhen001/QinZhen001.github.io/master/img/in-post/shixi_2.png)
 
@@ -50,13 +56,16 @@ sdk挂载在wepy.$instance.xhwSdk这里
 封装request的难点在于
 
 * 需要降级处理 (请求错误或请求不到数据时 去请求json文件 避免前端拿不到数据渲染)
-* 需要监控上报处理 (请求错误或请求异常时 上报对应的情况 方便监控)
+* 需要监控上报处理 (请求错误或请求异常时 上报对应的情况 和监控组件Monitor配合)
 * 部分接口依赖sessionid openid
 * 部分请求使用protobuf协议
 * **一些特殊请求会请求多次**
 
 
-设计封装了三种请求xhwRequest(普通请求) xhwRequestWithProto(protobuf协议的请求) xhwGetJson(获取json文件的请求)
+设计封装了三种请求
+* xhwRequest(普通请求) 
+* xhwRequestWithProto(protobuf协议的请求) 
+* xhwGetJson(获取json文件的请求)
 
 
 请求的配置项
@@ -148,7 +157,7 @@ sdk初始化的时候，也就onLaunch的时候，会调用三个接口getInitIn
 当时整整思考了一天无果，后经老大指导，找到了最终的解决方案
 
 
-将这些可能会在同一时刻发送多次的请求做成缓存队列模式
+将这些可能会在同一时刻发送多次的请求做成单例缓存队列模式
 
 
 ```javascript
@@ -169,7 +178,6 @@ async function singletonForLogin(key, url) {
       global.singleton[key].push(resolve);
     } else {
       global.singleton[key + 'lock'] = true;
-      //global.singleton[key]不存在的时候
       global.singleton[key] = [resolve];
       //这时候外面如果有请求过来就会进入缓存队列global.singleton[key]里
       const code = (await wepy.login()).code;
@@ -199,8 +207,8 @@ async function singletonForLogin(key, url) {
 }
 ```
 
-**核心思想：维护一个全局队列，每个发请求的方法都返回一个Promise对象，第一个发请求的方法进去队列后，把锁打开，这样后面的发请求方法就不会真的发请求出去，把后面发请求的方法的resolve存到这个这个队列，当第一个请求拿到response后，后面的请求也
-resolve这个response，最后再把锁关掉。**
+**核心思想：维护一个全局队列，每个发请求的方法都返回一个Promise对象，第一次调用这个方法，把锁设为true，把它的resolve加入到一个全局队列中，后面再调用这个方法就不会真的发请求出去，会把后面的方法的resolve也存到这个这个队列，这样只有第一个请求可以拿到response，后面的方法就直接
+resolve这个response，最后再把锁设为false。**
 
 
 这样一个请求的response对应多个Promise的resolve,形成了单例，另外请求拿到数据后会将数据存储到globalData下次在调用方法就可以不用发请求直接拿到数据。
@@ -215,12 +223,12 @@ resolve这个response，最后再把锁关掉。**
 **这样导致了一个bug 有一定概率出现首页白屏的情况**
 
 
-**原因是wx.login去拿code 这里会调用多次 而我封装成单例  但只有第一个code有效 有一定延时**
+**原因是wx.login去拿code 这里会调用多次 也就是有多个code 而我封装成单例  只有第一个code有效 存在有一定的延时**
 
 
 最终解决方案，就是上面的singletonForLogin
 
-将wx.login去拿code 和 拿code去makeSession封装成一个单例，也就是一个全局队列
+将wx.login去拿code 和 拿code去makeSession一起封装成一个单例，也就是一个全局队列
 
 ---
 
@@ -474,7 +482,7 @@ protobuf协议的话，用到是google-protobuf库，这里是后端和老大调
 由于之前后端规范有点乱所以会出现 下划线命名的数据 和 驼峰命名的数据
 
 
-所以，这里就由sdk处理下数据格式
+所以，这里就由sdk处理下不规范的数据格式
 
 
 
@@ -686,7 +694,7 @@ node一些简单的脚本之前还是写过，但是要做一个要放到线上�
  
  #### 预编译
  
- 去读一个json配置文件，循环遍历相应的页面对应的字段
+ 去读一个json配置文件，循环遍历相应的页面找到对应的字段，将配置项替换找到的字段
  
  >这里逐行读取文件，用到linebyline库 
  
@@ -785,14 +793,19 @@ async function _fixBug(path) {
 
 ## 其他
 
-零做后端系统页面也就是vue+element没什么难点，猜字类小程序的难点在于答案在不同的字段时要显示不同的UI，这也就出现了16种可能，还有当跳转到下一题时要有淡入淡出的效果。这里可以提一下做的一些基础组件
+其余，还做一些零碎的东西，比如，后端系统的一些页面也就是vue+element没什么难点，猜字类小程序，其难点在于答案在不同的字段时要显示不同的UI，这也就出现了16种可能，还有当跳转到下一题时要有淡入淡出的效果。
+
+
+
+
+这里可以提一下做的一些基础组件
 
 
 ### 监控组件Monitor
 
 监控上报组件
 
-本质上就是一个image通过动态改变image的src来发送get请求从而达到上报错误
+本质上就是一个image标签，可以通过动态改变image的src来发送get请求从而达到上报错误
 
 
 当出现错误情况时，把这个错误名加入到一个全局队列中（调用addReport），选择合适的时机上报（调用checkReport）
@@ -859,7 +872,7 @@ async function _fixBug(path) {
 monitorReportUrl有初始值，是一张一像素的图片，为什么需要它呢？
 
 
-因为由它来判断Monitor组件是否已经准备好了，准备好了的状态global.xhw.reportReady是一个全局状态，并不是每一个组件都维护一个这样的状态
+因为由它来判断Monitor组件是否已经准备好了，准备好了的状态global.xhw.reportReady是一个全局状态，并不是每一个组件都维护一个这样的状态，而是所有Monitor组件共享一个全局状态
 
 Monitor组件会在两种情况上报
 
