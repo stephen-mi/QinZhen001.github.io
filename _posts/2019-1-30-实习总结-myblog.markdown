@@ -59,7 +59,7 @@ sdk挂载在wepy.$instance.xhwSdk这里
 * 需要监控上报处理 (请求错误或请求异常时 上报对应的情况 和监控组件Monitor配合)
 * 部分接口依赖sessionid openid
 * 部分请求使用protobuf协议
-* **一些特殊请求会请求多次**
+* **一些特殊请求要求只能发起一次请求**
 
 
 设计封装了三种请求
@@ -68,7 +68,7 @@ sdk挂载在wepy.$instance.xhwSdk这里
 * xhwGetJson(获取json文件的请求)
 
 
-请求的配置项
+请求配置的一项
 ```javascript
   getHomePageList: {
     url: '/template/home_page_list',
@@ -83,7 +83,7 @@ sdk挂载在wepy.$instance.xhwSdk这里
   }
 ```
 
-亮点就是将needSessionId和needOpenId做成配置，请求前会根据这个自动去寻找sessionid和openid
+亮点就是将needSessionId和needOpenId做成配置项，请求前会根据这个自动去寻找sessionid和openid
 
 
 
@@ -146,7 +146,7 @@ async function xhwRequest(action, data = {}) {
 
 
 
-**一些特殊请求会请求多次**
+**一些特殊请求要求只能发起一次请求**
 
 一些请求
 
@@ -207,7 +207,7 @@ async function singletonForLogin(key, url) {
 }
 ```
 
-**核心思想：维护一个全局队列，每个发请求的方法都返回一个Promise对象，第一次调用这个方法，把锁设为true，把它的resolve加入到一个全局队列中，后面再调用这个方法就不会真的发请求出去，会把后面的方法的resolve也存到这个这个队列，这样只有第一个请求可以拿到response，后面的方法就直接
+**核心思想：维护一个全局队列，每个发请求的方法都返回一个Promise对象，第一次调用这个方法，把锁设为true，把它的resolve加入到这个全局队列中，后面再调用这个方法就不会真的发请求出去，会把后面的方法的resolve也存到这个这个队列，这样只有第一个请求可以拿到response，后面的方法就直接
 resolve这个response，最后再把锁设为false。**
 
 
@@ -692,9 +692,9 @@ node一些简单的脚本之前还是写过，但是要做一个要放到线上�
  ```
  
  
- #### 预编译
+#### 预编译
  
- 去读一个json配置文件，循环遍历相应的页面找到对应的字段，将配置项替换找到的字段
+ 去读一个json配置文件，循环遍历相应的页面找到对应的字段，将配置项替换成找到的字段
  
  >这里逐行读取文件，用到linebyline库 
  
@@ -744,7 +744,7 @@ node一些简单的脚本之前还是写过，但是要做一个要放到线上�
 
 
 
- #### 后编译
+#### 后编译
  
  ```javascript
  /**
@@ -813,7 +813,7 @@ async function _fixBug(path) {
 
 
 
-```javascript
+```
 <template>
   <image src="{{monitorReportUrl}}" @load="imgSuccessLoad" @error="imgErrorLoad"></image>
 </template>
@@ -850,6 +850,8 @@ async function _fixBug(path) {
 ```
 
 
+
+
 ```
     /**
      * 监控上报
@@ -883,3 +885,7 @@ Monitor组件会在两种情况上报
 
 
 >为了不影响页面渲染，这里也做了nextTick处理
+
+
+
+
