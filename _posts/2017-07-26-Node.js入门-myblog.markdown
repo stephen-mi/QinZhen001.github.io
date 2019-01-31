@@ -469,6 +469,21 @@ depth 表示最大递归的层数，如果对象很复杂，你可以指定层�
 特别要指出的是，util.inspect 并不会简单地直接把对象转换为字符串，即使该对 象定义了toString 方法也不会调用。
 
 
+### 依赖管理
+
+nodejs 中总共有 5 种依赖：
+
+* dependencies (常用)
+* devDependencies （常用）
+* peerDependencies （不太常用）
+* bundledDependencies (我之前没用过)
+* optionalDependencies (我之前没用过)
+
+devDependencies 就是开发中使用的依赖，它区别于实际的依赖。也就是说，在线上状态不需要使用的依赖，就是开发依赖。
+
+
+
+
 
 ## 爬坑
 
