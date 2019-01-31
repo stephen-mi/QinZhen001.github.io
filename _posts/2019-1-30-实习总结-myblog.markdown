@@ -1,0 +1,873 @@
+---
+layout:     post
+title:      "实习总结"
+date:       2018-1-30 15:55:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - 生活
+---
+
+> “Yeah It's on. ”
+
+
+# 正文
+
+最近年底，临放假几天，有时间摸摸鱼，索性写一篇实习总结。我的实习是从2018年9月开始到2019年2月结束，在一家专门做小程序小游戏的公司(小黑屋科技)，期间总体来说就是**打造了前端的工作流**(包括制定eslint规范，框架选型，编写基础组件，建立npm私服，打造前端团队cli脚手架，从头开始开发一套基于wepy的小程序sdk)，当然还有一些别的业务，比如node爬虫，后台系统的一些页面，猜字小程序，等等。
+
+
+
+## 基于wepy的小程序sdk
+
+先写下最重要的这个sdk，一开始本来是打算在wepy框架基础上，进行再次封装，做成一个内部使用的框架，但由于框架太散，对业务代码的阅读有一定的影响，而且容易被人修改，和老大讨论后做成了sdk的形式(如同一个黑盒)，减少对业务代码的侵入(不用到处import)。另外，我这边是从零开始写需要频繁迭代更新，导致sdk使用者频繁地去pull，所以最终决定将sdk做成了一个git submodule去管理。同时，将sdk的配置项抽离出来，由外部的配置文件(baseConfig.js, reqConfig.js)决定。一开始写sdk是采取面向对象的思想，但写到后面发现sdk的通用性存在一定的局限性，经老大指导，最终选择采取[IoC依赖倒置模式设计](https://juejin.im/post/5c2c47dcf265da616d544a53)，但考虑到团队的编程习惯，更倾向使用配置文件，所以并没有采用IoC模式的use方法去加载模块，而采用去读配置文件来选择使用什么模块，所以只能算是伪IoC模式。
+
+
+![enter description here](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/shixi_2.png)
+
+
+sdk挂载在wepy.$instance.xhwSdk这里 
+
+![enter description here](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/shixi_1.png)
+
+
+当onLaunch初始化sdk后，就可以在任何地方使用sdk
+
+```javascript
+  import { xhwSdk } from './sdk/src/index';
+  import { baseConfig } from './config/baseConfig';
+  import { reqConfig } from './config/reqConfig';
+  
+ onLaunch(option) {
+     xhwSdk.xhwInit(option, baseConfig, reqConfig);
+ }
+  ```
+
+下面总结一下一些比较难的点
+
+
+### 封装request
+
+封装request的难点在于
+
+* 需要降级处理 (请求错误或请求不到数据时 去请求json文件 避免前端拿不到数据渲染)
+* 需要监控上报处理 (请求错误或请求异常时 上报对应的情况 方便监控)
+* 部分接口依赖sessionid openid
+* 部分请求使用protobuf协议
+* **一些特殊请求会请求多次**
+
+
+设计封装了三种请求xhwRequest(普通请求) xhwRequestWithProto(protobuf协议的请求) xhwGetJson(获取json文件的请求)
+
+
+请求的配置项
+```javascript
+  getHomePageList: {
+    url: '/template/home_page_list',
+    method: 'POST',
+    header: { 'content-type': 'application/x-www-form-urlencoded' },
+    protoHeader: { 'content-type': 'application/octet-stream' },
+    needSessionId: true,
+    needOpenId: false,
+    code: 10000,
+    errorHandlingUrl: `/{appId}/homepage/{tagId}/{index}.json`,
+    index: 0
+  }
+```
+
+亮点就是将needSessionId和needOpenId做成配置，请求前会根据这个自动去寻找sessionid和openid
+
+
+
+
+```javascript
+/**
+ * 封装wx小程序请求，返回一个promise
+ * @string action 行为 (必填) (action的值只能为reqConfig中的key)
+ * @object data 参数对象  (可省略)  (默认空对象{})
+ */
+async function xhwRequest(action, data = {}) {
+  return new Promise(async (resolve, reject) => {
+    let reqConfig = getGlobalData('reqConfig');
+    let baseConfig = getGlobalData('baseConfig');
+    // console.log(action, data, isProduction);
+    if (Object.keys(reqConfig).indexOf(action) === -1) {
+      //action不在reqConfig配置中
+      throw new SyntaxError(`非法的xhwRequest:  ${action}`);
+    }
+    if (isJsonRequest() && reqConfig[action].errorHandlingUrl) {
+      //降级处理
+      let result = await _dealDegrade(reqConfig[action], data, false);
+      return resolve(result);
+    }
+    if (reqConfig[action].needSessionId) {
+      //需要sessionid
+      data.sessionid = await getSessionId();
+    }
+    if (reqConfig[action].needOpenId) {
+      //需要openid
+      data.openid = await getOpenId();
+    }
+    data.client_version = baseConfig.clientVersion;
+    data.item = baseConfig.identification;
+    data.timestamp = new Date().getTime();
+    data.sign = getSign(data);
+    let url = `${baseConfig.baseUrl}${reqConfig[action].url}`;
+    wepy.request({
+      url: url,
+      data: data,
+      method: reqConfig[action].method,
+      header: reqConfig[action].header
+    }).then(
+      res => {
+        // console.log('res.data.code', res.data.code);
+        if (res.statusCode >= 200 && res.statusCode < 300 && res.data.code == 1) {
+          resolve(res);
+        } else {
+          _addMonitorReport(action);
+          reject(res);
+        }
+      },
+      rej => {
+        _addMonitorReport(action);
+        reject(rej);
+      });
+  });
+}
+```
+
+
+
+**一些特殊请求会请求多次**
+
+一些请求
+
+举个例子：
+
+sdk初始化的时候，也就onLaunch的时候，会调用三个接口getInitInfo(获取小程序的init信息 一些挂件和开关)  getAbTest 和 getAdList(获取广告列表)，**但是页面的onLoad和app的onLaunch几乎处于同一时间**，页面的onLoad也有可能去获取上面提到的三个接口，但这三个接口规定要设计成在程序运行期间只请求一次，请求后要将拿到的数据保存在globalData中，而不是每个页面独立请求一次，同时这三个接口都依赖sessionid openid，这也会导致多次调用makeSession。
+
+当时整整思考了一天无果，后经老大指导，找到了最终的解决方案
+
+
+将这些可能会在同一时刻发送多次的请求做成缓存队列模式
+
+
+```javascript
+/**
+ * 将basePostRequest变成缓存队列模式 (只能用于拿seesionId 和 openId)
+ * 核心思想：缓存singleton这个Promise的resolve 选择合适的时候回调
+ * @param{String} key 标识
+ * @param{String} url 请求
+ * @param{Object} data 参数对象
+ * @returns {Promise<*>}
+ */
+async function singletonForLogin(key, url) {
+  return new Promise(async (resolve, reject) => {
+    // const code = (await singletonWxLogin(WX_LOGIN_KEY)).code;
+    global.singleton = global.singleton || {};
+    global.singleton[key + 'lock'] = global.singleton[key + 'lock'] || false;
+    if (global.singleton[key + 'lock']) {
+      global.singleton[key].push(resolve);
+    } else {
+      global.singleton[key + 'lock'] = true;
+      //global.singleton[key]不存在的时候
+      global.singleton[key] = [resolve];
+      //这时候外面如果有请求过来就会进入缓存队列global.singleton[key]里
+      const code = (await wepy.login()).code;
+      basePostRequest(url, { code: code }).then((output) => {
+        let sessionid = null;
+        let openid = null;
+        if (output.data.code == 1) {
+          sessionid = output.data.data.mixData.sessionid;
+          openid = base64Decode(output.data.data.mixData.baseid);
+          saveSessionIdAndOpenId(sessionid, openid);
+          console.log('sessionid', sessionid);
+          console.log('openid', openid);
+        } else {
+          wepy.$instance.xhwSdk.addReport('makeSessionError');
+        }
+        let func = {};
+        // eslint-disable-next-line
+        while (func = global.singleton[key].shift()) {
+          func({ openid: openid, sessionid: sessionid });
+        }
+        global.singleton[key + 'lock'] = false;
+      }, reject => {
+        wepy.$instance.xhwSdk.addReport('makeSessionError');
+      });
+    }
+  });
+}
+```
+
+**核心思想：维护一个全局队列，每个发请求的方法都返回一个Promise对象，第一个发请求的方法进去队列后，把锁打开，这样后面的发请求方法就不会真的发请求出去，把后面发请求的方法的resolve存到这个这个队列，当第一个请求拿到response后，后面的请求也
+resolve这个response，最后再把锁关掉。**
+
+
+这样一个请求的response对应多个Promise的resolve,形成了单例，另外请求拿到数据后会将数据存储到globalData下次在调用方法就可以不用发请求直接拿到数据。
+
+
+---
+
+
+当时我将wx.login去拿code 和 拿code去makeSession 分别封装成了不同的单例，也就是两个全局队列
+
+
+**这样导致了一个bug 有一定概率出现首页白屏的情况**
+
+
+**原因是wx.login去拿code 这里会调用多次 而我封装成单例  但只有第一个code有效 有一定延时**
+
+
+最终解决方案，就是上面的singletonForLogin
+
+将wx.login去拿code 和 拿code去makeSession封装成一个单例，也就是一个全局队列
+
+---
+
+
+
+**遇到的一个坑**
+
+当时，makeSession之后要等200+到300+ms才会去调用getInitInfo  getAbTest 和 getAdList，按理说这三个接口依赖sessionid openid，在makeSession之后本来无可厚非，但时间相隔应该不超过100ms。
+
+![enter description here](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/shixi_3.png)
+
+由于之前没遇到这种问题，经过几个小时排查还是束手无策，最后再老大的帮助下，找到了解决方案
+
+**排查方法：打印请求前后的时间点，判断出哪里出现了耗时操作**
+
+
+最终定位到有问题的代码
+
+
+```javascript
+   while (func = global.singleton[key].shift()) {
+          func({ openid: openid, sessionid: sessionid });
+		  sessionid = output.data.data.mixData.sessionid;
+          openid = base64Decode(output.data.data.mixData.baseid);
+         saveSessionIdAndOpenId(sessionid, openid);
+        }
+```
+
+
+原来是，我将base64解码 保存openid sessionid这些耗时操作放到了while循环里
+
+最终解决方案，就是上面的singletonForLogin
+
+将所有耗时操作放到while循环外面
+
+
+
+
+### 数据存储
+一般来说全局数据放到globalData或者storage之中，wepy是挂载在wepy.$instance.gloabalData下
+
+当老大教了个黑科技 存储在global下  
+
+
+
+在Console控制台输入global就可以看到数据了
+
+
+![enter description here](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/shixi_4.png)
+
+
+
+
+这样就可以封装全局管理数据的方法，并暴露出去给sdk使用者使用 
+
+因为并没有很难的全局数据管理的需求，所以也没有必要用上wepy-redux这些库,减少了程序体积
+
+```javascript
+/**
+ * 保存数据到全局
+ * @param key
+ * @param value
+ */
+function saveGlobalData(key, value) {
+  if (key && typeof key === 'string') {
+    global.xhw = global.xhw || {};
+    global.xhw[key] = value;
+  }
+}
+
+/**
+ * 获取全局数据
+ * @param key
+ * @return
+ */
+function getGlobalData(key) {
+  if (key && typeof key === 'string') {
+    global.xhw = global.xhw || {};
+    return global.xhw[key];
+  }
+  return null;
+}
+```
+
+
+
+
+
+### sessionId 和 openId 的获取 
+
+
+1. 去global取数据 若有数据返回 否则第二步
+2. 去localStorage取取数据 若有数据返回 否则第三步
+3. 进行wx.login拿到code 拿到sessionId 和 opede 进行后端请求nId 并把这两个存到global和localStorage中 方便下次请求
+
+
+总结： global => localStorage => wx.login
+
+>其实不止sessionId 和 openId 一些其他字段也是采取这种设计，这样可以尽可能地减少请求
+
+
+
+```javascript
+// openid.js
+
+async function getOpenIdByRequest() {
+  let baseConfig = getGlobalData('baseConfig');
+  const { openid } = await singletonForLogin(WX_LOGIN_KEY, `${baseConfig.baseUrl}${MAKE_SESSION_URL}`);
+  return openid;
+}
+
+
+async function getOpenId() {
+  return getGlobalData('openId') || wx.getStorageSync('openId') || getOpenIdByRequest();
+}
+
+function getOpenIdSync() {
+  return getGlobalData('openId') || wx.getStorageSync('openId') || 'none';
+}
+
+
+export {
+  getOpenId,
+  getOpenIdSync,
+  getOpenIdByRequest
+};
+
+```
+
+
+
+### 统计上报
+
+统计上报这里也是做成了锁和队列模式，为了防止发送大量请求，占用过多请求通道，影响到业务请求
+
+还是一样的套路，第一次调用sendkv就加上锁，后面再调用sendkv就将data存入一个队列中
+
+
+
+```javascript
+function sendkv(data) {
+  if (lock) {
+    //存在锁,此时直接将数据丢入队列
+    _pushDataToQueue(data);
+  } else {
+    //不存在锁,开始上锁
+    lock = true;
+    if (queue.length === 0) {
+      //请求队列为空,直接发送请求
+      _sendReport(data);
+    } else {
+      //请求队列不为空，请求队列添加一个元素
+      _pushDataToQueue(data);
+      // 发起请求
+      _sendReport(queue);
+    }
+  }
+}
+```
+
+_sendReport发送请求时会判断是单条数据还是多条数据
+
+* 单条数据就是发送到 '/api/v3/kv' 接口
+* 多条数据就JSON.stringify一次，发送到 '/api/sdk/merge_kv' 接口
+
+
+另外，统计上报请求是不需要马上就发送的，为了避免影响页面，这里也用wx.nextTick做了处理
+
+
+```javascript
+async function _sendReport(report) {
+  let data = {};
+  if (isObject(report)) {
+    //单条请求
+    data = report;
+    await _addCommonParams(data);
+    REPORT_URL = '/api/v3/kv';
+  } else {
+    //多条请求
+    data.merge_data = JSON.stringify(report);
+    //迅速置空队列
+    queue = [];
+    REPORT_URL = '/api/sdk/merge_kv';
+  }
+  let baseConfig = getGlobalData('baseConfig');
+  const params = {
+    url: `${baseConfig.prefixReportUrl}${REPORT_URL}`,
+    data: data,
+    method: 'POST',
+    header: { 'content-type': 'application/x-www-form-urlencoded' }
+  };
+  if (wx.nextTick) {
+    wx.nextTick(() => {
+      wepy.request(params).then(_onCompleted, _onRejected);
+    });
+  } else {
+    //不存在wx.nextTick
+    wepy.request(params).then(_onCompleted, _onRejected);
+  }
+}
+```
+
+
+请求成功的话，如果队列空了就可以把锁关掉
+
+请求失败的话，直接把锁关掉
+
+```javascript
+function _onCompleted(res) {
+  console.log('sendkv上报结果 ', res);
+  if (queue.length === 0) {
+    //_sendReport请求过程中，外部没有调用sendkv接口 所以queue为空数组
+    lock = false;
+  } else {
+    //_sendReport请求过程中,外部有调用sendkv接口 queue不为空数组
+    _sendReport(queue);
+  }
+}
+
+function _onRejected() {
+  lock = false;
+}
+```
+
+
+### protobuf协议
+
+protobuf协议的话，用到是google-protobuf库，这里是后端和老大调好了的，我这里只是照着流程写写
+
+根据协商好的数据格式生成xxx.proto文件，然后生成对应的js文件，在配置好protobuf的配置文件
+
+关键点在于 配置好request的参数
+
+```javascript
+    wepy.request({
+      url: url,
+      data: data,
+      method: 'POST',
+      header: { 'content-type': 'application/octet-stream' },
+      dataType: 'application/octet-stream',
+      responseType: 'arraybuffer'
+    })
+```
+
+解析数据的时候，就按约定的规则，最终返回解析好的数据
+
+### 一些util方法
+
+工具方法中，也有一些蛮有趣的东西，比如:
+
+由于之前后端规范有点乱所以会出现 下划线命名的数据 和 驼峰命名的数据
+
+
+所以，这里就由sdk处理下数据格式
+
+
+
+
+```javascript
+/**
+ * 将对象中的key由下划线变成驼峰
+ * @param{Object} obj
+ * @return{Object}
+ */
+function transformToHump(obj) {
+  let result = obj.constructor === Array ? [] : {};
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      //判断ojb子元素是否为对象，如果是，递归复制
+      if (obj[key] && typeof obj[key] === 'object') {
+        result[underlineToHump(key)] = transformToHump(obj[key]);
+      } else {
+        //如果不是，简单复制
+        result[underlineToHump(key)] = obj[key];
+      }
+    }
+  }
+  return result;
+}
+
+/**
+ * 将单词由下滑线模式转化为驼峰  ab_cc => abCc
+ * @param{String} str
+ * @returns {String}
+ */
+function underlineToHump(str) {
+  // return str;
+  return str.replace(/_(\S)/g, (re, $1) => {
+    return re.replace('_', '').replace($1, $1.toUpperCase());
+  });
+}
+```
+
+还有一些其他
+
+```javascript
+/**
+ * 比较版本号的大小
+ * @param num1  例如 '1.2.4'
+ * @param num2  例如 '1.2.5'
+ * @return {boolean} true num1比num2大
+ */
+function compareVersion(num1, num2) {
+  let arr1 = num1.split('.');
+  let arr2 = num2.split('.');
+  console.log(arr1, arr2);
+  for (let i = 0; i < arr1.length; i++) {
+    let num1 = Number(arr1[i]);
+    let num2 = Number(arr2[i]);
+    if (num1 > num2) {
+      return true;
+    } else if (num1 < num2) {
+      return false;
+    }
+  }
+  return false;
+}
+```
+
+
+```javascript
+/**
+ * 将普通的url转化成鉴权后的url
+ * (对外暴露的方法)
+ * https://cloud.tencent.com/document/product/228/13677
+ * @param{String} url
+ * @return {String}
+ */
+function transformAuthUrl(url) {
+  if (!url || url.indexOf('sign') !== -1) {
+    return url;
+  }
+  // console.log('url', url);
+  let key = getGlobalData('resourceSignKey');
+  if (!key) {
+    //key为'' 或者 undefined
+    key = 'alexander';
+  } else if (key == 'none') {
+    //不做任何处理 直接返回url
+    return url;
+  }
+  //去掉url前缀
+  let path = url.replace(/^https?:\/\/\S+?\//, '/');
+  let t = (new Date().getTime() / 1000).toString(16).replace(/\.\S+/, '');
+  // console.log('tttt', t);
+  let sign = '';
+  if (path.indexOf('?') !== -1) {
+    //path中有？
+    path = path.replace(/\?\S+$/, '');
+    sign = md5(`${key}${path}${t}`).toString();
+    // console.log('path', path);
+    return `${url}&sign=${sign}&t=${t}`;
+  } else {
+    sign = md5(`${key}${path}${t}`).toString();
+    // console.log('path', path);
+    return `${url}?sign=${sign}&t=${t}`;
+  }
+}
+```
+
+
+```javascript
+/**
+ *
+ * 获取页面路径参数中的article_id
+ * (对外暴露的方法)
+ * @param{Number} num 索引 (不传或0代表当前页 1代表上一页 如此类推)
+ * (如果访问到不存在的页面，返回默认值0)
+ * @return
+ */
+function getArticleId(num) {
+  /* eslint-disable */
+  let pageLen = getCurrentPages().length;
+  let curPage = null;
+  if (!num) {
+    curPage = getCurrentPages()[pageLen - 1];
+  } else {
+    if (typeof num !== 'number') {
+      throw new SyntaxError(`非法的getArticleId:  ${num}`);
+    }
+    curPage = getCurrentPages()[pageLen - 1 - num];
+    // console.log(curPage);
+  }
+  /* eslint-disable */
+  if (curPage && curPage.options && curPage.options.article_id) {
+    return curPage.options.article_id;
+  }
+  return 0;
+}
+```
+
+```javascript
+
+/**
+ * 解决路由跳转超过10层无法跳转的情况
+ * (对外暴露的方法)
+ * @param{Object} object
+ * object包括url(路径)，success(成功的回调函数)，fail(失败的回调函数)
+ */
+function xhwNavigateTo({ url, success, fail }) {
+  // console.log(url, success, fail);
+  let pageLen = getCurrentPages().length;
+  // console.log(pageLen);
+  if (pageLen === 10) {
+    wx.redirectTo({ url, success, fail });
+  } else {
+    wx.navigateTo({ url, success, fail });
+  }
+}
+```
+
+
+## node爬虫
+[https://github.com/QinZhen001/crawler](https://github.com/QinZhen001/crawler)
+
+
+node一些简单的脚本之前还是写过，但是要做一个要放到线上工程用的爬虫还是没有试过。也通过这个爬虫，加深了node的一些基础知识，之后才能打造出前端团队的脚手架工具
+
+利用koa-generator快速搭建一个koa2项目
+
+![enter description here](https://github.com/QinZhen001/QinZhen001.github.io/blob/master/img/in-post/shixi_5.png)
+
+
+
+这其中，也遇到很多问题：
+
+* ejs模板后端渲染，以瀑布流的形式展示抓回来的数据
+* 如何设计路由
+* 如何设计流程 （抓数据下来，存储服务器，生成json配置文件，上传到腾讯云cos桶，视频添加水印）
+* 如何设计异步流程，保证爬取下来的视频是完整的 （用到async库）
+
+
+也学到不少东西
+
+* 学会了使用Fiddler抓包
+* 学会了使用Postman发送请求来验证请求
+* 学会了如何使用Xshell，跳板机
+* 学习了一些基础Linux指令
+* 学会了用pm2部署爬虫
+
+
+
+
+## xhw-cli前端脚手架工具
+
+[http://npm.heywoods.cn/#/detail/xhw-cli](http://npm.heywoods.cn/#/detail/xhw-cli)
+
+为了解决解决wepy框架打包后dist下的.wxss文件@import路径指向bug，一套代码根据不同的配置文件生成不同的小程序
+
+这里需要对wepy小程序进行预编译和后编译，所以就做一个命令行工具，集成到项目中也就成了前端工作流
+
+```javascript
+  "scripts": {
+    "init": "xhw-cli compile -p",
+    "dev": "wepy build --watch && xhw-cli compile -a",
+    "build": "cross-env NODE_ENV=production wepy build --no-cache",
+    "after-build": "xhw-cli compile -a",
+    "xhw-build": "cross-env NODE_ENV=production wepy build --no-cache && xhw-cli compile -a",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+ ```
+ 
+ 
+ #### 预编译
+ 
+ 去读一个json配置文件，循环遍历相应的页面对应的字段
+ 
+ >这里逐行读取文件，用到linebyline库 
+ 
+* 生成baseConfig.js (config/baseConfig.js)
+* 生成app的config (包括pages，window，navigateToMiniProgramAppIdList)
+* 复制通用页面到src/pages下 (可选功能)
+* 复制通用mixins到src/mixins下 (可选功能)
+* 生成所有页面的config
+
+
+关键代码
+
+```javascript
+        let answers = await askCopy()
+        await _copyFiles(answers)
+        let fileName = cmd.pre
+        if (!(/json/.test(fileName))) {
+            fileName += '.json'
+        }
+        // appConfig.json的相对路径
+        const appConfigRelativePath = `/config/${fileName}`
+        // console.log(appConfigRelativePath)
+        //预编译
+        let pagesPath = path.join(workingPath, `/src/pages`)
+        let pageNames = await readDir(pagesPath)
+        // console.log('pageNames', pageNames)
+        let appConfigPath = path.join(workingPath, appConfigRelativePath)
+        let appConfigData = JSON.parse(await readFile(appConfigPath))
+        //将result分离成含有config和其他
+        const {
+            appConfig,
+            pageConfig,
+            ...data
+        } = appConfigData
+        let importPromiseArr = []
+        pageNames.forEach(item => {
+            let name = item.match(pathReg)[1]
+            let pagePath = path.join(workingPath, `/src/pages/${name}.wpy`)
+            importPromiseArr.push(dealPage(pageConfig[name], pagePath))
+        })
+        let baseConfigPath = path.join(workingPath, '/src/config/baseConfig.js')
+        importPromiseArr.push(_genBaseConfig(data, baseConfigPath))
+        let appWpyPath = path.join(workingPath, `/src/app.wpy`)
+        importPromiseArr.push(_genAppConfig(appConfig, appWpyPath))
+        await Promise.all(importPromiseArr)
+```
+
+
+
+ #### 后编译
+ 
+ ```javascript
+ /**
+ * 解决wepy框架 npm包嵌套导致的bug
+ * 打包后dist中.wxss文件@import引入的路径会错误 (删去 /src )
+ * @import "./../../src/npm/base-scene-image/BaseSceneImage.wxss";  =>  @import "./../../npm/base-scene-image/BaseSceneImage.wxss";
+ */
+async function afterCompile() {
+    const workingPath = path.join(getWorkingPath(), '/dist')
+    let fileNames = await readDir(workingPath)
+    if (fileNames.indexOf('npm') === -1) {
+        console.log(chalk.blue('当前目录不存在npm文件夹'))
+        return
+    }
+    const searchPath = path.join(workingPath, '/npm')
+    let searchFiles = await readDir(searchPath)
+    // console.log(searchFiles)
+    searchFiles.forEach(async item => {
+        let finalPath = path.join(searchPath, `/${item}`)
+        let finalFileNames = await readDir(finalPath)
+        // console.log(finalFileNames)
+        finalFileNames.forEach(async final => {
+            if (final.indexOf('.wxss') !== -1) {
+                await _fixBug(path.join(finalPath, `/${final}`))
+            }
+        })
+    })
+}
+
+
+
+async function _fixBug(path) {
+    // console.log(path)
+    let result = await readFile(path)
+    if (/\/src\/npm\//.test(result)) {
+        // console.log(result)
+        result = result.replace('/src/npm/', '/npm/')
+        // console.log(result)
+        writeFile(path, result)
+        console.log(chalk.blue(`成功改变${path} @imoport指向`))
+    }
+}
+```
+
+
+
+## 其他
+
+零做后端系统页面也就是vue+element没什么难点，猜字类小程序的难点在于答案在不同的字段时要显示不同的UI，这也就出现了16种可能，还有当跳转到下一题时要有淡入淡出的效果。这里可以提一下做的一些基础组件
+
+
+### 监控组件Monitor
+
+监控上报组件
+
+本质上就是一个image通过动态改变image的src来发送get请求从而达到上报错误
+
+
+当出现错误情况时，把这个错误名加入到一个全局队列中（调用addReport），选择合适的时机上报（调用checkReport）
+
+
+
+
+```javascript
+<template>
+  <image src="{{monitorReportUrl}}" @load="imgSuccessLoad" @error="imgErrorLoad"></image>
+</template>
+```
+
+```javascript
+  data = {
+      monitorReportUrl: 'http://xhw-front.heywoods.cn/images/monitor-report.png'
+    };
+
+    methods = {
+      imgSuccessLoad(src) {
+        if (global.xhw && !global.xhw.reportReady && !global.xhw.reportClose) {
+          global.xhw.reportReady = true;
+          console.log('图片加载完成', src);
+          if (wx.nextTick) {
+            wx.nextTick(() => {
+              this.monitorReport();
+            });
+          } else {
+            this.monitorReport();
+          }
+        }
+      },
+      imgErrorLoad(err) {
+        let monitorList = global.xhw.monitorList || [];
+        // console.log('monitorList', monitorList)
+        console.log('监控上报成功', err.detail);
+        let tempName = monitorList.pop();
+        this.monitorReportUrl = tempName ? this._nameToMonitorUrl(tempName) : '';
+        this.$apply();
+      }
+    };
+```
+
+
+```
+    /**
+     * 监控上报
+     * (对外暴露的方法)
+     */
+    monitorReport() {
+      let monitorList = global.xhw.monitorList || [];
+      // console.log('monitorList', monitorList)
+      let last = monitorList.pop();
+      if (last) {
+        this.monitorReportUrl = this._nameToMonitorUrl(last);
+        this.$apply();
+      }
+    }
+```	
+
+这里有些细节设计
+
+
+monitorReportUrl有初始值，是一张一像素的图片，为什么需要它呢？
+
+
+因为由它来判断Monitor组件是否已经准备好了，准备好了的状态global.xhw.reportReady是一个全局状态，并不是每一个组件都维护一个这样的状态
+
+Monitor组件会在两种情况上报
+
+1. Monitor组件已经准备好了 （为了确保有些用户一进页面就退出这种情况下，还是可以监控到错误）
+2. 页面的onShow生命周期 （写在所有页面通用的mixins中）
+
+
+
+
+>为了不影响页面渲染，这里也做了nextTick处理
