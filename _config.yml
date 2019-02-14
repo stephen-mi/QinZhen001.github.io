@@ -3,8 +3,8 @@ title: Qz Blog
 SEOTitle: 秦臻的博客 | Qz Blog
 header-img: img/home-bg.jpg
 email: qz519189636@qq.com
-description: "记录下学习过程中的点点滴滴。"
-keyword: "Qz, qinzhen, QinZhen001,QinZhen,秦臻,渣臻"
+description: "Qz,qinzhen,qinzhen blog,秦臻,秦臻 blog,秦臻 博客,秦臻的博客,渣臻"
+keyword: "Qz,qinzhen,qinzhen blog,秦臻,秦臻 blog,秦臻 博客，秦臻的博客,渣臻"
 url: "https://qinzhen001.github.io/"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 permalink: /:categories/:title.html
