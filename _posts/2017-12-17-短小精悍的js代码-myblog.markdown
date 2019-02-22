@@ -176,14 +176,29 @@ const anagrams = str => {
 4. 最后数组用map 把当前letter和其他部分拼接起来扔进叠加器acc里
 
 ### Set去除数组的重复元素
+
+**注意：只能用于拥有基本类型的数组**
+
 ```javascript
 let arr = [1,2,3,3];
 let unique = [...new Set(arr)];
 ```
 
 
+### 拥有复杂数据类型的数组去重
+```javascript
+  let arr = [1, 2, 3, 3, true, true, [2, 2], [2, 2], [1, 2, [3, 4]], [1, 2, [3, 4]], {name: 'aaa'}, {father: 'fff'}, {name: 'aaa'}];
 
+  function unique(arr) {
+    var hash = {};
+    return arr.filter(function (element) {
+      var key = JSON.stringify(element);
+      return hash.hasOwnProperty(key) ? false : (hash[key] = true)
+    });
+  }
 
+  console.log(unique(arr))
+```
 
 ### isJson
 ```javascript

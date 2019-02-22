@@ -229,16 +229,80 @@ JSON.stringify(
 
 
 
+### 数组中索引强制转换
+
+在数组中，如果字符串键值能够被强制类型转换为十进制数字的话，它就会被当作数字索引来处理。
+
+```javascript
+var a = [ ];
+a["13"] = 42;
+a.length; // 14
+```
+
+
+
+### 字符串不可变
+JavaScript 中字符串是不可变的，而数组是可变的
+
+```javascript
+  var a = "foo"
+  var b = ["f", "o", "o"]
+  a[1] = 'x'
+  b[1] = 'x'
+  console.log(a) // "foo"
+  console.log(b) //["f", "x", "o"]
+```
+
+且 a[1] 在 JavaScript 中并非总是合法语法，正确的方法应该是a.chartAt(1)
+
+
+
+### toPrecision()获取有效位数
+
+
+
+```javascript
+var a = 42.59;
+a.toPrecision( 1 ); // "4e+1" 
+a.toPrecision( 2 ); // "43" 
+a.toPrecision( 3 ); // "42.6" 
+a.toPrecision( 4 ); // "42.59"
+a.toPrecision( 5 ); // "42.590" 
+a.toPrecision( 6 ); // "42.5900"
+```
+
+
+上面的方法不仅适用于数字变量，也适用于数字常量。不过对于 . 运算符需要给予特别注意，因为它是一个有效的数字字 符，会被优先识别为数字常量的一部分，然后才是对象属性访问运算符。
 
 
 
 
+```javascript
+// 无效语法： 42.toFixed( 3 );    // SyntaxError
+
+
+// 下面的语法都有效：
+(42).toFixed( 3 );  // "42.000" 
+0.42.toFixed( 3 );  // "0.420"
+42..toFixed( 3 );   // "42.000
+```
+
+
+42.tofixed(3) 是无效语法，因为 . 被视为常量 42. 的一部分（如前所述），所以没有 . 属性访问运算符来调用 tofixed 方法
 
 
 
+42..tofixed(3) 则没有问题，因为第一个 . 被视为 number 的一部分，第二个 . 是属性访问运算符。只是这样看着奇 怪，实际情况中也很少见。在基本类型值上直接调用的方法并不多见，不过这并不代表不好 不好 或不对 不对 。
 
 
+### undefined 和 null 
 
+
+undefined 类型只有一个值，即 undefined 。null 类型也只有一个值，即 null 。它们的名称既是类型也是值。
+
+
+* null 指空值（empty value）
+* undefined 指没有值（missing value）
 
 
 
