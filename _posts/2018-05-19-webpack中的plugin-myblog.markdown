@@ -106,6 +106,66 @@ Webpack在所有的 async chunk 中，找到来自 node_modules ，并且名字�
 
 
 
+### mini-css-extract-plugin
+**This plugin extracts CSS into separate files.**
+
+
+ It creates a CSS file per JS file which contains CSS. It supports On-Demand-Loading of CSS and SourceMaps.
+
+
+
+**It builds on top of a new webpack v4 feature (module types) and requires webpack 4 to work.**
+
+
+
+(与extract-text-webpack-plugin相比：)
+Compared to the extract-text-webpack-plugin:
+
+
+* Async loading (异步加载)
+* No duplicate compilation (performance)               没有重复的编译（性能）
+* Easier to use  更容易使用
+* Specific to CSS  特定于CSS
+
+
+```javascript
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+module.exports = {
+  plugins: [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ]
+      }
+    ]
+  }
+}
+
+
+
+```
+
+
+
+
 ### extract-text-webpack-plugin
 Extract text from a bundle, or bundles, into a separate file.(提取文本到单独的文件)
 

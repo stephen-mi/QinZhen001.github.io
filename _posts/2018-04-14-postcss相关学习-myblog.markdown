@@ -24,6 +24,17 @@ PostCSS 它需要一个插件系统才能够发挥作用。我们可以通过“
 [https://segmentfault.com/a/1190000003909268](https://segmentfault.com/a/1190000003909268)
 
 
+postcss处理css的方式，主要区分三部分：
+
+* parser过程：将css字符串解析成可供我们操作的JavaScript对象
+* processor过程：我们应用postcss插件、或是自定义插件，都是在这个过程中，根据postcss提供的API，对parser生成的js对象做相应调整；
+* stringfier过程：将我们处理后的js对象，再转换回为css字符串
+
+
+
+[https://segmentfault.com/a/1190000015155639](https://segmentfault.com/a/1190000015155639)
+
+
 
 ### postcss-loader
 [https://www.npmjs.com/package/postcss-loader](https://www.npmjs.com/package/postcss-loader)
