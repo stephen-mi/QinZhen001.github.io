@@ -480,6 +480,20 @@ saveCityZipCode(city, zipCode);
 ```
 
 
+### &&优先级高于||
+
+碰到与或运算最好是写上括号
+
+
+```javascript
+var a = true, b = false, c = false;
+console.log( a || b && c )  // true
+console.log( (a || b) && c ) // false
+console.log( a || (b && c) )  // true
+```
+
+
+
 ### >>0
 相当于
 ```javascript
