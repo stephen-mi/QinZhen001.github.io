@@ -272,7 +272,9 @@ const isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge
 ```
 
 
-### hasClass
+### 对className的一些操作
+
+#### hasClass
 
 ```javascript
 function hasClass(el, className) {
@@ -289,7 +291,7 @@ function hasClass(el, className) {
 
 
 
-### addClass
+#### addClass
 ```javascript
 function addClass(el, className) {
   if (hasClass(el, className)) {
@@ -303,7 +305,7 @@ function addClass(el, className) {
 ```
 
 
-### removeClass
+#### removeClass
 ```javascript
 function removeClass (obj, cls) {
   if (hasClass(obj, cls)) {
@@ -313,7 +315,7 @@ function removeClass (obj, cls) {
 };
 ```
 
-### toggleClass
+#### toggleClass
 ```javascript
 function toggleClass(obj, cls) {
   if (hasClass(obj, cls)) {
