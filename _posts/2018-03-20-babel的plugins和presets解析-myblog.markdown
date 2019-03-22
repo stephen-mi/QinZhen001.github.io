@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Babel插件"
+title:      "babel的plugins和presets解析"
 date:       2018-03-20 18:36:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -14,6 +14,33 @@ tags:
 
 ## 正文
 [网页链接](https://segmentfault.com/p/1210000008466178)
+
+
+
+babel可以将当前运行平台(浏览器、node服务器)尚不支持的下一代或几代js语法编译为当前支持的js语法版本，比如可以把es6 es7和es8的js代码编译为es5的代码。
+
+
+
+* **plugin: babel的插件，在6.x版本之后babel必需要配合插件来进行工作**
+* **preset: babel插件集合的预设，包含某一部分的插件plugin**
+
+
+
+```json
+{
+  "plugins": ["transform-es2015-arrow-functions"]，
+  "presets": ["es2015"]
+}
+```
+
+
+
+
+
+
+
+
+
 
 
 ### babel-preset-env
