@@ -99,6 +99,29 @@ devserver作为webpack配置选项中的一项，以下是它的一些配置选�
 | historyApiFallback  | 在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html                                                   |
 
 
+
+### watch
+
+```javascript
+ "scripts": {
+    ...
+    "watch": "webpack --watch"
+  },
+```
+
+
+
+这样我们就可以使用npm run watch来调用 node_modules/.bin/webpack --watch了。
+
+
+命令执行完之后,它会监控源码文件，然后只对改变的文件进行重编译。
+
+>另外，npm run build，调用了node_modules/.bin/webpack，它是一个软链接，
+
+
+
+
+
 ### Loaders
 Loaders是webpack提供的最激动人心的功能之一了。通过使用不同的loader，webpack有能力调用外部的脚本或工具，实现对不同格式的文件的处理，比如说分析转换scss为css，或者把下一代的JS文件（ES6，ES7)转换为现代浏览器兼容的JS文件，对React的开发而言，合适的Loaders可以把React的中用到的JSX文件转换为JS文件。
 
