@@ -60,18 +60,95 @@ module.exports = {
 };
 ```
 
-### 规则
+### 规则 Configuration
+运行 eslint --init 之后，.eslintrc 文件会在你的文件夹中自动创建。你可以在 .eslintrc 文件中看到许多像这样的规则：
 
-在配置文件中可以设置一些规则。
+```json
+{
+    "rules": {
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"]
+    }
+}
+```
 
-这些规则的等级有三种：
-
-* "off" 或者 0：关闭规则。
-* "warn" 或者 1：打开规则，并且作为一个警告（不影响exit code）。
-* "error" 或者 2：打开规则，并且作为一个错误（exit code将会是1）。
 
 
-作者：给我一炷香的时间
-链接：http://www.jianshu.com/p/2bcdce1dc8d4
-來源：简书
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+"semi" 和 "quotes" 是 ESLint 中 规则 的名称。第一个值是错误级别，可以使下面的值之一：
+
+
+
+* "off" or 0 - 关闭规则
+* "warn" or 1 - 将规则视为一个警告（不会影响退出码）
+* "error" or 2 - 将规则视为一个错误 (退出码为1)
+
+
+
+### Specifying Environments
+
+```javascript
+module.exports = {
+  root: true,
+  env: {
+    node: true
+  },
+  'extends': [
+    'plugin:vue/essential',
+    '@vue/standard'
+  ],
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+  },
+  parserOptions: {
+    parser: 'babel-eslint'
+  }
+}
+```
+
+
+一个环境定义了一组预定义的全局变量。可用的环境包括：
+
+
+
+
+
+
+
+* browser - 浏览器环境中的全局变量。
+* node - Node.js 全局变量和 Node.js 作用域。
+* commonjs - CommonJS 全局变量和 CommonJS 作用域 (用于 Browserify/WebPack 打包的只在浏览器中运行的代码)。
+* shared-node-browser - Node.js 和 Browser 通用全局变量。
+* es6 - 启用除了 modules 以外的所有 ECMAScript 6 特性（该选项会自动设置 * * ecmaVersion 解析器选项为 6）。
+* worker - Web Workers 全局变量。
+* amd - 将 require() 和 define() 定义为像 amd 一样的全局变量。
+* mocha - 添加所有的 Mocha 测试全局变量。
+* jasmine - 添加所有的 Jasmine 版本 1.3 和 2.0 的测试全局变量。
+* jest - Jest 全局变量。
+* phantomjs - PhantomJS 全局变量。
+* protractor - Protractor 全局变量。
+* qunit - QUnit 全局变量。
+* jquery - jQuery 全局变量。
+* prototypejs - Prototype.js 全局变量。
+* shelljs - ShellJS 全局变量。
+* meteor - Meteor 全局变量。
+* mongo - MongoDB 全局变量。
+* applescript - AppleScript 全局变量。
+* nashorn - Java 8 Nashorn 全局变量。
+* serviceworker - Service Worker 全局变量。
+* atomtest - Atom 测试全局变量。
+* embertest - Ember 测试全局变量。
+* webextensions - WebExtensions 全局变量。
+* greasemonkey - GreaseMonkey 全局变量。
+
+
+
+
+
+
+
+
+
+
+
+

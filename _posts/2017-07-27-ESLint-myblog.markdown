@@ -13,6 +13,24 @@ tags:
 
 
 ## 正文
+
+
+### Configuration
+
+
+运行 eslint --init 之后，.eslintrc 文件会在你的文件夹中自动创建。你可以在 .eslintrc 文件中看到许多像这样的规则：
+
+
+
+
+
+
+
+
+
+
+### no-new
+
 [网页链接](http://eslint.org/docs/rules/no-new)
 
 The goal of using new with a constructor is typically to create an object of a particular type and store that object in a variable, such as:
@@ -41,8 +59,6 @@ Thing();
 ```
 
 
-
-## 后记
 存在ESLint
 .js中new后一定要赋值给某个变量
 避免这种情况，单独加一条规则：
