@@ -296,54 +296,7 @@ vue-loader 是一个 webpack 的 loader，可以将用下面这个格式编写�
 
 
 
-
-
-
-
-
-### Webpack的Loader为什么是从右往左写？
-
-比如说下面的Loader写法：
-```
-style-loader!css-loader!sass-loader
-```
-
-**其实为啥是从右往左，而不从左往右，只是Webpack选择了compose方式，而不是pipe的方式而已**
-
-
-
-* less-loader 是将less文件编译成css
-* sass-loader 是将sass文件编译成css
-* css-loader 是处理css文件中的url()等
-* style-loader 将css插入到页面的style标签顺便告诉你
-
-
-
-### 补充
-
-#### 在output中path和publicPath
-
-* path 是你打包的路径
-* **publicpath 是你在html 中引入的路径**
-
-
-
-#### browserslist
-
-为了让所有插件共享browserslist
-
-我们在package.json文件中加入
-```
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
-```
-上面是vue默认配置
-
-
-#### postcss-loader
+### postcss-loader
 [网页链接](https://www.npmjs.com/package/postcss-loader)
 
 
@@ -390,6 +343,86 @@ module.exports = {
   }
 }
 ```
+
+
+
+
+
+### source-map-loader
+
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      }
+    ]
+  }
+};
+```
+
+source-map-loader从所有JavaScript条目中提取现有的源映射。这包括内联源映射以及通过URL链接的映射。所有源映射数据都将传递给webpack，以便按照webpack.config.js中选项指定的所选源映射样式进行处理。devtool
+
+
+
+
+source-map-loader extracts existing source maps from all JavaScript entries. This includes both inline source maps as well as those linked via URL. All source map data is passed to webpack for processing as per a chosen source map style specified by the devtool option in webpack.config.js.
+
+
+
+
+
+
+## 补充
+
+
+
+### Webpack的Loader为什么是从右往左写？
+
+比如说下面的Loader写法：
+```
+style-loader!css-loader!sass-loader
+```
+
+**其实为啥是从右往左，而不从左往右，只是Webpack选择了compose方式，而不是pipe的方式而已**
+
+
+
+* less-loader 是将less文件编译成css
+* sass-loader 是将sass文件编译成css
+* css-loader 是处理css文件中的url()等
+* style-loader 将css插入到页面的style标签顺便告诉你
+
+
+
+
+
+#### 在output中path和publicPath
+
+* path 是你打包的路径
+* **publicpath 是你在html 中引入的路径**
+
+
+
+#### browserslist
+
+为了让所有插件共享browserslist
+
+我们在package.json文件中加入
+```
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+```
+上面是vue默认配置
+
+
 
 
 

@@ -160,6 +160,20 @@ white-space: nowrap;
 
 
 
+### 如何禁止页面的滚动
+
+在组件的包裹层加上catchtouchmove='true' 就好了，这样手指移动的事件就不会冒泡到page层
+
+```html
+举个例子 在mpvue中
+
+
+<div class="shopping" @touchmove.stop="true">
+    ...
+</div>
+```
+
+
 ## mpvue相关
 
 [http://mpvue.com/mpvue/](http://mpvue.com/mpvue/)
