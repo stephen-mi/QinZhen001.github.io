@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "less之爬坑"
+title:      "less相关"
 date:       2018-05-07 13:14:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -49,7 +49,7 @@ header.vue使用.bg-images(@url)
 ```
 
 
-#### LESS中关于‘~’符号的小问题
+### LESS中关于‘~’符号的小问题
 在.less文件中写：
 ```
 .test_03{  
@@ -81,6 +81,150 @@ header.vue使用.bg-images(@url)
 也就是说让浏览器去计算300px-30px。
 
 
+
+### less字符串拼接
+
+
+[网页链接](https://blog.csdn.net/butterfly5211314/article/details/72667273)
+
+
+```
+@iconUrl: "/img";
+
+// mixin
+.c-icon(@bgImg) {
+    background-image: url(@bgImg);
+}
+
+
+.bg {
+    @someImgUrl: "/icon.png";
+
+    // call mixin .c-icon();
+    .c-icon("@{iconUrl}@{someImgUrl}");
+
+    // or below
+    // .c-icon("@{iconUrl}/icon.png");
+}
+```
+
+**字符串拼接中取字符串以@{varName}这种形式即可**
+
+
+---
+
+
+
+>在stylus中变量可以直接拼接成字符串
+```
+bg-image($url)
+  background-image: url($url + "@2x.png")
+  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+    background-image: url($url + "@3x.png")
+```
+
+
+
+
+### modifyVars
+
+使用modifyVars可以在运行时修改LESS变量。当用新的变量值调用了这个函数时，LESS文件将会被重新编译，但不会被重新加载。一个基本的用法示例：
+
+
+```javascript
+less.modifyVars({
+    '@buttonFace': 'red',
+    '@buttonText': '#fff'
+});
+```
+
+#### webpack less-loader 的modifyVars
+在module rules 中的less-loader 下配置options modifyVars。 
+实现 更改less 中的变量
+```javascript
+{
+                test: /\.less/, 
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader"
+                    },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            "modifyVars":{ "@test": "#ffb200",  }
+                        }
+                    }
+                ]
+            },
+```
+
+
+在组件中
+
+[https://juejin.im/post/5ca41617f265da3092006155](https://juejin.im/post/5ca41617f265da3092006155)
+
+```javascript
+import React from 'react';
+import { loadScript } from '../../shared/utils';
+import './index.less';
+const colorCluters = ['red', 'blue', 'green'];
+
+export default class ColorPicker extends React.Component {
+    handleColorChange = color => {
+        const changeColor = () => {
+            window.less
+                .modifyVars({  // 调用 `less.modifyVars` 方法来改变变量值
+                    '@primary-color': color,
+                    '@bg-color': '#2f54eb',
+                })
+                .then(() => {
+                    console.log('修改成功');
+                });
+        };
+        const lessUrl =
+            'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
+
+        if (this.lessLoaded) {
+            changeColor();
+        } else {
+            window.less = {
+                async: true,
+            };
+
+            loadScript(lessUrl).then(() => {
+                this.lessLoaded = true;
+                changeColor();
+            });
+        }
+    };
+
+    render() {
+        return (
+            <ul className="color-picker">
+                {colorCluters.map(color => (
+                    <li
+                        style={{ color }}
+                        onClick={() => {
+                            this.handleColorChange(color);
+                        }}>
+                        color
+                    </li>
+                ))}
+            </ul>
+        );
+    }
+}
+
+```
+
+>这是在antd ui多颜色主题中实现的
+
+
+
+## 补充
 
 
 ### @import引入路径中使用波浪号~

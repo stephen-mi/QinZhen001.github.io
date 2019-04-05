@@ -188,4 +188,60 @@ This is a postcss plugin of px2rem.
 
 
 
+
+### postcss-custom-properties
+
+
+[https://github.com/postcss/postcss-custom-properties](https://github.com/postcss/postcss-custom-properties)
+
+```javascript
+const postcss = require('postcss');
+const postcssCustomProperties = require('postcss-custom-properties');
+
+postcss([
+  postcssCustomProperties(/* pluginOptions */)
+]).process(YOUR_CSS /*, processOptions */);
+```
+
+```
+postcssCustomProperties({
+  preserve: false
+});
+```
+
+The preserve option determines whether Custom Properties and properties using custom properties should be preserved in their original form. By default, both of these are preserved.
+
+
+
+该preserve选项确定是否应以原始形式保留使用自定义属性的自定义属性和属性。默认情况下，这两个都被保留。
+
+
+[举个例子](https://postcss.github.io/postcss-custom-properties/)
+
+```
+:root {
+  --color: red;
+}
+
+h1 {
+  color: var(--color);
+}
+
+/* becomes */
+
+h1 {
+  color: red;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
   [1]: https://www.w3cplus.com/sites/default/files/blogs/2018/1801/vw-layout-4.png

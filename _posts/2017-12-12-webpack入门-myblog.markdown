@@ -20,6 +20,8 @@ tags:
 [webpack从入门到工程实践](https://github.com/zhangwang1990/blogs/blob/master/articles/webpack%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5.md)
 
 
+[https://webpack.toobug.net/zh-cn/](https://webpack.toobug.net/zh-cn/)
+
 ### 什么是Webpack
 WebPack可以看做是**模块打包机**：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其转换和打包为合适的格式供浏览器使用。
 
@@ -539,6 +541,40 @@ const func = context(filename); // => Success
 
 
 通过这个方式就可以解决引入不必要的 node_modules 中的文件的问题
+
+
+
+
+### UMD
+
+
+```javascript
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['b'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('b'));
+    } else {
+        // Browser globals (root is window)
+        root.returnExports = factory(root.b);
+    }
+}(this, function (b) {
+    //use b in some fashion.
+
+    // Just return a value to define the module export.
+    // This example returns an object, but the module
+    // can return a function as the exported value.
+    return {};
+}));
+
+```
+
+
+
 
 
 
