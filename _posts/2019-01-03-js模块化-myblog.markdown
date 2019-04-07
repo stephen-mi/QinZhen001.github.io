@@ -56,7 +56,7 @@ define((require, exports, module) => {
 
 UMD又是个什么玩意呢？**UMD是AMD和CommonJS的一个糅合。AMD是浏览器优先，异步加载；CommonJS是服务器优先，同步加载。**
 
-
+UMD模块是指那些既可以作为模块使用（通过导入）又可以作为全局（在没有模块加载器的环境里）
 
 
 ### CommonJS

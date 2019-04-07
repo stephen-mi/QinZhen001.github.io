@@ -1,3 +1,8 @@
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+
+
+
 # 我的博客
 * 基于GitHub Pages + Jekyll 的个人博客站点
 * [套用了huxpro大大模版](https://github.com/huxpro/huxpro.github.io/)
