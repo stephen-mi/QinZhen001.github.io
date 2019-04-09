@@ -852,6 +852,27 @@ function normalizeMap (map) {
 var args = Array.prototype.slice.call(arguments);
 
 
+### new操作符和apply,bind同时使用
+[https://qinzhen001.github.io/2017/08/09/JS%E4%B8%ADcall%E5%92%8Capply%E5%92%8Cbind-myblog/](https://qinzhen001.github.io/2017/08/09/JS%E4%B8%ADcall%E5%92%8Capply%E5%92%8Cbind-myblog/)
+
+
+```javascript
+function newApply(Fn, argsAry) {
+    argsAry.unshift(null);
+    return new (Fn.bind.apply(Fn, argsAry));
+}
+
+// 调用
+newApply(Cls.func, [1, 2, 3]) // well done !!
+```
+
+
+
+
+
+
+
+
 
 
 

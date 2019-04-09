@@ -269,6 +269,7 @@ function asyncify(fn) {
 
 和前面类似，我们将orig_fn.bind.apply(orig_fn, args)拆成两部分来看：函数orig_fn.bind(…)和.apply(orig_fn, args)。根据.apply(…)的定义，orig_fn.bind.apply(orig_fn, args)其实就意味着我们将orig_fn.bind(…)函数的this指向orig_fn，然后.apply(orig_fn, args)的第二个参数会将剩下的参数传递给orig_fn.bind(…)函数。
 
+
 那么我们现在分析一下剩下的参数（[this].concat( [].slice.call( arguments )）都是什么吧，首先arguments是外界传入的其余参数(return function(…)这个函数传入的参数)，接下来我们借助[].slice.call( arguments )将其转化为一个参数数组，备用。由于.bind(…)的第一个参数为在 origin_fn 调用中用到的 this (我们在前一段就已经提到过，这个this其实就指向orig_fn)，所以使用 [this] 将构造的参数数组中的第一个参数设置为 this 。[this]再与我们前面的备用数组拼接起来，一同传递给.bind(…)。
 
 此时，.bind(…)的第一个参数就是this，剩余参数就是外界传入的参数。所以，除了传递给orig_fn.bind(…)的第一个参数this，其余的参数都会作为柯里化参数（预设值）。
@@ -276,6 +277,119 @@ function asyncify(fn) {
 
 
 >在这里的关键点是：.bind(…) 函数是通过 .apply(…) 调用的，所以 .bind(…) 自身所需要的 this 对象是一个函数（函数也是对象，在这里即 origin_fn）。
+
+
+
+
+
+
+### new操作符和bind或apply同时使用
+[https://github.com/bramblex/jsjs](https://github.com/bramblex/jsjs)
+
+
+发现：在写js解析器操作ast时发现些神奇的代码
+
+```javascript
+    NewExpression: (node: ESTree.NewExpression, scope: Scope) => {
+        const func = evaluate(node.callee, scope)
+        const args = node.arguments.map(arg => evaluate(arg, scope))
+        return new (func.bind.apply(func, [null].concat(args)))
+    },
+```
+
+
+bind.apply和new结合，引起了我的兴趣，所以就搜索资料进行了学习
+
+---
+
+[https://www.cnblogs.com/pspgbhu/p/6796795.html](https://www.cnblogs.com/pspgbhu/p/6796795.html)
+
+Fn.bind.apply()解决new操作符不能用与apply或call同时使用
+
+小明想要用数组的形式为 Cls.func 传入多个参数，他想到了以下的写法：
+
+```javascript
+var a = new Cls.func.apply(null, [1, 2, 3]);
+```
+
+然而浏览器却报错 Cls.func.apply is not a constructor。
+乍一看是 new 操作符去修饰 Cls.func.apply 了，于是他又这么写：
+
+```javascript
+var a = (new Cls.func).apply(null, [1, 2, 3]);
+```
+
+
+浏览器依旧报错。。。好吧，还是好好查一查相关的解决方法吧，还好这是个好时代，没有什么是网上查不出来的。
+
+
+解决方案:
+
+[https://stackoverflow.com/questions/1606797/use-of-apply-with-new-operator-is-this-possible](https://stackoverflow.com/questions/1606797/use-of-apply-with-new-operator-is-this-possible)
+
+
+
+```javascript
+function newCall(Fn) {
+    return new (Function.prototype.bind.apply(Fn, arguments));
+    // or even
+    // return new (Fn.bind.apply(Fn, arguments));
+    // if you know that Fn.bind has not been overwritten
+}
+
+// It can be used as follows:
+var s = newCall(Fn, a, b, c);
+
+// or even directly:
+var a = new (Function.prototype.bind.call(Fn, null, 1, 2, 3));
+
+var a = new (Function.prototype.bind.apply(Fn, [null, 1, 2, 3]));
+```
+
+
+以上关键就在于 .bind.apply() 或 .bind.call() 这中写法。
+
+Function.prototype.bind() 等同于 Fn.bind() 会创建一个新的函数，第一个参数为新函数的 this 指向，而后多个参数为绑定函数被调用时，这些参数将置于实参之前传递给被绑定的方法。
+
+
+先分析一下 Function.prototype.bind.call() 这种写法：
+
+var a = new (Function.prototype.bind.call(Fn, null, 1, 2, 3));
+call() 接受多个参数，第一个参数为函数执行的上下文环境，后面的参数会依次传递给前面的 bind 作为参数。
+
+所以 bind() 接到的参数为 bind(null, 1, 2, 3)。所以上面的那种写法就等同于：
+```javascript
+var a = new ( Fn.bind(null, 1, 2, 3)() );
+```
+同理再推导 Function.prototype.bind.apply() 写法：
+```javascript
+var a = new (Function.prototype.bind.apply(Fn, [null, 1, 2, 3]);
+```
+call() 接受两个参数，第一个参数为函数执行的上下文环境，第二个参数为数组，数组的每一项会一次作为 bind() 的参数，因此 bind() 接受到的参数也为 bind(null, 1, 2, 3)。因此也等价于：
+```javascript
+var a = new ( Fn.bind(null, 1, 2, 3)() );
+```
+
+
+**有了上面的推导，我们可以抽象出一个通用方法**
+
+
+```javascript
+function newApply(Fn, argsAry) {
+    argsAry.unshift(null);
+    return new (Fn.bind.apply(Fn, argsAry));
+}
+
+// 调用
+newApply(Cls.func, [1, 2, 3]) // well done !!
+```
+
+
+
+
+
+
+
 
 
 
