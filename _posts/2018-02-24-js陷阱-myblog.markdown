@@ -110,3 +110,52 @@ for(item in f){
 }
 ```
 
+
+### Function.apply.bind()与Function.apply.bind()
+
+[https://blog.csdn.net/weixin_37787381/article/details/81509361](https://blog.csdn.net/weixin_37787381/article/details/81509361)
+
+
+```javascript
+Promise.resolve([10,20]).then(Function.apply.bind(function(x, y){
+   console.log(x, y);
+}, null));     // 10,20
+```
+
+
+Function.apply.bind(…)是个什么操作？
+
+```javascript
+var sum = function(x, y) {
+   console.log(x, y);
+}
+var foo = Function.apply.bind(sum, null);
+foo([10, 20]);   // 10, 20
+```
+
+
+
+这里我们有一个函数sum，通过Function.apply.bind(sum, null)我们创建了一个新的函数foo(…)。
+
+
+我们一步步分析Function.apply.bind(sum, null)这段代码。 
+sum.apply(null, [10, 20])这句代码将第一个参数置为null，第二个参数是一个数组，用于拆开后作为sum的最终参数。 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

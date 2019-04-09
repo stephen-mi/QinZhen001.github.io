@@ -14,6 +14,8 @@ tags:
 
 ## 正文
 
+[在线AST转换器](https://astexplorer.net/)
+
 [https://segmentfault.com/a/1190000016231512](https://segmentfault.com/a/1190000016231512)
 
 
@@ -100,13 +102,104 @@ JS整体语法整体分为三级别：programe：stament：expresstion;
 
 
 
+
+#### **Node objects**
+
+ESTree AST nodes are represented as Node objects, which may have any prototype inheritance but which implement the following interface:
+
+```javascript
+interface Node {
+    type: string;
+    loc: SourceLocation | null;
+}
+```
+
+
+The type field is a string representing the AST variant type. Each subtype of Node is documented below with the specific string of its type field. You can use this field to determine which interface a node implements.
+
+The loc field represents the source location information of the node. If the node contains no information about the source location, the field is null; otherwise it is an object consisting of a start position (the position of the first character of the parsed source region) and an end position (the position of the first character after the parsed source region):
+
+```javascript
+interface SourceLocation {
+    source: string | null;
+    start: Position;
+    end: Position;
+}
+```
+
+
+
+#### Literal 和 identifier
+
+
+literals指那些值就是它本身的符号。而identifier或者叫标示符，是指它们的值是通过literal来表示的。
+
+
+
+
+```javascript
+interface Literal <: Expression {
+    type: "Literal";
+    value: string | boolean | null | number | RegExp;
+}
+
+
+A literal token. Note that a literal can be an expression.
+```
+
+
+
+
+```javascript
+interface Identifier <: Expression, Pattern {
+    type: "Identifier";
+    name: string;
+}
+
+An identifier. Note that an identifier may be an expression or a destructuring pattern.
+```
+
+
+
+
+#### Expression
+
+```javascript
+interface Expression <: Node { }
+
+Any expression node. Since the left-hand side of an assignment may be any expression in general, an expression can also be a pattern.
+```
+
+
+
+#### Function
+```javascript
+interface Function <: Node {
+    id: Identifier | null;
+    params: [ Pattern ];
+    body: FunctionBody;
+}
+```
+
+
+A function declaration or expression.
+
+
+
+#### Pattern 
+```javascript
+interface Pattern <: Node { }
+```
+
+Destructuring binding and assignment are not part of ES5, but all binding positions accept Pattern to allow for destructuring in ES6. **Nevertheless, for ES5, the only Pattern subtype is Identifier.**
+
+## 补充
+
+
 ### acorn
 
 
 acorn是一个符合estree规范的高性能的的js解析器，输出的ast符合estree规范。acron也被大量我们熟悉的工具采用。
-
-
-
 
 
 

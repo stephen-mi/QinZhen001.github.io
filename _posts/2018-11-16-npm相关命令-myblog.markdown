@@ -79,3 +79,22 @@ package-lock.json (use shrinkwrap instead)
 
 
 **可是如果你在项目中添加了.npmignore文件，.gitignore中的规则就会被忽略，而且这时候你还需要维护两份儿规则文件。**
+
+
+
+
+
+
+
+
+### npm彩蛋
+
+圣诞节彩蛋
+```javascript
+npm xmas
+```
+
+
+
+
+
