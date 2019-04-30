@@ -1,0 +1,105 @@
+---
+layout:     post
+title:      "搞一个基于原生小程序的框架"
+date:       2019-04-29 11:05:00
+author:     "Qz"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - Other
+---
+
+> “Yeah It's on. ”
+
+
+## 正文
+
+### 框架设计
+目前的思路是用gulp复制src的文件到dist文件夹，处理js文件，用babel将es7语法转成es6，处理less文件，将less文件转wxss。加上watch命令，改变src中的文件时，生成对应dist中的文件。
+
+### 难点
+对node_modules文件夹的处理，dist目录下应该带有node_modules，不应该对它里面东西进行处理。
+
+https://www.jianshu.com/p/c179cb928ae4
+
+
+
+### async/await
+
+
+[参考项目](https://github.com/zarknight/owx)
+
+要在小程序中使用async/await
+
+如何实现？两种方式
+
+
+**第一直接写   不勾选微信开发者工具中的ES6转ES5就行了**
+
+如果 勾选微信开发者工具中的ES6转ES5或者自己用babel等工具把小程序的js文件转成了es5那么会报错
+
+```javascript
+ thirdScriptError 
+ sdk uncaught third Error 
+ regeneratorRuntime is not defined 
+ ReferenceError: regeneratorRuntime is not defined
+```
+
+第二需要自己引入**regeneratorRuntime**这个模块
+
+如何解决这个问题？
+
+采用第二种解决方案
+
+
+
+
+
+
+### 使用ES6特性Class后出现编译异常
+
+```javascript
+Uncaught SyntaxError: Unexpected token export
+```
+
+[https://segmentfault.com/a/1190000009739674](https://segmentfault.com/a/1190000009739674)
+
+
+
+
+### require的坑
+
+require中不支持对象解构
+
+```javascript
+// 下面这种情况是错误的
+const {setTagId} = require('./utils/util')
+```
+
+>卧槽在es6中是支持的，但是在小程序中不支持Orz
+
+
+另外
+
+
+
+```
+//下面这种写法也是错误的 在其他文件中无法require进来
+module.exports = {
+  getSign,
+  getFormIdSign,
+  basePostRequest,
+  singletonForLogin,
+  getVersion,
+};
+```
+
+建议写法
+
+```javascript
+exports.getSign = getSign
+exports.getFormIdSign = getFormIdSign
+exports.basePostRequest = basePostRequest
+exports.singletonForLogin = singletonForLogin
+exports.getVersion = getVersion
+```

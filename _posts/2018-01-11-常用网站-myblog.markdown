@@ -79,6 +79,9 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 [https://caniuse.com/](https://caniuse.com/)
 
 
+### 管理github上的star
+[https://app.astralapp.com/](https://app.astralapp.com/)
+
 
 ### vue SSR
 [https://ssr.vuejs.org/zh/](https://ssr.vuejs.org/zh/)

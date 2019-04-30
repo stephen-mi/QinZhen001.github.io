@@ -6,7 +6,7 @@ author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - Webpack
+    - Babel
 ---
 
 > “Yeah It's on. ”
@@ -25,6 +25,10 @@ Babel 默认只转换新的 JavaScript 语法，而不转换新的 API。例如�
 
 
 ### babel-runtime-transform
+
+[https://babeljs.io/docs/en/next/babel-plugin-transform-runtime](https://babeljs.io/docs/en/next/babel-plugin-transform-runtime)
+
+
 局部垫片
 **为开发框架而准备**
 不会污染全局变量
@@ -75,7 +79,7 @@ var obj = (0, _defineProperty3.default)({}, 'name', 'JavaScript');
 
 
 ## 补充
-因为babel编译es6到es5的过程中，babel-plugin-transform-runtime这个插件会自动polyfill es5不支持的特性，这些polyfill包就是在babel-runtime这个包里，所以babel-runtime需要安装在dependency而不是devDependency。
+因为babel编译es6到es5的过程中，babel-plugin-transform-runtime这个插件会自动polyfill es5不支持的特性，这些polyfill包就是在babel-runtime这个包里，**所以babel-runtime需要安装在dependency而不是devDependency**。
 
 babel-plugin-transform-runtime和babel-runtime
 字面意思就能看出来，一个是转化的包（插件），一个是充满polyfill的包。

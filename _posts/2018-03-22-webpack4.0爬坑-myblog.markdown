@@ -53,30 +53,66 @@ Compared to the extract-text-webpack-plugin:
 
 
 ### mode 
+[https://segmentfault.com/a/1190000013712229?utm_source=tag-newest](https://segmentfault.com/a/1190000013712229?utm_source=tag-newest)
+
 现在可以在两种模式中选择 (mode or --mode) : 生产模式或开发模式
 
 一旦开启了 --mode production，会自动开启代码压缩、scope hoist 等插件，以及自动传递环境变量给 lib 包，所以已经不需要 plugins 这个配置项了。
 
 同理，开启了 --mode development 会自动开启 sourceMap 等开发插件，我们只要关心更简单的配置，这就是 4.0 零配置的重要改变。
 
-
-* entry 的默认值是 ./src 
-* output.path 的默认值是 ./dist
-* mode 的默认值是 production
-* UglifyJs 插件默认开启 caches 和 parallizes
+```javascript
+//parent chunk中解决了的chunk会被删除
+optimization.removeAvailableModules:true
+//删除空的chunks
+optimization.removeEmptyChunks:true
+//合并重复的chunk
+optimization.mergeDuplicateChunks:true
+````
 
 **在 develoment mode 默认**
 
-* 开启 output.pathinfo 
-* 关闭 optimization.minimize 
-
+```javascript
+//调试
+devtool:eval
+//缓存模块, 避免在未更改时重建它们。
+cache:true
+//缓存已解决的依赖项, 避免重新解析它们。
+module.unsafeCache:true
+//在 bundle 中引入「所包含模块信息」的相关注释
+output.pathinfo:true
+//在可能的情况下确定每个模块的导出,被用于其他优化或代码生成。
+optimization.providedExports:true
+//找到chunk中共享的模块,取出来生成单独的chunk
+optimization.splitChunks:true
+//为 webpack 运行时代码创建单独的chunk
+optimization.runtimeChunk:true
+//编译错误时不写入到输出
+optimization.noEmitOnErrors:true
+//给模块有意义的名称代替ids
+optimization.namedModules:true
+//给模chunk有意义的名称代替ids
+optimization.namedChunks:true
+```
 
 **在 production mode 默认**
 
-* 关闭 in-memory caching
-* 开启 NoEmitOnErrorsPlugin
-* 开启 ModuleConcatenationPlugin
-* 开启 optimization.minimize 
+```javascript
+//性能相关配置
+performance:{hints:"error"....}
+//某些chunk的子chunk已一种方式被确定和标记,这些子chunks在加载更大的块时不必加载
+optimization.flagIncludedChunks:true
+//给经常使用的ids更短的值
+optimization.occurrenceOrder:true
+//确定每个模块下被使用的导出
+optimization.usedExports:true
+//识别package.json or rules sideEffects 标志
+optimization.sideEffects:true
+//尝试查找模块图中可以安全连接到单个模块中的段。- -
+optimization.concatenateModules:true
+//使用uglify-js压缩代码
+optimization.minimize:true
+```
 
 
 
@@ -317,4 +353,22 @@ import 'assets/css/style.css'
 
 意思就是: 告诉加载器它是一个模块，而不是相对路径
 
+
 注意: 只有在template中的静态文件地址和style中的静态文件地址需要加~, 在script里的, 别名定义成什么就写什么.
+
+
+
+
+
+
+
+### Cannot assign to read only property
+
+```
+webpack报错：Cannot assign to read only property 'exports' of object '#<Object>'
+```
+
+The code above is ok. You can mix require and export. You can‘t mix import and module.exports.
+
+也就是说，在webpack打包的时候，可以在js文件中混用require和export。**但是不能混用import 以及module.exports。**
+
