@@ -400,3 +400,55 @@ gulp.task('my-tasks', gulp.series('a', gulp.parallel('styles','scripts', 'images
 
 **相关任务必须在被调用之前发生。**
 
+
+
+
+
+
+
+### 报错did you forget to signal async completion 
+
+[https://blog.csdn.net/weixin_40817115/article/details/81079507](https://blog.csdn.net/weixin_40817115/article/details/81079507)
+
+
+解决方法，使用 async 和 await。
+
+```javascript
+const gulp = require('gulp');
+gulp.task('testGulp', async() => {
+   await console.log('Hello World!');
+});
+```
+
+在不使用文件流的情况下，向task的函数里传入一个名叫done的回调函数，以结束task，如下代码所示：
+
+```javascript
+gulp.task('testGulp', done => {
+  console.log('Hello World!');
+  done();
+});
+```
+
+done回调函数的作用是在task完成时通知Gulp（而不是返回一个流），而task里的所有其他功能都纯粹依赖Node来实现。
+
+### 报错 GulpUglifyError: unable to minify JavaScript
+
+
+gulp-uglify无法压缩带有es6语法的js，先要用babel把es6转为es5。
+
+
+
+
+>这就很坑了Orz
+
+
+
+
+
+
+
+
+
+
+
+

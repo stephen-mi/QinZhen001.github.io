@@ -280,6 +280,9 @@ This package has been deprecated
 
 
 ### @babel/plugin-transform-strict-mode
+**默认babel转义后的js文件头会带上'use strict';**
+
+如果想去掉js文件头部的'use strict'
 
 **@babel/plugin-transform-strict-mode取消js文件的严格模式 (默认babel转义后的js文件头会带上'use strict';)**
 
@@ -297,6 +300,34 @@ This package has been deprecated
 
 
 >这里又坑了好久
+
+
+最终这个插件还是没办法正常使用
+
+
+换成babel6，使用babel6的插件也不行。
+
+
+使用gulp-remove-use-strict也不行。
+
+
+----
+
+**最终解决办法：**
+
+
+**由于一些原因还是使用了babel6，增加了配置"modules": false**
+
+[https://segmentfault.com/q/1010000013533162](https://segmentfault.com/q/1010000013533162)
+
+```javascript
+{
+  presets: [
+    ["env", { "modules": false }]
+  ]
+}
+```
+
 
 
 ### gulp-babel的坑
