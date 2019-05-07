@@ -15,7 +15,7 @@ tags:
 # 正文
 
 ## 框架设计
-整体思路是用gulp复制src文件夹中的文件到dist文件夹，在个过程中，处理相关文件。如处理js文件，用babel将es7语法转成es6；处理less文件，将less文件转wxss；处理图片文件进行压缩等。
+整体思路是用gulp复制src文件夹中的文件到dist文件夹，在个过程中完成编译，处理相关文件。如处理js文件，用babel将es6语法转成es5；处理less文件，将less文件转wxss；处理图片文件进行压缩等。
 
 核心的三条命令
 * npm run dev (进行开发环境打包，并监听文件)
@@ -24,7 +24,7 @@ tags:
 
 
 在development环境中js会加上sourcemaps
-在production环境中会压缩wxss，压缩js，压缩图片，去除js的在development环境中js会加上sourcemaps
+在production环境中会压缩wxss，压缩js，压缩图片，去除js的sourcemaps
 
 
 
@@ -267,7 +267,7 @@ gulp-babel don't produce any output file or doesn't work properly
 
 第一次尝试：在babel7中使用@babel/plugin-transform-strict-mode，失败
 
-第二次尝试：在babel中使用我们不能使用plugin-transform-strict-mode，失败
+第二次尝试：在babel中使用plugin-transform-strict-mode，失败
 
 第三次尝试：使用gulp-remove-use-strict，失败
 
