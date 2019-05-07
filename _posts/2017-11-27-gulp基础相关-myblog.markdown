@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "gulp初入门"
+title:      "gulp基础相关"
 date:       2017-11-27 22:56:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - gulp
+    - Gulp
 ---
 
 > “Yeah It's on. ”

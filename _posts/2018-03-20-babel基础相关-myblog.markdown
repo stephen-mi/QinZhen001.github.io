@@ -134,6 +134,50 @@ var obj = (0, _defineProperty3.default)({}, 'name', 'JavaScript');
 1. 避免 babel 编译的工具函数在每个模块里重复出现，减小库和工具包的体积；
 2. 在没有使用 babel-runtime 之前，库和工具包一般不会直接引入 polyfill。否则像 Promise 这样的全局对象会污染全局命名空间，这就要求库的使用者自己提供 polyfill。这些 polyfill 一般在库和工具的使用说明中会提到，比如很多库都会有要求提供 es5 的 polyfill。在使用 babel-runtime 后，库和工具只要在 package.json 中增加依赖 babel-runtime，交给 babel-runtime 去引入 polyfill 就行了；
 
+
+
+### stage-0
+
+
+它包含stage-1, stage-2以及stage-3的所有功能，同时还另外支持如下两个功能插件：
+
+* transform-do-expressions
+* transform-function-bind
+
+
+### stage-1
+stage-1除了包含stage-2和stage-3，还包含了下面4个插件：
+
+
+* transform-class-constructor-call (Deprecated)
+* transform-class-properties
+* transform-decorators – disabled pending proposal update
+* transform-export-extensions
+
+
+
+### stage-2
+
+stage-2它除了覆盖stage-3的所有功能，还支持如下两个插件：
+
+* syntax-trailing-function-commas
+* transform-object-reset-spread
+
+
+### stage-3
+它支持大名鼎鼎的async和await
+
+
+总的来说，它包含如下两个插件:
+
+* transform-async-to-generator
+* transform-exponentiation-operator
+
+
+
+
+
+
 ## 总结
 * 具体项目还是需要使用 babel-polyfill，只使用 babel-runtime 的话，实例方法不能正常工作（例如 "foobar".includes("foo")）；
 * JavaScript 库和工具可以使用 babel-runtime，在实际项目中使用这些库和工具，需要该项目本身提供 polyfill；
@@ -147,7 +191,6 @@ var obj = (0, _defineProperty3.default)({}, 'name', 'JavaScript');
 
 babel-plugin-transform-runtime和babel-runtime
 字面意思就能看出来，一个是转化的包（插件），一个是充满polyfill的包。
-
 
 
 

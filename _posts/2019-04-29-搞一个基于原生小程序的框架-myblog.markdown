@@ -12,15 +12,63 @@ tags:
 > “Yeah It's on. ”
 
 
-## 正文
+# 正文
 
-### 框架设计
-目前的思路是用gulp复制src的文件到dist文件夹，处理js文件，用babel将es7语法转成es6，处理less文件，将less文件转wxss。加上watch命令，改变src中的文件时，生成对应dist中的文件。
+## 框架设计
+整体思路是用gulp复制src文件夹中的文件到dist文件夹，在个过程中，处理相关文件。如处理js文件，用babel将es7语法转成es6；处理less文件，将less文件转wxss；处理图片文件进行压缩等。
 
-### 难点
-对node_modules文件夹的处理，dist目录下应该带有node_modules，不应该对它里面东西进行处理。
+核心的三条命令
+* npm run dev (进行开发环境打包，并监听文件)
+* npm run watch (监听文件)
+* npm run build (生产环境打包)
 
-https://www.jianshu.com/p/c179cb928ae4
+
+在development环境中js会加上sourcemaps
+在production环境中会压缩wxss，压缩js，压缩图片，去除js的在development环境中js会加上sourcemaps
+
+
+
+
+
+## 相关知识
+
+
+### gulp全家桶
+
+由于微信小程序并无入口文件，无法使用webpack进行编译打包，所以这里采用gulp4进行编译打包。
+
+* gulp-autoprefixer (css自动补全前缀)
+* gulp-babel (babel编译器)
+* gulp-changed  (更改了的文件，减少监听的文件数量，节约资源)
+* gulp-clean (删除文件)
+* gulp-clean-css (css压缩)
+* gulp-eslint (eslint检查)
+* gulp-eslint-auto-fix (fix文件，使之满足eslint规范)
+* gulp-if (判断，通常用于区分开发环境和生产环境)
+* gulp-imagemin (图片压缩)
+* gulp-install (安装依赖)
+* gulp-less (编译less文件)
+* gulp-rename (重命名文件)
+* gulp-sourcemaps (生成sourcemaps)
+* gulp-uglify (压缩js)
+
+
+
+
+
+## 爬坑
+
+
+### 对node_modules的处理
+
+**不应该对src中node_modules进行处理**
+
+
+复制src中package.json到dist，利用gulp-install安装依赖，生成dist下的node_modules。
+
+
+>不监听src中node_modules文件的修改
+
 
 
 
@@ -34,9 +82,24 @@ https://www.jianshu.com/p/c179cb928ae4
 如何实现？两种方式
 
 
-**第一直接写   不勾选微信开发者工具中的ES6转ES5就行了**
+**第一直接写   不勾选微信开发者工具中的ES6转ES5 和 不用babel编译js**
+
+
+**总之不对js做处理**
+
+但是es6在低端机的兼容性不是很好
+
+-------
+
+
+**第二种需要自己引入regeneratorRuntime这个模块**
+
 
 如果 勾选微信开发者工具中的ES6转ES5或者自己用babel等工具把小程序的js文件转成了es5那么会报错
+
+
+![enter description here][1]
+
 
 ```javascript
  thirdScriptError 
@@ -45,45 +108,47 @@ https://www.jianshu.com/p/c179cb928ae4
  ReferenceError: regeneratorRuntime is not defined
 ```
 
-第二需要自己引入**regeneratorRuntime**这个模块
 
-如何解决这个问题？
-
-采用第二种解决方案
+解决方案：
 
 
+```javascript
+// 在app.js头部增加
+global.regeneratorRuntime = require('./lib/regenerator/runtime-module')
+```
 
 
+
+使用async/await的js文件头部增加
+```javascript
+const {regeneratorRuntime} = global
+```
 
 
 ### 使用ES6特性Class后出现编译异常
+
+[https://segmentfault.com/a/1190000009739674](https://segmentfault.com/a/1190000009739674)
 
 ```javascript
 Uncaught SyntaxError: Unexpected token export
 ```
 
-[https://segmentfault.com/a/1190000009739674](https://segmentfault.com/a/1190000009739674)
-
+**这里也是因为es6语法的问题，将js转成es5就行了**
 
 
 
 ### require的坑
 
-require中不支持对象解构
+**微信小程序中require是不支持对象解构**
 
 ```javascript
 // 下面这种情况是错误的
 const {setTagId} = require('./utils/util')
 ```
 
->卧槽在es6中是支持的，但是在小程序中不支持Orz
 
 
-另外
-
-
-
-```
+```javascript
 //下面这种写法也是错误的 在其他文件中无法require进来
 module.exports = {
   getSign,
@@ -94,7 +159,10 @@ module.exports = {
 };
 ```
 
-建议写法
+>但是在web开发中是可以。。。
+
+
+只能改成
 
 ```javascript
 exports.getSign = getSign
@@ -103,3 +171,261 @@ exports.basePostRequest = basePostRequest
 exports.singletonForLogin = singletonForLogin
 exports.getVersion = getVersion
 ```
+
+
+### sdk的打包的坑
+
+sdk使用webpack打包，采用umd规范。
+```javascript
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['b'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('b'));
+    } else {
+        // Browser globals (root is window)
+        root.returnExports = factory(root.b);
+    }
+}(this, function (b) {
+    //use b in some fashion.
+
+    // Just return a value to define the module export.
+    // This example returns an object, but the module
+    // can return a function as the exported value.
+    return {};
+}));
+```
+
+这样this指向变成了传入的window，所以global指向也是window。
+
+**所以挂载在global下的xhw对象变成了window下的xhw。**
+
+
+### babel相关
+
+### babel7的坑
+**babel7之后babel相关的npm包都是以@babel开头的**
+
+当你安装了@babel/preset-env 使用时 **presets: ['@babel/env']**
+
+重点注意是这个
+**@babel/env**
+
+
+------
+
+@babel/preset-es2015
+[https://www.npmjs.com/package/@babel/preset-es2015](https://www.npmjs.com/package/@babel/preset-es2015)
+
+这个东西在babel7中被干掉了，真的坑 
+
+This package has been deprecated
+
+
+> We've deprecated any official yearly presets in 6.x in favor or babel-preset-env. For 7.x it would be @babel/preset-env.
+
+
+
+------
+
+
+经过测试gulp-babel和babel7配合使用并不好，一些plugins无法使用
+
+```javascript
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+ 
+gulp.task('default', () =>
+    gulp.src('src/app.js')
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(gulp.dest('dist'))
+);
+```
+
+**这里不能使用plugins 很无语**
+
+**所以最终决定切回babel6使用，babel相关的第三方库也使用无@babel开头的版本**
+
+
+gulp-babel don't produce any output file or doesn't work properly
+
+[https://stackoverflow.com/questions/52599370/gulp-babel-dont-produce-any-output-file-or-doesnt-work-properly](https://stackoverflow.com/questions/52599370/gulp-babel-dont-produce-any-output-file-or-doesnt-work-properly)
+
+
+
+
+### 去掉 use strict
+
+默认babel转义后的js文件头会带上'use strict'
+
+
+第一次尝试：在babel7中使用@babel/plugin-transform-strict-mode，失败
+
+第二次尝试：在babel中使用我们不能使用plugin-transform-strict-mode，失败
+
+第三次尝试：使用gulp-remove-use-strict，失败
+
+第四次尝试：在babel中设置sourceType为"script"，失败
+
+[https://www.babeljs.cn/docs/options#misc-options](https://www.babeljs.cn/docs/options#misc-options)
+
+```
+sourceType  
+
+Type: "script" | "module" | "unambiguous"
+
+Default: "module"
+```
+
+* "script" - Parse the file using the ECMAScript Script grammar. No import/export statements allowed, and files are **not in strict mode**.
+* "module" - Parse the file using the ECMAScript Module grammar. Files are automatically strict, and import/export statements are allowed.
+* "unambiguous" - Consider the file a "module" if import/export statements are present, or else consider it a "script".
+
+
+
+**最终解决办法：**
+
+
+**使用babel6，增加了配置"modules": false**
+
+[https://segmentfault.com/q/1010000013533162](https://segmentfault.com/q/1010000013533162)
+
+```javascript
+{
+  presets: [
+    ["env", { "modules": false }]
+  ]
+}
+```
+
+
+
+### gulp相关
+
+#### task return 的作用
+[https://segmentfault.com/a/1190000016971285?utm_source=tag-newest](https://segmentfault.com/a/1190000016971285?utm_source=tag-newest)
+
+Without return the task system wouldn't know when it finished
+
+**task和里面的gulp流是异步执行的**
+
+
+结论： gulp的task都要保证有return或者callback，去通知系统任务结束。（make sure they either return a stream or promise, or handle the callback
+
+```javascript
+gulp.task('build-clean', function() {
+    // Return the Promise from del()
+    return del([BUILD_DIRECTORY]);
+//  ^^^^^^
+//   This is the key here, to make sure asynchronous tasks are done!
+});
+gulp.task('build-scripts', function() {
+    // Return the stream from gulp
+    return gulp.src(SCRIPTS_SRC).pipe(...)...
+//  ^^^^^^
+//   This is the key here, to make sure tasks run to completion!
+});
+
+gulp.task('callback-example', function(callback) {
+    // Use the callback in the async function
+    fs.readFile('...', function(err, file) {
+        console.log(file);
+        callback();
+//      ^^^^^^^^^^
+//       This is what lets gulp know this task is complete!
+    });
+});
+```
+
+
+#### gulp4 和 gulp3 之间的区别
+[https://www.jianshu.com/p/40b99bed3127](https://www.jianshu.com/p/40b99bed3127)
+
+
+```javascript
+AssertionError [ERR_ASSERTION]: Task function must be specified
+    at Gulp.set [as _setTask] (F:\前端项目\xhw-native\node_modules\undertaker\lib\set-task.js:10:3)
+    at Gulp.task (F:\前端项目\xhw-native\node_modules\undertaker\lib\task.js:13:8)
+    at BuildTask.init (F:\前端项目\xhw-native\build\build.js:59:10)
+    at new BuildTask (F:\前端项目\xhw-native\build\build.js:45:10)
+    at Object.<anonymous> (F:\前端项目\xhw-native\gulpfile.js:10:1)
+    at Module._compile (internal/modules/cjs/loader.js:701:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:712:10)
+    at Module.load (internal/modules/cjs/loader.js:600:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:539:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:531:3)
+```
+
+
+
+4.0错误的写法：
+
+```javascript
+gulp.task('default', ['del'], function() {
+    // default task code here
+});
+```
+
+修改为最新的正确写法：
+
+
+```javascript
+gulp.task('default', gulp.series('del', function() { 
+    // default task code here
+}));
+
+```
+
+
+>Gulp 4最大的变化就是你不能像以前那样传递一个依赖任务列表。
+
+
+
+
+
+#### 报错did you forget to signal async completion 
+
+[https://blog.csdn.net/weixin_40817115/article/details/81079507](https://blog.csdn.net/weixin_40817115/article/details/81079507)
+
+
+解决方法，使用 async 和 await。
+
+```javascript
+const gulp = require('gulp');
+gulp.task('testGulp', async() => {
+   await console.log('Hello World!');
+});
+```
+
+在不使用文件流的情况下，向task的函数里传入一个名叫done的回调函数，以结束task，如下代码所示：
+
+```javascript
+gulp.task('testGulp', done => {
+  console.log('Hello World!');
+  done();
+});
+```
+
+done回调函数的作用是在task完成时通知Gulp（而不是返回一个流），而task里的所有其他功能都纯粹依赖Node来实现。
+
+#### 报错 GulpUglifyError: unable to minify JavaScript
+
+
+gulp-uglify无法压缩带有es6语法的js，必须先要用babel把es6转为es5。
+
+
+
+
+
+
+
+## 备注
+
+
+  [1]: https://s2.ax1x.com/2019/05/07/EsnB5j.png
