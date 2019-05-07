@@ -32,7 +32,7 @@ with语句的作用是将代码的作用域设置到一个特定的作用域中
 
 
 使用with关键字的目的是为了简化多次编写访问同一对象的工作，比如下面的例子：
-```
+```javascript
 var qs = location.search.substring(1);
 var hostName = location.hostname;
 var url = location.href;
@@ -40,7 +40,7 @@ var url = location.href;
 
 这几行代码都是访问location对象中的属性，如果使用with关键字的话，可以简化代码如下
 
-```
+```javascript
 with (location){
     var qs = search.substring(1); 
     var hostName = hostname;  
@@ -81,7 +81,7 @@ arrayObject.slice(start,end)
 
 
 在本例中，我们将创建一个新数组，然后显示从其中选取的元素：
-```
+```javascript
 <script type="text/javascript">
 var arr = new Array(3)
 arr[0] = "George"
@@ -100,7 +100,7 @@ George,John,Thomas
 ```
 
 在本例中，我们将创建一个新数组，然后显示从其中选取的元素：
-```
+```javascript
 <script type="text/javascript">
 
 var arr = new Array(6)
@@ -254,7 +254,7 @@ splice() 方法可删除从 index 处开始的零个或多个元素，并且用�
 
 
 在本例中，我们将创建一个新数组，并向其添加一个元素：
-```
+```javascript
 <script type="text/javascript">
 
 var arr = new Array(6)
@@ -275,7 +275,7 @@ George,John,Thomas,James,Adrew,Martin
 George,John,William,Thomas,James,Adrew,Martin
 ```
 在本例中我们将删除位于 index 2 的元素，并添加一个新元素来替代被删除的元素：
-```
+```javascript
 <script type="text/javascript">
 
 var arr = new Array(6)
@@ -302,7 +302,7 @@ George,John,William,James,Adrew,Martin
 
 [https://blog.csdn.net/a727911438/article/details/55224532](https://blog.csdn.net/a727911438/article/details/55224532)
 
-```
+```javascript
     var arr = new Array(1, 2, 3, 4, 5);     //初始化数字集合  
     var delete_number = 3;    //要被删除的数字  
       
@@ -330,7 +330,7 @@ splice 是直接操作并修改数组的，所以当找到数字3时在循环中
 
 **解决方案**
 
-```
+```javascript
     if(arr[i] === delete_number){   //如果找到要被删除的数字所在的数组下标  
         var num = arr.splice( i, 1 );   //从i位置开始删除1个数字  
         console.log("成功删除 "+num);    //输出被删除的数字  
@@ -342,7 +342,7 @@ splice 是直接操作并修改数组的，所以当找到数字3时在循环中
 
 **采用逆循环的方式**
 
-```
+```javascript
     for (var i = arr.length - 1; i >= 0; i--) {
         if (arr[i] === delete_number) {   //如果找到要被删除的数字所在的数组下标
             var num = arr.splice(i, 1);   //从i位置开始删除1个数字
@@ -379,7 +379,129 @@ Show the number 13.37 with one decimal:
 fixed() 方法用于把字符串显示为打字机字体。
 stringObject.fixed()
 
----
+
+
+### JS中的“use strict” 严格模式
+
+[网页链接](https://www.cnblogs.com/liaojie970/p/7154144.html)
+
+ECMAScript 5 引入严格模式('strict mode')概念。通过严格模式，在函数内部选择进行较为严格的全局或局部的错误条件检测，使用严格模式的好处是可以提早知道代码中的存在的错误，
+
+**及时捕获一些可能导致编程错误的ECMAScript行为**，在开发中使用严格模式能帮助我们早发现错误。
+
+
+#### 严格模式影响范围
+* 变量：  var、delete、变量关键字
+* 对象： 只读属性、 对象字面量属性重复申明
+* 函数：参数重名、arguments对象、申明
+* 其他：this、eval、关键字...
+
+
+----------
+
+
+设立"严格模式"的目的，主要有以下几个：错误检测、规范、效率、安全、面向未来
+* 消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为;
+* 消除代码运行的一些不安全之处，保证代码运行的安全；
+* 提高编译器效率，增加运行速度；
+* 为未来新版本的Javascript做好铺垫。
+
+
+进入"严格模式"的编译指示（pragma），是下面这行语句：　　
+`"use strict";`
+
+将"use strict"放在脚本文件的第一行，则整个脚本都将以"严格模式"运行。
+
+如果这行语句不在第一行，则无效，整个脚本以"正常模式"运行。
+
+如果不同模式的代码文件合并成一个文件，这一点需要特别注意。
+
+
+
+
+### Object.create(proto [, propertiesObject ]) 
+
+propertiesObject 参数的详细解释：（默认都为false）
+数据属性： 
+* writable:是否可任意写 
+* configurable：是否能够删除，是否能够被修改 
+* enumerable：是否能用 for in 枚举 
+* value：值 
+访问属性：
+* get(): 访问
+* set(): 设置
+
+
+```javascript
+		newObj = Object.create(obj, {
+			t1: {
+				value: 'yupeng',
+				writable: true
+			},
+			bar: {
+				configurable: false,
+				get: function() {
+					return bar;
+				},
+				set: function(value) {
+					bar = value
+				}
+			}
+		})
+```
+
+
+通过 Object.create() 方法，使用一个指定的原型对象和一个额外的属性对象创建一个新对象。这是一个用于对象创建、继承和重用的强大的新接口。说直白点，就是一个新的对象可以继承一个对象的属性，并且可以自行添加属性。
+
+#### 用 Object.create实现类式继承
+```javascript
+// Shape - 父类(superclass)
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+// 父类的方法
+Shape.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// Rectangle - 子类(subclass)
+function Rectangle() {
+  Shape.call(this); // call super constructor.
+}
+
+// 子类续承父类
+Rectangle.prototype = Object.create(Shape.prototype);
+Rectangle.prototype.constructor = Rectangle;
+
+// 因为使用“.prototype =...”后,constructor会改变为“=...”的那个
+// constructor，所以要重新指定.constructor 为自身。
+var rect = new Rectangle();
+
+console.log('Is rect an instance of Rectangle?',
+  rect instanceof Rectangle); // true
+console.log('Is rect an instance of Shape?',
+  rect instanceof Shape); // true
+rect.move(1, 1); // Outputs, 'Shape moved.'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
