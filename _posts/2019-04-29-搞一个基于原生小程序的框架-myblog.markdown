@@ -348,7 +348,7 @@ gulp.task('callback-example', function(callback) {
 [https://www.jianshu.com/p/40b99bed3127](https://www.jianshu.com/p/40b99bed3127)
 
 
-```javascript
+```
 AssertionError [ERR_ASSERTION]: Task function must be specified
     at Gulp.set [as _setTask] (F:\前端项目\xhw-native\node_modules\undertaker\lib\set-task.js:10:3)
     at Gulp.task (F:\前端项目\xhw-native\node_modules\undertaker\lib\task.js:13:8)

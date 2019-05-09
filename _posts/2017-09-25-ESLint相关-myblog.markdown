@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "ESLint简介"
+title:      "ESLint相关"
 date:       2017-09-25 11:00:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
@@ -14,6 +14,9 @@ tags:
 
 ## 正文
 [网页链接](http://www.jianshu.com/p/2bcdce1dc8d4)
+
+[自己配置的eslint规则](https://github.com/QinZhen001/eslint-config-qzconfig)
+
 
 **ESLint是一个用来识别 ECMAScript 并且按照规则给出报告的代码检测工具，使用它可以避免低级错误和统一代码的风格。**
 
@@ -144,6 +147,65 @@ module.exports = {
 
 
 
+
+### Configuration
+
+
+运行 eslint --init 之后，.eslintrc 文件会在你的文件夹中自动创建。你可以在 .eslintrc 文件中看到许多像这样的规则：
+
+
+
+
+
+
+
+
+
+
+### no-new
+
+[网页链接](http://eslint.org/docs/rules/no-new)
+
+The goal of using new with a constructor is typically to create an object of a particular type and store that object in a variable, such as:
+
+var person = new Person();
+
+It’s less common to use new and not store the result, such as:
+
+new Person();
+
+In this case, the created object is thrown away because its reference isn’t stored anywhere, and in many cases, this means that the constructor should be replaced with a function that doesn’t require new to be used.
+Rule Details
+
+This rule is aimed at maintaining consistency and convention by disallowing constructor calls using the new keyword that do not assign the resulting object to a variable.
+
+Examples of incorrect code for this rule:
+```
+/*eslint no-new: "error"*/
+new Thing();
+```
+Examples of correct code for this rule:
+```
+/*eslint no-new: "error"*/
+var thing = new Thing();
+Thing();
+```
+
+
+存在ESLint
+.js中new后一定要赋值给某个变量
+避免这种情况，单独加一条规则：
+/* eslint-disable no-new */
+
+```
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  template: '<App/>',
+  components: { App }
+})
+```
 
 
 
