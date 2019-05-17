@@ -174,6 +174,45 @@ white-space: nowrap;
 ```
 
 
+
+### observers中箭头函数获取不到this
+数据监听器可以用于监听和响应任何属性和数据字段的变化。**从小程序基础库版本 2.6.1 开始支持。**
+
+>注意:从小程序基础库版本 2.6.1 开始支持。
+
+
+```javascript
+// 下面这种写法是错误的
+
+  observers: {
+    'imgUrl': (imgUrl) => {
+      console.log('this', this)
+      console.log('this.data', this.data)
+      console.log('this.properties', this.properties)
+      console.log(imgUrl)
+    }
+  },
+```
+
+```javascript
+// 正确的写法
+
+  observers: {
+    imgUrl(imgUrl) {
+      console.log('this', this)
+      console.log('this.data', this.data)
+      console.log('this.properties', this.properties)
+      console.log(imgUrl)
+    }
+  },
+```
+
+
+还有一个非常重要的关注点：
+
+**这里this.data和this.properties指向的是同一个对象，这个对象包括data和properties中的数据。**
+
+
 ## mpvue相关
 
 [http://mpvue.com/mpvue/](http://mpvue.com/mpvue/)

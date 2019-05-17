@@ -646,8 +646,248 @@ for (let a of arr) {
 
 
 
+### ||和&&的高级用法
 
 
+
+
+
+[网页链接](https://segmentfault.com/a/1190000002454280)
+
+
+#### 用于赋值
+* &&:从左往右依次判断，当当前值为true则继续，为false则返回此值。是返回未转换为布尔值时的原值
+* ||:从左往右依次判断，当当前值为false则继续，为true则返回此值。是返回未转换为布尔值时的原值
+
+
+
+
+
+```
+// => aaa
+var attr = true && 4 && "aaa";
+
+// => 0
+var attr = true && 0 && "aaa";
+```
+
+
+
+
+
+
+
+```
+// => 100
+var attr = 100 || 12;
+
+// => e
+var attr = "e" || "hahaha"
+
+// => hahaha
+var attr = "" || "hahaha"
+```
+
+#### 经过多次判断的赋值
+
+
+
+
+```
+/*
+x>=15时 => 4
+x>=12时 => 3
+x>=10时 => 2
+x>=5时 => 1
+x<5时 => 0
+*/
+console.log((x>=15 && 4) || (x>=12 && 3) || (x>=10 && 2) || (x>=5 && 1) || 0);
+```
+
+
+#### 与对象形式的变量合体
+
+
+
+```
+/*
+x=15 时 => 4
+x=12 时 => 3
+x=10 时 => 2
+x=5 时 => 1
+其它 => 0
+*/
+console.log( {'5':1,'10':2,'12':3,'15':4}[x] || 0 );
+```
+
+#### 用于执行语句
+
+
+
+
+
+
+```
+if(a >=5){alert("你好");}
+//可以写成： 
+a >= 5 && alert("你好");
+```
+
+
+
+
+
+
+### eval() 函数
+
+
+
+[网页链接](http://www.w3school.com.cn/jsref/jsref_eval.asp)
+
+##### 定义和用法
+eval() 函数可计算某个字符串，并执行其中的的 JavaScript 代码。
+
+#### 语法
+eval(string)
+string  	必需。要计算的字符串，其中含有要计算的 JavaScript 表达式或要执行的语句。
+
+返回值  通过计算 string 得到的值（如果有的话）。
+
+#### 说明
+该方法只接受原始字符串作为参数，如果 string 参数不是原始字符串，那么该方法将不作任何改变地返回。因此请不要为 eval() 函数传递 String 对象来作为参数。
+
+如果试图覆盖 eval 属性或把eval()方法赋予另一个属性，并通过该属性调用它，则 ECMAScript 实现允许抛出一个 EvalError 异常。
+
+#### 提示和注释
+虽然 eval() 的功能非常强大，但在实际使用中用到它的情况并不多。
+
+#### 实例
+```
+<script type="text/javascript">
+
+eval("x=10;y=20;document.write(x*y)")
+
+document.write(eval("2+2"))
+
+var x=10
+document.write(eval(x+17))
+
+</script>
+
+输出：
+200
+4
+27
+```
+
+```javascript
+eval("2+3")	// 返回 5
+var myeval = eval;	// 可能会抛出 EvalError 异常
+myeval("2+3");	// 可能会抛出 EvalError 异常
+```
+可以使用下面这段代码来检测 eval() 的参数是否合法：
+```javascript
+try  {
+     alert("Result:" + eval(prompt("Enter an expression:","")));
+     }
+
+catch(exception) {
+     alert(exception);
+     }
+```
+
+
+----------
+js中这个函数eval（）对json数据有什么用？那eval( '(' + content + ')' )里边为什么要加引号呢？ 
+
+
+对于服务器返回的JSON字符串，如果jquery异步请求没做类型说明，或者以字符串方式接受，那么需要做一次对象化处理，方式不是太麻烦，就是将该字符串放于eval()中执行一次。这种方式也适合以普通javascipt方式获取json对象，以下举例说明：
+
+var dataObj=eval("("+data+")");//转换为json对象
+为什么要 eval这里要添加 “("("+data+")");//”呢？
+
+原因在于：eval本身的问题。 由于json是以”{}”的方式来开始以及结束的，在JS中，它会被当成一个语句块来处理，所以必须强制性的将它转换成一种表达式。
+
+**加上圆括号的目的是迫使eval函数在处理JavaScript代码的时候强制将括号内的表达式（expression）转化为对象，而不是作为语 句（statement）来执行。**
+
+
+举一个例子，例如对象字面量{}，如若不加外层的括号，那么eval会将大括号识别为JavaScript代码块的开始 和结束标记，那么{}将会被认为是执行了一句空语句。所以下面两个执行结果是不同的：
+
+```javascript
+alert(eval("{}"); // return undefined
+alert(eval("({})");// return object[Object]
+```
+
+
+
+
+### JS闭包
+
+[网页链接](http://www.runoob.com/js/js-function-closures.html)
+
+当function里嵌套function时，内部的function可以访问外部function里的变量。
+
+<strong>闭包是可访问上一层函数作用域里变量的函数，即便上一层函数已经关闭。</strong>
+
+闭包就是一个函数引用另一个函数的变量，因为变量被引用着所以不会被回收，因此可以用来封装一个私有变量。这是优点也是缺点，不必要的闭包只会增加内存消耗。
+或者说闭包就是子函数可以使用父函数的局部变量，还有父函数的参数。
+
+
+```javascript
+function foo(x) {
+    var tmp = 3;
+    function bar(y) {
+        alert(x + y + (++tmp));
+    }
+    bar(10);
+}
+foo(2)
+```
+不管执行多少次，都会alert16，因为bar能访问foo的参数x，也能访问foo的变量tmp。但，这还不是闭包。当你return的是内部function时，就是一个闭包。内部function会close-over外部function的变量直到内部function结束。
+```javascript
+function foo(x) {
+    var tmp = 3;
+    return function (y) {
+        alert(x + y + (++tmp));
+    }
+}
+var bar = foo(2); // bar 现在是一个闭包
+bar(10);
+```
+上面的脚本最终也会alert16，因为虽然bar不直接处于foo的内部作用域，但bar还是能访问x和tmp。
+但是，由于tmp仍存在于bar闭包的内部，所以它还是会自加1，而且你每次调用bar时它都会自加1.
+
+
+----------
+
+
+如果在一个大函数中有一些代码能够独立出来， 我们常常把这些代码封装在独立的的小函数里面。独立出来的小函数有助于代码复用，如果这些小函数有一个良好的命名，它们本身也起到了注释的作用。如果这些小函数不需要在程序的其他地方使用，最好是它们用闭包封装起来
+
+
+
+
+```javascript
+  var mult = (function () {
+        var cache = {}
+        var calculate = function () {
+            //封闭calculate函数
+            var a = 1
+            for (var i = 0, l = arguments.length; i < l; i++) {
+                a = a * arguments[i]
+            }
+            return a
+        }
+
+
+        return function () {
+            var args = Array.prototype.join.call(arguments, ',')
+            if (args in cache) {
+                return cache[args]
+            }
+            return cache[args] = calculate.apply(null, arguments)
+        }
+    })()
+```
 
 
 
