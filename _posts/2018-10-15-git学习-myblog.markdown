@@ -141,13 +141,17 @@ git log
 ```
 
 
-### 回滚、取消之前的提交
+### **回滚、取消之前的提交**
+
+
 ```
 git reset --hard commit_id    
 
 //退到/进到 指定commit的sha码 commit_id:239afed0857cc2e77c17c01014077808619af64d
 ```
 
+
+>**注意:这是个必须掌握的操作**
 
 
 ### git stash
@@ -260,3 +264,55 @@ cd ..
 git rm --cached 子模块名称
 
 完成删除。
+
+
+
+
+### branch diverged
+
+git分支分叉(branch diverged)的问题
+
+
+```
+$ git status
+# On branch feature/worker-interface
+# Your branch and 'origin/feature/worker-interface' have diverged,
+# and have 1 and 4 different commit(s) each, respectively.
+```
+
+
+
+
+
+
+
+
+
+### 补充
+
+
+[Git基本操作](http://youngxhui.github.io/2016/08/13/Git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/)
+
+[github小窍门](http://youngxhui.github.io/2016/08/28/GitHub-for-Windows%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

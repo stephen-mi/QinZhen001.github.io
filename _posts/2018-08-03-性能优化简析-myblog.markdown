@@ -242,6 +242,184 @@ code-splitting是Webpack中最引人注目的特性之一。此特性能够把�
 
 推荐使用Cache-control: immutable避免重新验证。
 
+### vue中长列表性能优化
+
+我们应该都知道vue会通过object.defineProperty对数据进行劫持，来实现视图响应数据的变化，然而有些时候我们的组件就是纯粹的数据展示，不会有任何改变，我们就不需要vue来劫持我们的数据，在大量数据展示的情况下，这能够很明显的减少组件初始化的时间，那如何禁止vue劫持我们的数据呢？可以通过object.freeze方法来冻结一个对象，一旦被冻结的对象就再也不能被修改了。
+
+
+```javascript
+export default {
+  data: () => ({
+    users: {}
+  }),
+  async created() {
+    const users = await axios.get("/api/users");
+    this.users = Object.freeze(users);
+  }
+};
+```
+复制代码另外需要说明的是，这里只是冻结了users的值，引用不会被冻结，当我们需要reactive数据的时候，我们可以重新给users赋值。
+
+```javascript
+export default {
+  data: () => ({
+    users: {}
+  }),
+  async created() {
+    const users = await axios.get("/api/users");
+    this.users = Object.freeze(users);
+  },
+  methods:{
+    // 改变值不会触发视图响应
+    this.data.users[0] = newValue
+    // 改变引用依然会触发视图响应
+    this.data.users = newArray
+  }
+};
+```
+
+
+作者：skinner
+链接：https://juejin.im/post/5ce3b519f265da1bb31c0d5f
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
+### vue中keep-alive优化
+
+
+
+一个常见的的场景，
+主页 -->前进 列表页-->前进 详情页，详情页 -->返回 主页 -->返回 列表页
+
+我们希望，
+从 详情页 -->返回 列表页 的时候页面的状态是缓存，不用重新请求数据，提升用户体验。
+
+从 列表页 -->返回 主页 的时候页面，注销掉列表页，以在进入不同的列表页的时候，获取最新的数据。
+
+
+
+**把需要缓存和不需要缓存的视图组件区分开**
+
+
+写2个 router-view 出口
+
+```javascript
+<keep-alive>
+    <!-- 需要缓存的视图组件 -->
+  <router-view v-if="$route.meta.keepAlive">
+  </router-view>
+</keep-alive>
+
+<!-- 不需要缓存的视图组件 -->
+<router-view v-if="!$route.meta.keepAlive">
+</router-view>
+```
+
+
+
+
+
+在Router里定义好需要缓存的视图组件
+```javascript
+new Router({
+    routes: [
+        {
+            path: '/',
+            name: 'index',
+            component: () => import('./views/keep-alive/index.vue'),
+            meta: {
+                deepth: 0.5
+            }
+        },
+        {
+            path: '/list',
+            name: 'list',
+            component: () => import('./views/keep-alive/list.vue'),
+            meta: {
+                deepth: 1
+                keepAlive: true //需要被缓存
+            }
+        },
+        {
+            path: '/detail',
+            name: 'detail',
+            component: () => import('./views/keep-alive/detail.vue'),
+            meta: {
+                deepth: 2
+            }
+        }
+    ]
+})
+```
+
+
+
+
+#### 按需keep-alive
+我们从官方文档提供的api入手,
+
+keep-alive组件如果设置了 include ，就只有和 include 匹配的组件会被缓存，
+
+所以思路就是，动态修改 include 数组来实现按需缓存。
+
+
+
+```javascript
+<keep-alive>
+    <!-- 需要缓存的视图组件 -->
+  <router-view :include="include" v-if="$route.meta.keepAlive">
+  </router-view>
+</keep-alive>
+
+<!-- 不需要缓存的视图组件 -->
+<router-view v-if="!$route.meta.keepAlive">
+</router-view>
+```
+
+让我们在app.vue里监听路由的变化,
+```javascript
+export default {
+  name: "app",
+  data: () => ({
+    include: []
+  }),
+  watch: {
+    $route(to, from) {
+      //如果 要 to(进入) 的页面是需要 keepAlive 缓存的，把 name push 进 include数组
+      if (to.meta.keepAlive) {
+        !this.include.includes(to.name) && this.include.push(to.name);
+      }
+      //如果 要 form(离开) 的页面是 keepAlive缓存的，
+      //再根据 deepth 来判断是前进还是后退
+      //如果是后退
+      if (from.meta.keepAlive && to.meta.deepth < from.meta.deepth) {
+        var index = this.include.indexOf(from.name);
+        index !== -1 && this.include.splice(index, 1);
+      }
+    }
+  }
+};
+```
+
+
+keep-alive需要其包裹的组件有name属性，
+我们上面的代码中的 push 和 splice 的是 router 的 name。
+
+所以建议大家把 route 的 name属性设置和 route对应component的name设成一样的。
+
+
+----------
+
+
+作者：宁柏龙
+链接：https://juejin.im/post/5cdcbae9e51d454759351d84
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
 ### 其他
 其他一些值得考虑的优化点：
 
