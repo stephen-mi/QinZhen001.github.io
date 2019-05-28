@@ -131,6 +131,7 @@ var obj = (0, _defineProperty3.default)({}, 'name', 'JavaScript');
 ```
 
 思考：babel-runtime 为什么适合 JavaScript 库和工具包的实现？
+
 1. 避免 babel 编译的工具函数在每个模块里重复出现，减小库和工具包的体积；
 2. 在没有使用 babel-runtime 之前，库和工具包一般不会直接引入 polyfill。否则像 Promise 这样的全局对象会污染全局命名空间，这就要求库的使用者自己提供 polyfill。这些 polyfill 一般在库和工具的使用说明中会提到，比如很多库都会有要求提供 es5 的 polyfill。在使用 babel-runtime 后，库和工具只要在 package.json 中增加依赖 babel-runtime，交给 babel-runtime 去引入 polyfill 就行了；
 
@@ -191,6 +192,24 @@ stage-2它除了覆盖stage-3的所有功能，还支持如下两个插件：
 
 babel-plugin-transform-runtime和babel-runtime
 字面意思就能看出来，一个是转化的包（插件），一个是充满polyfill的包。
+
+
+### Generator
+
+[https://www.jianshu.com/p/92639e681e2a](https://www.jianshu.com/p/92639e681e2a)
+
+Generator 的中文名称是生成器，它是ECMAScript6中提供的新特性。在过去，封装一段运算逻辑的单元是函数。函数只存在“没有被调用”或者“被调用”的情况，不存在一个函数被执行之后还能暂停的情况，而Generator的出现让这种情况成为可能。
+
+
+通过function*来定义的函数称之为“生成器函数”（generator function），它的特点是可以中断函数的执行，每次执行yield语句之后，函数即暂停执行，直到调用返回的生成器对象的next()函数它才会继续执行。
+
+
+也就是说Generator 函数是一个状态机，封装了多个内部状态。执行 Generator 函数返回一个遍历器对象（一个指向内部状态的指针对象），调用遍历器对象的next方法，使得指针移向下一个状态。每次调用next方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个yield表达式（或return语句）为止。
+
+作者：黎贝卡beka
+链接：https://www.jianshu.com/p/92639e681e2a
+来源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
 
 
 

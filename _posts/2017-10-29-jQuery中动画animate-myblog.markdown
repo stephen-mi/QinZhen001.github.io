@@ -20,7 +20,7 @@ tags:
 
 操作一个元素执行3秒的淡入动画，对比一下2组动画设置的区别
 
-```
+```javascript
 $(elem).fadeOut(3000)  
 $(elem).animate({   
     opacity:0
@@ -43,7 +43,7 @@ properties：一个或多个css属性的键值对所构成的Object对象。要�
 
 特别注意单位，属性值的单位像素（px）,除非另有说明。单位em 和 %需要指定使用
 
-```
+```javascript
 .animate({
     left: 50, 
     width: '50px'   
@@ -53,7 +53,7 @@ properties：一个或多个css属性的键值对所构成的Object对象。要�
 ```
 
 除了定义数值，每个属性能使用'show', 'hide', 和 'toggle'。这些快捷方式允许定制隐藏和显示动画用来控制元素的显示或隐藏
-```
+```javascript
 .animate({
     width: "toggle"
 });
@@ -61,7 +61,7 @@ properties：一个或多个css属性的键值对所构成的Object对象。要�
 
 如果提供一个以+= 或 -=开始的值，那么目标值就是以这个属性的当前值加上或者减去给定的数字来计算的
 
-```
+```javascript
 .animate({ 
     left: '+=50px'
 }, "slow");
@@ -79,7 +79,7 @@ jQuery库中默认调用 swing。如果需要其他的动画算法，请查找�
 动画完成时执行的函数，这个可以保证当前动画确定完成后发会触发
 
 ### 例子
-```
+```html
     <h2>animate(上)</h2>
     <p>慕课网,专注分享</p>
     <div id="aaron">内部动画</div>
@@ -91,6 +91,9 @@ jQuery库中默认调用 swing。如果需要其他的动画算法，请查找�
         <option value="4">动画4</option>
     </select>
     <input id="exec" type="button" value="执行动画">
+```
+
+```javascript
   <script type="text/javascript">
     $("#exec").click(function() {
         var v = $("#animation").val();
@@ -140,7 +143,7 @@ animate在执行动画中，如果需要观察动画的一些执行情况，或�
 
 **如果多个元素执行动画，回调将在每个匹配的元素上执行一次，不是作为整个动画执行一次**
 
-```
+```javascript
 $('#elem').animate({
     width: 'toggle',  
     height: 'toggle'
@@ -158,7 +161,7 @@ $('#elem').animate({
 
 
 
-```
+```javascript
  <script type="text/javascript">
     $("#exec").click(function() {
         var v = $("#animation").val();
