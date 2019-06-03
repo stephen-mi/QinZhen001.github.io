@@ -38,7 +38,7 @@ mouseout()方法触发mouseout事件，当鼠标离开**被选元素或者任意
 >mouseleave()和mouseenter()经常配合一起使用，
 >mouseover()和mouseout()经常配合一起使用。
 
-## 后记
+
 经过自己的测试，mousedown，mousemove，mouseup都会进行事件冒泡。
 ```javascript
     jQuery(document).ready(function ($) {
@@ -80,7 +80,7 @@ jQuery中有个很重要的核心方法each，大部分jQuery方法在内部都�
 jQuery的大部分方法都是针元素合集的操作，所以jQuery会提供$(selector).each()来遍历jQuery对象
 .each只是处理jQuery对象的方法，jQuery还提供了一个通用的jQuery.each方法，用来处理对象和数组的遍历
 
-### 语法
+#### 语法
 ```javascript
 jQuery.each(array, callback )
 jQuery.each( object, callback )
@@ -102,7 +102,7 @@ $.each(["Aaron", "慕课网"], function(index, value) {
 });
 ```
 
-### 例子
+#### 例子
 ```javascript
   $("#exec").click(function() {
         var v = $("#animation").val();
@@ -228,7 +228,115 @@ scrollTop()
 
 
 
+### detach()方法
+[网页链接](http://www.w3school.com.cn/jquery/manipulation_detach.asp)
 
+```javascript
+$("button").click(function(){
+  $("p").detach();
+});
+```
+
+
+
+detach() 方法移除被选元素，包括所有文本和子节点。
+
+这个方法会保留 jQuery 对象中的匹配的元素，因而可以在将来再使用这些匹配的元素。
+
+**detach() 会保留所有绑定的事件、附加的数据，这一点与 remove() 不同。**
+
+
+```html
+<html>
+<head>
+<script type="text/javascript" src="/jquery/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  var x;
+  $("#btn1").click(function(){
+    x=$("p").detach();
+  });
+  $("#btn2").click(function(){
+    $("body").prepend(x);
+  });
+});
+</script>
+</head>
+<body>
+<p>这是一个段落。</p>
+<button id="btn1">删除 p 元素</button>
+<button id="btn2">恢复 p 元素</button>
+</body>
+</html>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+### focus()和focusin()
+[网页链接](http://www.w3school.com.cn/jquery/event_focus.asp)
+
+#### focus()方法
+
+```
+$("input").focus(function(){
+  $("input").css("background-color","#FFFFCC");
+});
+```
+
+当元素获得焦点时，发生 focus 事件。**(只对当前元素有效)**
+
+当通过鼠标点击选中元素或通过 tab 键定位到元素时，该元素就会获得焦点。
+
+focus() 方法触发 focus 事件，或规定当发生 focus 事件时运行的函数。
+
+
+#### focusin() 方法
+
+当元素（或在其内的任意元素）获得焦点时发生 focusin 事件。
+
+当在元素或在其内的任意元素上发生 focus 事件时，focusin() 方法添加要运行的函数。
+
+**与 focus() 方法不同的是，focusin() 方法在任意子元素获得焦点时也会触发。**
+
+
+
+
+>同理适用于blur()和focusout()
+
+
+
+
+
+
+## 补充
+
+
+
+### $('#a.b')是低效做法
+
+[网页链接](https://segmentfault.com/q/1010000002939093/a-1020000006707782)
+
+
+jQuery选择器优化问题，使用$('#a>.b')，IDE会提示这是低效的用法
+
+It suggests to split descendant selectors which are prefaced with ID selector and warns about duplicated selectors which could be cached.
+
+```
+$("#property [data-role='content'] .container");
+
+Changing it to this makes PhpStorm happy and can evidently be more than twice as fast:
+
+$("#property").find("[data-role='content'] .container");
+```
 
 
 
