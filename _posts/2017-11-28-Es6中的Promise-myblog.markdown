@@ -52,7 +52,7 @@ pending 状态的 Promise 对象可能触发fulfilled 状态并传递一个值�
 ### 创建Promise
 
 Promise 对象是由关键字 new 及其构造函数来创建的。该构造函数会把一个叫做“处理器函数”（executor function）的函数作为它的参数。这个“处理器函数”接受两个函数——resolve 和 reject ——作为其参数。当异步任务顺利完成且返回结果值时，会调用 resolve 函数；而当异步任务失败且返回失败原因（通常是一个错误对象）时，会调用reject 函数。
-```
+```javascript
 const myFirstPromise = new Promise((resolve, reject) => {
   // ?异步操作，最终调用:
   //
@@ -63,7 +63,7 @@ const myFirstPromise = new Promise((resolve, reject) => {
 ```
 
 想要某个函数拥有promise功能，只需让其返回一个promise即可。
-```
+```javascript
 function myAsyncFunction(url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -76,7 +76,7 @@ function myAsyncFunction(url) {
 ```
 
 ### 示例
-```
+```javascript
 let myFirstPromise = new Promise(function(resolve, reject){
     //当异步代码执行成功时，我们才会调用resolve(...), 当异步代码失败时就会调用reject(...)
     //在本例中，我们使用setTimeout(...)来模拟异步代码，实际编码时可能是XHR请求或是HTML5的一些API方法.
@@ -93,7 +93,7 @@ myFirstPromise.then(function(successMessage){
 ```
 
 包装成一个函数
-```
+```javascript
 function runAsync () {
     var promise = new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -113,7 +113,7 @@ runAsync().then(function (data) {
 ```
 
 ### 链式调用
-```
+```javascript
 function runAsync1(){
     var promise = new Promise(function(resolve, reject){
         //做一些异步操作
@@ -194,7 +194,7 @@ promise.then(
 
 [https://segmentfault.com/q/1010000005330351](https://segmentfault.com/q/1010000005330351)
 
-```
+```javascript
 var foo = {
     then: (resolve, reject) => resolve('foo')
 };
@@ -212,7 +212,7 @@ resolved.then((str) =>
 
 ----------
 
-```
+```javascript
 Promise.resolve('hello');
 // 相当于
 const promise = new Promise(resolve => {
@@ -241,7 +241,7 @@ Promise.resolve(theanable);
 
 
 ### Promise 代码实现
-```
+```javascript
 /**
  * Promise 实现 遵循promise/A+规范
  * Promise/A+规范译文:
@@ -559,7 +559,7 @@ try {
 #### Promise的执行时机
 Promise 新建后就会立即执行。
 
-```
+```javascript
 let promise = new Promise(function(resolve, reject) {
   console.log('Promise');
   resolve();
@@ -602,6 +602,96 @@ Promise.all([asyncTask(1),asyncTask(2),asyncTask(3)])
 结论:
 
 由此可见，Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]，是按顺序发起的，**由于它们都是异步的，互相之间并不阻塞，每个任务完成时机是不确定的。尽管如此，所有任务结束之后，它们的结果仍然是按顺序地映射到resultList里**，这样就能和Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]一一对应起来。
+
+
+### return的问题
+
+**return resolve() 或 return reject()之后的代码不会执行**
+
+
+
+例子：
+
+
+resolve前面不加return情况
+
+```javascript
+function test() {
+  test1().then(res=>{
+    console.log(res)
+  })
+}
+
+
+function test1() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('resolve 前面')
+      resolve('aaa')
+      console.log('resolve 后面')
+    }, 1000)
+  })
+}
+
+
+test()
+```
+
+
+```javascript
+//输出
+resolve 前面
+resolve 后面
+aaa
+```
+
+
+----------
+
+
+
+
+
+resolve前面加return情况
+
+```javascript
+function test() {
+  test1().then(res=>{
+    console.log(res)
+  })
+}
+
+
+function test1() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('resolve 前面')
+      return resolve('aaa')
+      console.log('resolve 后面')
+    }, 1000)
+  })
+}
+
+
+test()
+```
+
+
+```javascript
+//输出
+resolve 前面
+aaa
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

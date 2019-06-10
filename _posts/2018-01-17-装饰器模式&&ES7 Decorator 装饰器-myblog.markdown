@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "装饰器模式&&ES7 Decorator 装饰器"
+title:      "装饰器模式"
 date:       2018-01-17 16:09:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - ES7
+    - DesignPattern
 ---
 
 > “Yeah It's on. ”
@@ -308,5 +308,156 @@ public class Player {
 
 
 
+## 其他
+
+
+### 小程序页面注入 
+
+>2019.6.6 18:03
+
+最近一直在写小程序相关框架，在搭建项目架子的时候，就用到了装饰器模式
+
+
+[https://developers.weixin.qq.com/community/develop/article/doc/000022ca3e4d0877fb68e44ac56013](https://developers.weixin.qq.com/community/develop/article/doc/000022ca3e4d0877fb68e44ac56013)
+
+
+
+
+
+![enter description here][2]
+
+
+
+**在小程序页面的生命周期中注入其他函数，从而达到增加生命周期的效果。**
+
+
+
+
+
+```javascript
+
+// 在页面进入和离开时自动进行数据上报
+
+/* eslint-disable */
+(function () {
+  let page_path = ''
+  let option_ = ''
+  let starttime_ = ''
+  const sdk = wx.xhw.xhwSdk
+
+  function appendFunc(instance, LifeCycle, appendFunc) {
+    if (instance[LifeCycle]) {
+      var LifeCyclefunc = instance[LifeCycle];
+      instance[LifeCycle] = function (params) {
+        LifeCyclefunc.call(this, params)
+        appendFunc.call(this, params, LifeCycle);
+      }
+    } else {
+      instance[LifeCycle] = function (params) {
+        appendFunc.call(this, params, LifeCycle)
+      }
+    }
+  }
+
+  function appendFuncReturn(instance, LifeCycleFunc, appendFunc) {
+    if (instance[LifeCycleFunc]) {
+      var s = instance[LifeCycleFunc];
+      instance[LifeCycleFunc] = function (params) {
+        var n = s.call(this, params);
+        appendFunc.call(this, [params, n], LifeCycleFunc);
+        return n
+      }
+    } else {
+      instance[LifeCycleFunc] = function (params) {
+        appendFunc.call(this, params, LifeCycleFunc)
+      }
+    }
+  }
+
+  var apponLaunch = function (opt) {
+
+  }
+  var apponShow = function () {
+  }
+  var apponUnlaunch = function () {
+  }
+  var apponHide = function () {
+  }
+  var apponError = function (msg) {
+
+  }
+  var pageonLoad = function (opt) {
+
+  }
+  var pageonUnload = function () {
+    console.log('pageonUnload')
+  }
+  var pageonShow = function () {
+    let pageLen = getCurrentPages().length;
+    let curPage = getCurrentPages()[pageLen - 1];
+    option_ = Object.keys(curPage.options).length !== 0 ? JSON.stringify(curPage.options) : 'none';
+    page_path = curPage.route;
+    starttime_ = new Date().getTime();
+    let reportData = {
+      key: 90031,
+      type_: 1,
+      option_: option_,
+      page_path: page_path,
+      starttime_: starttime_
+    };
+    reportData.scene = sdk.getScene()
+    reportData.trace_id = `${sdk.getOpenIdSync()}${reportData.starttime_}`;
+    console.log('进入页面数据上报:', reportData);
+    sdk.sendkv(reportData)
+  }
+  var pageonHide = function () {
+    let reportData = {
+      key: 90031,
+      type_: 2,
+      option_: option_,
+      page_path: page_path,
+      starttime_: starttime_
+    };
+    reportData.scene = sdk.getScene();
+    let leftTime = new Date().getTime();
+    reportData.trace_id = `${sdk.getOpenIdSync()}${leftTime}`;
+    reportData.staytime_ = parseInt((leftTime - reportData.starttime_) / 1000);
+    console.log('离开页面数据上报:', reportData);
+    sdk.sendkv(reportData)
+  }
+  var pageonReady = function () {
+  }
+  //
+  // var N = App;
+  // App = function (obj) {
+  //   appendFunc(obj, "onLaunch", apponLaunch);
+  //   appendFunc(obj, "onUnlaunch", apponUnlaunch);
+  //   appendFunc(obj, "onShow", apponShow);
+  //   appendFunc(obj, "onHide", apponHide);
+  //   appendFunc(obj, "onError", apponError);
+  //   N(obj)
+  // };
+  var J = Page;
+  Page = function (obj) {
+    // appendFunc(obj, "onLoad", pageonLoad);
+    // appendFunc(obj, "onUnload", pageonUnload);
+    appendFunc(obj, "onShow", pageonShow);
+    appendFunc(obj, "onHide", pageonHide);
+    // appendFunc(obj, "onReady", pageonReady);
+    // appendFunc(obj, "onPullDownRefresh", pageonPullDownRefresh);
+    // if (typeof obj["onShareAppMessage"] != "undefined") {
+    //   appendFuncReturn(obj, "onShareAppMessage", pageonShareAppMessage)
+    // }
+    J(obj)
+  }
+})();
+```
+
+
+
+>在每个页面require引入这个文件就行了
+
+
 
   [1]: http://www.runoob.com/wp-content/uploads/2014/08/decorator_pattern_uml_diagram.jpg
+  [2]: https://s2.ax1x.com/2019/06/06/VdVdIJ.jpg

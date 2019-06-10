@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "记一次webpack打包体积优化"
-date:       2019-05-27 15:41:00
+title:      "记sdk一次webpack打包优化"
+date:       2018-02-27 15:41:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
@@ -16,7 +16,7 @@ tags:
 
 最近，准备将小程序代码从wepy框架迁移到原生框架，所以要将原来基于wepy框架的小程序sdk用原生框架进行重写。
 
-重写的过程中，使用webpack4.0进行打包，扔上npm私服，期间更改了babel配置，**减少了30多kb体积**。
+重写的过程中，使用webpack4.0进行打包，扔上npm私服，期间更改了babel配置，**一开始减少了30多kb体积，但最终可行方案只减少了10+kb**。
 
 
 ### 原来配置

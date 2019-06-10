@@ -423,9 +423,166 @@ gulp-uglify无法压缩带有es6语法的js，必须先要用babel把es6转为es
 
 
 
+### gulp-clean效率太慢
+
+[https://www.npmjs.com/package/gulp-clean](https://www.npmjs.com/package/gulp-clean)
+
+
+Option read:false prevents gulp from reading the contents of the file and makes this task a lot faster. If you need the file and its contents after cleaning in the same stream, do not set the read option to false.
+
+选项read:false阻止gulp读取文件的内容，**并使这个任务快得多**。如果在同一流中清理后需要文件及其内容，请不要将read选项设置为false。
+
+
+-----
+
+
+For safety files and folders outside the current working directory can be removed only with option force set to true.
+
+
+
+对于当前工作目录之外的安全文件和文件夹，只能在将选项force设置为true时删除。
+
+
+
+
+
+------
+
+
+
+```javascript
+gulp.task('clean', () => gulp.src(distPath, {read: false, allowEmpty: true}).pipe(clean()))
+```
+
+
+
+
+>allowEmpty为true，允许distPath不存在，不加这个的话，如果distPath不存在会报错
+
+
+
+
+
+
+### gulp-imagemin无法处理小图片
+
+[https://github.com/sindresorhus/gulp-imagemin](https://github.com/sindresorhus/gulp-imagemin)
+
+
+原本想build的时候，对图片进行压缩处理，但是如果gulp-imagemin处理的是几kb的图片(例如：小图标)，这种图片就会消失不见。
+
+
+**经过各种尝试，和查看issue，最终还是没有倒找到解决办法，最终放弃压缩图片**
+ 
+
+
+>基本上大图片都放在腾讯云桶或者cdn上，所以这里不优化也没有太大问题
+
+
+### gulp-clean-css报错
+
+[https://segmentfault.com/q/1010000009464383/a-1020000009474922](https://segmentfault.com/q/1010000009464383/a-1020000009474922)
+
+
+```
+Error [ERR_UNHANDLED_ERROR]: Unhandled error. (Ignoring local @import of "../../common/common" as resource is missing.)
+    at Domain.emit (events.js:178:17)
+    at Domain.EventEmitter.emit (domain.js:441:20)
+    at DestroyableTransform.EventEmitter.emit (domain.js:454:12)
+    at DestroyableTransform.onerror (F:\前端项目\xhw-native\node_modules\readable-stream\lib\_stream_readable.js:640:52)
+    at DestroyableTransform.emit (events.js:189:13)
+    at DestroyableTransform.EventEmitter.emit (domain.js:441:20)
+    at onwriteError 
+```
+
+
+可以非常快的定位到是css中@import导致路径的问题
+
+
+尝试解决：
+
+[http://www.imooc.com/wenda/detail/467650](http://www.imooc.com/wenda/detail/467650)
+
+gulp-clean-css 只是一个 gulp 的插件，内部使用了clean-css，因此可以去 clean-css 项目找解决方案：
+
+[https://github.com/jakubpawlowicz/clean-css#how-to-process-remote-imports-correctly](https://github.com/jakubpawlowicz/clean-css#how-to-process-remote-imports-correctly)
+
+
+How to process remote @imports correctly?
+
+```javascript
+In order to inline remote @import statements you need to provide a
+callback to minify method as fetching remote assets is an asynchronous
+operation, e.g.:
+
+var source = '@import url(http://example.com/path/to/remote/styles);';new CleanCSS({ inline: ['remote'] }).minify(source, function 
+(error, output) {  // output.styles});
+f you don't provide a callback, then remote @imports will be left as is.
+```
+
+加一个参数：
+```javascript
+{ inline: ['remote'] }
+```
+
+**但是，解决失败。。。。。**
+
+
+**经过n次解决后，决定，放弃使用gulp-clean-css压缩css**
+
+
+
+
+
+### gulp-htmlmin报错
+
+gulp-htmlmin压缩小程序wxml会有奇奇怪怪的问题
+
+如：样式错乱 页面白屏 单标签闭合 等
+
+
+
+
+![enter description here][2]
+
+
+
+
+```javascript
+.pipe(gulpif(!config.isDev, htmlmin({
+          collapseWhitespace: true,
+          removeComments: true,
+          keepClosingSlash: true
+ })))
+```
+
+
+
+**经过多次的尝试也没有找到解决办法，最终放弃了**
+
+
+
+
+### 压缩wxml和wxss
+
+经过前面的gulp-htmlmin和gulp-clean-css都未能正确压缩
+
+那该如何压缩wxml和wxss呢？
+
+
+经过查看wepy源码发现它用到了一个库 **pretty-data**
+
+
+[https://github.com/Tencent/wepy/blob/2.0.x/packages/wepy-plugin-filemin/src/index.js](https://github.com/Tencent/wepy/blob/2.0.x/packages/wepy-plugin-filemin/src/index.js)
+
+
+
+所以，我找到了它的对应gulp包gulp-pretty-data
+
 
 
 ## 备注
 
 
   [1]: https://s2.ax1x.com/2019/05/07/EsnB5j.png
+  [2]: https://s2.ax1x.com/2019/06/10/V6rXin.png
