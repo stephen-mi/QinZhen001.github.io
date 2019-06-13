@@ -28,7 +28,7 @@ async 函数是什么？
 
 
 
-```
+```javascript
 const fs = require('fs');
 
 const readFile = function (fileName) {
@@ -52,7 +52,7 @@ const gen = function* () {
 
 写成async函数，就是下面这样。
 
-```
+```javascript
 const asyncReadFile = async function () {
   const f1 = await readFile('/etc/fstab');
   const f2 = await readFile('/etc/shells');
@@ -101,7 +101,7 @@ async函数的返回值是 Promise 对象，这比 Generator 函数的返回值�
 async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句
 
 
-```
+```javascript
 async function getStockPriceByName(name) {
   const symbol = await getStockSymbol(name);
   const stockPrice = await getStockPrice(symbol);
@@ -121,7 +121,7 @@ async函数的语法规则总体上比较简单，难点是错误处理机制。
 
 **async函数内部return语句返回的值，会成为then方法回调函数的参数。**
 
-```
+```javascript
 async function f() {
   return 'hello world';
 }
@@ -135,7 +135,9 @@ f().then(v => console.log(v))
 上面代码中，函数f内部return命令返回的值，会被then方法回调函数接收到。
 
 async函数内部抛出错误，会导致返回的 Promise 对象变为reject状态。抛出的错误对象会被catch方法回调函数接收到。
-```
+
+
+```javascript
 async function f() {
   throw new Error('出错了');
 }
@@ -151,7 +153,7 @@ f().then(
 async函数返回的 Promise 对象，必须等到内部所有await命令后面的 Promise 对象执行完，才会发生状态改变，除非遇到return语句或者抛出错误。也就是说，只有async函数内部的异步操作执行完，才会执行then方法指定的回调函数。
 
 下面是一个例子
-```
+```javascript
 async function getTitle(url) {
   let response = await fetch(url);
   let html = await response.text();
@@ -166,7 +168,7 @@ getTitle('https://tc39.github.io/ecma262/').then(console.log)
 ### await 命令
 **正常情况下，await命令后面是一个 Promise 对象。如果不是，会被转成一个立即resolve的 Promise 对象。**
 
-```
+```javascript
 async function f() {
   return await 123;
 }
@@ -184,7 +186,7 @@ f().then(v => console.log(v))
 
 await命令后面的 Promise 对象如果变为reject状态，则reject的参数会被catch方法的回调函数接收到。
 
-```
+```javascript
 async function f() {
   await Promise.reject('出错了');
 }
@@ -195,14 +197,14 @@ f()
 // 出错了
 ```
 
-注意，上面代码中，await语句前面没有return，但是reject方法的参数依然传入了catch方法的回调函数。这里如果在await前面加上return，效果是一样的。
+注意，上面代码中，await语句前面没有return，但是reject方法的参数依然传入了catch方法的回调函数。
 
 
 
 
 **只要一个await语句后面的 Promise 变为reject，那么整个async函数都会中断执行。**
 
-```
+```javascript
 async function f() {
   await Promise.reject('出错了');
   await Promise.resolve('hello world'); // 不会执行
@@ -214,7 +216,7 @@ async function f() {
 
 
 有时，我们希望即使前一个异步操作失败，也不要中断后面的异步操作。这时可以将第一个await放在**try...catch结构**里面，这样不管这个异步操作是否成功，第二个await都会执行。
-```
+```javascript
 async function f() {
   try {
     await Promise.reject('出错了');
@@ -232,7 +234,7 @@ f()
 
 
 
-```
+```javascript
 async function f() {
   await Promise.reject('出错了')
     .catch(e => console.log(e));
@@ -249,7 +251,7 @@ f()
 ### 错误处理
 如果await后面的异步操作出错，那么等同于async函数返回的 Promise 对象被reject。
 
-```
+```javascript
 async function f() {
   await new Promise(function (resolve, reject) {
     throw new Error('出错了');
@@ -268,7 +270,7 @@ f()
 
 防止出错的方法，也是将其放在try...catch代码块之中。
 
-```
+```javascript
 async function f() {
   try {
     await new Promise(function (resolve, reject) {
@@ -281,7 +283,7 @@ async function f() {
 ```
 如果有多个await命令，可以统一放在try...catch结构中。
 
-```
+```javascript
 async function main() {
   try {
     const val1 = await firstStep();
@@ -297,7 +299,7 @@ async function main() {
 ```
 
 下面的例子使用try...catch结构，实现多次重复尝试。
-```
+```javascript
 const superagent = require('superagent');
 const NUM_RETRIES = 3;
 
@@ -319,7 +321,7 @@ test();
 
 ### 使用的注意点
 第一点，前面已经说过，await命令后面的Promise对象，运行结果可能是rejected，所以最好把await命令放在try...catch代码块中。
-```
+```javascript
 async function myFunction() {
   try {
     await somethingThatReturnsAPromise();
@@ -345,7 +347,7 @@ let bar = await getBar();
 
 上面代码中，getFoo和getBar是两个独立的异步操作（即互不依赖），被写成继发关系。这样比较耗时，因为只有getFoo完成以后，才会执行getBar，完全可以让它们同时触发。
 
-```
+```javascript
 // 写法一
 let [foo, bar] = await Promise.all([getFoo(), getBar()]);
 

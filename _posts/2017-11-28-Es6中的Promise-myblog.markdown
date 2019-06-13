@@ -240,6 +240,157 @@ Promise.resolve(theanable);
 
 
 
+
+## 补充
+
+### promise中如何取到[[PromiseValue]]
+
+[https://segmentfault.com/q/1010000010670739](https://segmentfault.com/q/1010000010670739)
+
+
+```javascript
+var a = Promise.resolve('xx')
+// Promise {[[PromiseStatus]]: "resolved", [[PromiseValue]]: "xx"}
+a.then(function (result) { console.log(result) })
+```
+
+### Promise的执行时机
+
+
+Promise 新建后就会立即执行。
+
+```javascript
+let promise = new Promise(function(resolve, reject) {
+  console.log('Promise');
+  resolve();
+});
+
+promise.then(function() {
+  console.log('resolved.');
+});
+
+console.log('Hi!');
+
+// Promise
+// Hi!
+// resolved
+```
+
+上面代码中，Promise 新建后立即执行，所以首先输出的是Promise。然后，then方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以resolved最后输出。
+
+
+
+### promise.all使用问题
+```javascript
+const getRandom = () => +(Math.random()*1000).toFixed(0);
+
+const asyncTask = taskID => new Promise(resolve => {
+    let timeout = getRandom();
+    console.log(`taskID=${taskID} start.`);
+    setTimeout(function() {
+        console.log(`taskID=${taskID} finished in time=${timeout}.`);
+        resolve(taskID)
+    }, timeout);
+});
+
+Promise.all([asyncTask(1),asyncTask(2),asyncTask(3)])
+.then(resultList => {
+    console.log('results:',resultList);
+});
+```
+
+结论:
+
+由此可见，Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]，是按顺序发起的，**由于它们都是异步的，互相之间并不阻塞，每个任务完成时机是不确定的。尽管如此，所有任务结束之后，它们的结果仍然是按顺序地映射到resultList里**，这样就能和Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]一一对应起来。
+
+
+### return的问题
+
+**return resolve() 或 return reject()之后的代码不会执行**
+
+
+
+例子：
+
+
+resolve前面不加return情况
+
+```javascript
+function test() {
+  test1().then(res=>{
+    console.log(res)
+  })
+}
+
+
+function test1() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('resolve 前面')
+      resolve('aaa')
+      console.log('resolve 后面')
+    }, 1000)
+  })
+}
+
+
+test()
+```
+
+
+```javascript
+//输出
+resolve 前面
+resolve 后面
+aaa
+```
+
+
+----------
+
+
+
+
+
+resolve前面加return情况
+
+```javascript
+function test() {
+  test1().then(res=>{
+    console.log(res)
+  })
+}
+
+
+function test1() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('resolve 前面')
+      return resolve('aaa')
+      console.log('resolve 后面')
+    }, 1000)
+  })
+}
+
+
+test()
+```
+
+
+```javascript
+//输出
+resolve 前面
+aaa
+```
+
+
+
+
+
+
+
+
+
 ### Promise 代码实现
 ```javascript
 /**
@@ -546,142 +697,6 @@ try {
 來源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
-
-
-
-
-
-
-
-### 补充
-
-
-#### Promise的执行时机
-Promise 新建后就会立即执行。
-
-```javascript
-let promise = new Promise(function(resolve, reject) {
-  console.log('Promise');
-  resolve();
-});
-
-promise.then(function() {
-  console.log('resolved.');
-});
-
-console.log('Hi!');
-
-// Promise
-// Hi!
-// resolved
-```
-
-上面代码中，Promise 新建后立即执行，所以首先输出的是Promise。然后，then方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以resolved最后输出。
-
-
-
-### promise.all使用问题
-```javascript
-const getRandom = () => +(Math.random()*1000).toFixed(0);
-
-const asyncTask = taskID => new Promise(resolve => {
-    let timeout = getRandom();
-    console.log(`taskID=${taskID} start.`);
-    setTimeout(function() {
-        console.log(`taskID=${taskID} finished in time=${timeout}.`);
-        resolve(taskID)
-    }, timeout);
-});
-
-Promise.all([asyncTask(1),asyncTask(2),asyncTask(3)])
-.then(resultList => {
-    console.log('results:',resultList);
-});
-```
-
-结论:
-
-由此可见，Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]，是按顺序发起的，**由于它们都是异步的，互相之间并不阻塞，每个任务完成时机是不确定的。尽管如此，所有任务结束之后，它们的结果仍然是按顺序地映射到resultList里**，这样就能和Promise.all里的任务列表[asyncTask(1),asyncTask(2),asyncTask(3)]一一对应起来。
-
-
-### return的问题
-
-**return resolve() 或 return reject()之后的代码不会执行**
-
-
-
-例子：
-
-
-resolve前面不加return情况
-
-```javascript
-function test() {
-  test1().then(res=>{
-    console.log(res)
-  })
-}
-
-
-function test1() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('resolve 前面')
-      resolve('aaa')
-      console.log('resolve 后面')
-    }, 1000)
-  })
-}
-
-
-test()
-```
-
-
-```javascript
-//输出
-resolve 前面
-resolve 后面
-aaa
-```
-
-
-----------
-
-
-
-
-
-resolve前面加return情况
-
-```javascript
-function test() {
-  test1().then(res=>{
-    console.log(res)
-  })
-}
-
-
-function test1() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('resolve 前面')
-      return resolve('aaa')
-      console.log('resolve 后面')
-    }, 1000)
-  })
-}
-
-
-test()
-```
-
-
-```javascript
-//输出
-resolve 前面
-aaa
-```
 
 
 

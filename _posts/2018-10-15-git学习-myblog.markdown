@@ -155,6 +155,10 @@ git reset --hard commit_id
 
 
 ### git stash
+
+[https://www.cnblogs.com/tocy/p/git-stash-reference.html](https://www.cnblogs.com/tocy/p/git-stash-reference.html)
+
+
 现在你想切换分支，但是你还不想提交你正在进行中的工作；所以你储藏这些变更。为了往堆栈推送一个新的储藏，只要运行 git stash：
 
 ```
@@ -209,6 +213,27 @@ stash@{2}: WIP on master: 21d80a5 added number to log
 $ git stash drop stash@{0}
 Dropped stash@{0} (364e91f3f268f0900bc3ee613f9f733e82aaed43)
 ```
+
+
+
+-------------------
+
+git stash通常用于：
+1. 修复一个临时bug，需要清空工作目录
+2. 使用git pull文件时和本地文件冲突
+
+
+>[使用git pull文件时和本地文件冲突](http://www.01happy.com/git-resolve-conflicts/)
+
+
+
+
+
+
+
+
+
+
 
 ### git submodule
 

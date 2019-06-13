@@ -47,9 +47,104 @@ gulp.src(globs[, options])
 
 输出（Emits）符合所提供的匹配模式（glob）或者匹配模式的数组（array of globs）的文件。 将返回一个 Vinyl files 的 stream 它可以被 piped 到别的插件中。
 
-```
+```javascript
 gulp.src('client/templates/*.jade')
   .pipe(jade())
   .pipe(minify())
   .pipe(gulp.dest('build/minified_templates'));
 ```
+
+
+
+
+## 优化
+
+
+### 优化gulp watch
+
+不要一次watch太多文件，分开成几个watch任务
+
+```javascript
+    /**
+     * 构建相关任务
+     */
+    gulp.task(`${id}-watch`, () => {
+      gulp.watch(config.jsFiles, {cwd: srcPath}, gulp.series('js'))
+        .on('unlink', (curPath) => {
+          let targetPath = path.resolve(distPath, curPath)
+          _.delPath(targetPath)
+        })
+
+      gulp.watch(config.jsonFiles, {cwd: srcPath}, gulp.series('json'))
+        .on('change', (path) => {
+          if (/package/.test(path)) {
+            install()
+          }
+        })
+        .on('unlink', (curPath) => {
+          let targetPath = path.resolve(distPath, curPath)
+          _.delPath(targetPath)
+        })
+
+      gulp.watch(config.wxmlFiles, {cwd: srcPath}, gulp.series('wxml'))
+        .on('unlink', (curPath) => {
+          let targetPath = path.resolve(distPath, curPath)
+          _.delPath(targetPath)
+        })
+
+      gulp.watch(config.lessFiles, {cwd: srcPath}, gulp.series('wxss'))
+        .on('unlink', (curPath) => {
+          let targetPath = path.resolve(distPath, curPath)
+          if (/\.less/.test(targetPath)) {
+            targetPath = targetPath.replace('.less', '.wxss')
+          }
+          _.delPath(targetPath)
+        })
+
+      gulp.watch(config.imgFiles, {cwd: srcPath}, gulp.series('img'))
+        .on('unlink', (curPath) => {
+          let targetPath = path.resolve(distPath, curPath)
+          _.delPath(targetPath)
+        })
+    })
+```
+
+
+
+
+### gulp-changed
+
+Only pass through changed files
+[https://www.npmjs.com/package/gulp-changed](https://www.npmjs.com/package/gulp-changed)
+
+
+
+
+
+
+
+
+### gulp-cache
+
+
+
+A temp file based caching proxy task for gulp.
+
+
+[https://www.npmjs.com/package/gulp-cache](https://www.npmjs.com/package/gulp-cache)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

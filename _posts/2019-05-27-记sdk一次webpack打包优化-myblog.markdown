@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "记sdk一次webpack打包优化"
-date:       2018-02-27 15:41:00
+date:       2019-05-27 15:41:00
 author:     "Qz"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
