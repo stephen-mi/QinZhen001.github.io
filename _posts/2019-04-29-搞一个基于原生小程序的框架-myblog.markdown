@@ -512,8 +512,17 @@ For safety files and folders outside the current working directory can be remove
 
 
 ```javascript
-gulp.task('clean', () => gulp.src(distPath, {read: false, allowEmpty: true}).pipe(clean()))
+    /**
+     * 清空目标目录
+     */
+    gulp.task('clean', () => {
+      return gulp.src(distPath, {read: false, allowEmpty: true})
+        .pipe(clean({force: true}))
+    })
 ```
+
+
+----------
 
 
 ```
