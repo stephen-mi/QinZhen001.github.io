@@ -89,14 +89,86 @@ console.log(ary);//-->[12,23,24,42,1]；  原数组并未发生变化
 
 
 
+## 补充
+
+### async/await 与 forEach 问题
+
+[https://www.jianshu.com/p/18a6d889769b](https://www.jianshu.com/p/18a6d889769b)
+
+
+方法一：没问题
+```javascript
+    (async function () {
+        for (let i = 0; i < triggerArr.length; ++i) {
+            await sleep();
+            triggerArr[i]();
+        }
+    })();
+```    
+    
+方法二：是一起输出来的，为什么？(没有等待)
+
+```javascript
+    const test = async function (item) {
+            await sleep();
+            item();
+    };
+
+    triggerArr.forEach(test);
+```
+
+
+
+
+
+**forEach 的回调函数是一个异步函数，异步函数中包含一个 await 等待 Promise 返回结果，我们期望数组元素串行执行这个异步操作，但是实际却是并行执行了。**
 
 
 
 
 
 
+------------------------
 
 
+forEach 的实现：
+
+
+```javascript
+Array.prototype.forEach = function (callback) {
+  // this represents our array
+  for (let index = 0; index < this.length; index++) {
+    // We call the callback for each entry
+    callback(this[index], index, this);
+  }
+}
+
+```
+
+
+
+相当于 for 循环执行了这个异步函数，所以是并行执行，导致了一次性全部输出结果：
+
+
+
+
+
+
+```javascript
+async function test () {
+  var nums = [1, 2, 3];
+//   nums.forEach(async x => {
+//     var res = await multi(x);
+//     console.log(res);
+//   })
+  for(let index = 0; index < nums.length; index++) {
+    (async x => {
+      var res = await multi(x);
+      console.log(res);
+    })(nums[index]);
+  }
+}
+```
 
 
 

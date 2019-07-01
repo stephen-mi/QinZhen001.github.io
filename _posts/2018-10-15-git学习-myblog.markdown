@@ -237,6 +237,8 @@ git stash通常用于：
 
 ### git submodule
 
+[https://www.jianshu.com/p/0107698498af](https://www.jianshu.com/p/0107698498af)
+
 Git对于Submodule有特殊的处理方式，在一个主项目中引入了Submodule其实Git做了3件事情：
 
 * 记录引用的仓库
@@ -244,7 +246,28 @@ Git对于Submodule有特殊的处理方式，在一个主项目中引入了Submo
 * 记录引用Submodule的commit id
 
 
----
+
+----------------
+
+
+```javascript
+git submodule init  # 初始化本地.gitmodules文件
+git submodule update  # 同步远端submodule源码
+```
+
+
+
+>git submodule update 这条命令非常有用
+
+
+
+
+
+
+
+
+
+---------------
 
 **更新子模块**
 
