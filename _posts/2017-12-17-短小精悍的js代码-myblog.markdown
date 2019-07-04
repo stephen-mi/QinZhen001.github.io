@@ -14,6 +14,8 @@ tags:
 
 ## 正文
 
+[https://mp.weixin.qq.com/s/MMUQWlDOqpLLWDy9F-RZ7A](https://mp.weixin.qq.com/s/MMUQWlDOqpLLWDy9F-RZ7A)
+
 
 ### 统计字符串中相同字符出现的次数
 ```javascript
@@ -82,25 +84,32 @@ alert(b); // 返回21
 alert(c); // 返回10
 ```
 在JavaScript中，逗号运算符的优先级比赋值运算符还要底
-```
+
+```javascript
 var a = 20;
 var b = ++a,10;
 alert(b);   //不能运行
 ```
+
+
 下面代码才可以运行
-```
+```javascript
 var a = 20;
 var b = (++a,10);
 alert(b);
 ```
+
+
 之前不能执行的代码可以看成如下代码：
-```
+```javascript
 var a = 20;
 (var b = ++a),10;
 alert(b);
 ```
 逗号运算符最普通的用途是在 for 循环的递增表达式中使用
-```
+
+
+```javascript
 for (i = 0; i < 10; i++, j++)
 {
 k = i + j;
@@ -136,7 +145,7 @@ k = i + j;
 ---
 
 宽松相等还有一个坑，就是大部分 object 对象包括空字面量对象 {} 在跟强制类型转换过程中会出现的 number 类型的值比较时，object 的值会转换成 NaN，跟任何值比较都是不相等的。而在跟字符串比较的时候又会转化成 "[object Object]"
-```
+```javascript
 Number({}) ==> NaN        // 这里表示转换的过程，这个等式并不成立
 Number.isNaN(Number({}))  // true
 
@@ -148,7 +157,7 @@ Number.isNaN(Number({}))  // true
 ### Math.min(最大值,Math.max(0,function))
 将范围固定在 [0 - 最大值] 之间
 例子：
-```
+```javascript
 Math.min(255, Math.max(0, this.touch.left + deltaX))
 ```
 
@@ -221,7 +230,7 @@ function isJson(str) {
 ```
 
 ### 将数组拆成一个对象(键:id 值:数组item)
-```
+```javascript
 products.reduce((obj, product) => {
                     obj[product.id] = product
                     return obj
@@ -351,7 +360,7 @@ function isFunction(source) {
 
 
 ### isFirefox
-```
+```javascript
 const isFirefox = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 ```
 
@@ -426,7 +435,7 @@ console.log(pureObject.hasOwnProperty); //=> undefined
 
 ### 平铺多维数组
 使用Spread操作，可以很容易去平铺嵌套多维数组：
-```
+```javascript
 const arr = [11, [22, 33], [44, 55], 66];
 const flatArr = [].concat(...arr); //=> [11, 22, 33, 44, 55, 66]
 ```
@@ -865,6 +874,125 @@ function newApply(Fn, argsAry) {
 // 调用
 newApply(Cls.func, [1, 2, 3]) // well done !!
 ```
+
+
+
+
+### cached：记忆函数：缓存函数的运算结果
+
+```javascript
+
+function cached(fn) {
+    let cache = Object.create(null);
+    return function cachedFn(str) {
+        let hit = cache[str];
+        return hit || (cache[str] = fn(str))
+    }
+}
+```
+
+### camelize：横线转驼峰命名
+
+
+```javascript
+let camelizeRE = /-(w)/g;
+function camelize(str) {
+    return str.replace(camelizeRE, function(_, c) {
+        return c ? c.toUpperCase() : '';
+    })
+}
+//ab-cd-ef ==> abCdEf
+//使用记忆函数
+let _camelize = cached(camelize)
+```
+
+
+
+### hyphenate：驼峰命名转横线命名：拆分字符串，使用 - 相连，并且转换为小写
+
+```javascript
+let hyphenateRE = /B([A-Z])/g;
+function hyphenate(str){
+    return str.replace(hyphenateRE, '-$1').toLowerCase()
+}
+//abCd ==> ab-cd
+//使用记忆函数
+let _hyphenate = cached(hyphenate);
+```
+
+
+
+
+### capitalize：字符串首位大写
+
+```javascript
+function capitalize(str){
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
+// abc ==> Abc
+//使用记忆函数
+let _capitalize = cached(capitalize)
+```
+
+
+
+
+### extend：将属性混合到目标对象中
+
+
+```javascript
+function extend(to, _from) {
+    for(let key in _from) {
+        to[key] = _from[key];
+    }
+    return to
+}
+```
+
+
+
+
+### 禁止右键、选择、复制
+
+```javascript
+['contextmenu', 'selectstart', 'copy'].forEach(function(ev){
+    document.addEventListener(ev, function(event){
+        return event.returnValue = false
+    })
+});
+```
+
+
+
+### 禁止某些键盘事件
+
+
+
+```javascript
+document.addEventListener('keydown', function(event){
+    return !(
+        112 == event.keyCode || //F1
+        123 == event.keyCode || //F12
+        event.ctrlKey && 82 == event.keyCode || //ctrl + R
+        event.ctrlKey && 78 == event.keyCode || //ctrl + N
+        event.shiftKey && 121 == event.keyCode || //shift + F10
+        event.altKey && 115 == event.keyCode || //alt + F4
+        "A" == event.srcElement.tagName && event.shiftKey //shift + 点击a标签
+    ) || (event.returnValue = false)
+});
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
