@@ -58,6 +58,11 @@ git checkout -b 本地分支名 origin/远程分支名
 这个将会自动创建一个新的本地分支，并与指定的远程分支关联起来。
 
 
+### 查看远程分支
+
+* git branch -a，就是查看远程的所有分支列表
+* git branch是查看本地的git分支
+
 
 ### 查看本地分支与远程分支的映射关系
 [https://blog.csdn.net/tterminator/article/details/78108550](https://blog.csdn.net/tterminator/article/details/78108550)
