@@ -26,7 +26,10 @@ call 方法可以用来代替另一个对象调用一个方法。call 方法可�
 说明： 
 如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。 
 如果没有提供 argArray 和 thisObj 任何一个参数，那么 Global 对象将被用作 thisObj， 并且无法被传递任何参数。
-```
+
+
+
+```javascript
 function add(a,b)  
 {  
     alert(a+b);  
@@ -36,9 +39,13 @@ function sub(a,b)
     alert(a-b);  
 }  
 ```  
+
+
 add.call(sub,3,1);   
 这个例子中的意思就是用 add 来替换 sub，add.call(sub,3,1) == add(3,1) ，所以运行结果为：alert(4); // 注意：js 中的函数其实是对象，函数名是对 Function 对象的引用。
-```
+
+
+```javascript
 function Animal(){    
     this.name = "Animal";    
     this.showName = function(){    
@@ -53,6 +60,8 @@ function Cat(){
 var animal = new Animal();    
 var cat = new Cat();    
 ```   
+
+
 //通过call或apply方法，将原本属于Animal对象的showName()方法交给对象cat来使用了。    
 //输入结果为"Cat"    
 animal.showName.call(cat,",");    
@@ -69,6 +78,9 @@ apply(b,[arg1,arg2])
 //apply只有2个参数，它将call的参数（arg1,arg2…）放在一个数组中作为apply的第二参数
 
 ### bind方法
+
+
+[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
 
 [https://www.cnblogs.com/xxxxBW/p/4914567.html](https://www.cnblogs.com/xxxxBW/p/4914567.html)
 
@@ -141,6 +153,38 @@ fun.fun2();
 ```
 
 
+### 快捷调用
+
+
+在你想要为一个需要特定的 this 值的函数创建一个捷径（shortcut）的时候，bind() 也很好用。
+
+
+
+你可以用 Array.prototype.slice 来将一个类似于数组的对象（array-like object）转换成一个真正的数组，就拿它来举例子吧。你可以简单地这样写：
+
+```javascript
+var slice = Array.prototype.slice;
+
+// ...
+
+slice.apply(arguments);
+```
+
+
+
+用 bind()可以使这个过程变得简单。在下面这段代码里面，slice 是 Function.prototype 的 apply() 方法的绑定函数，并且将 Array.prototype 的 slice() 方法作为 this 的值。这意味着我们压根儿用不着上面那个 apply()调用了。
+
+
+
+```javascript
+// 与前一段代码的 "slice" 效果相同
+var unboundSlice = Array.prototype.slice;
+var slice = Function.prototype.apply.bind(unboundSlice);
+
+// ...
+
+slice(arguments);
+```
 
 
 ## 补充
@@ -185,6 +229,21 @@ fun.fun2();
 
 
 ### Function.apply.bind()
+
+**终于看懂了。。。。**
+
+关键点在于 bind可以预设参数
+
+也是就是说bind的第二个参数null，为apply的第一个参数
+
+
+apply(null,...args) 那么就意味着我们并不关心执行时其内部的this指向谁
+
+
+-------------
+
+
+[https://blog.csdn.net/weixin_37787381/article/details/81509361](https://blog.csdn.net/weixin_37787381/article/details/81509361)
 
 
 先撇开Promise不谈，直接来看Function.apply.bind(…)：
