@@ -146,7 +146,7 @@ git log
 ```
 
 
-### **回滚、取消之前的提交**
+### 回滚、取消之前的提交
 
 
 ```
@@ -229,6 +229,20 @@ git stash通常用于：
 
 
 >[使用git pull文件时和本地文件冲突](http://www.01happy.com/git-resolve-conflicts/)
+
+
+
+
+
+
+### git fetch & pull
+
+* git fetch是将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中。
+* 而git pull 则是将远程主机的最新内容拉下来后直接合并，即：git pull = git fetch + git merge，这样可能会产生冲突，需要手动解决。
+
+
+
+
 
 
 
