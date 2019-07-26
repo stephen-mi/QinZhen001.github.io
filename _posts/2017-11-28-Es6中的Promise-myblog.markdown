@@ -243,6 +243,68 @@ Promise.resolve(theanable);
 
 ## 补充
 
+
+### try/catch无法捕获promise.reject的问题
+
+[https://segmentfault.com/q/1010000014905440](https://segmentfault.com/q/1010000014905440)
+
+
+```javascript
+function f2() {
+  try {
+    Promise.reject('出错了');
+  } catch(e) {
+    console.log(e)
+  }
+}
+```
+
+
+执行f2()，无法通过try/catch捕获promise.reject，控制台抛出Uncaught (in promise)
+
+
+```javascript
+async function f() {
+  try {
+    await Promise.reject('出错了')
+  } catch(e) {
+    console.log(e)
+  }
+}
+```
+
+
+为什么改成await/async后，执行f()就能在catch中捕获到错误了，并不会抛出Uncaught (in promise)
+
+
+------------
+
+
+**这是一个非常好的问题**
+
+
+
+```javascript
+function f2() {
+  try {
+    Promise.reject('出错了').catch(err => {
+      console.log('2', err)
+    });
+    console.log('1')
+  } catch (e) {
+    console.log(e)
+  }
+}
+```
+
+**这样应该就理解了吧，拒绝reject发生在未来。**
+
+
+**try..catch 结构，它只能是同步的，无法用于异步代码模式**
+
+
+
+
 ### promise中如何取到[[PromiseValue]]
 
 [https://segmentfault.com/q/1010000010670739](https://segmentfault.com/q/1010000010670739)
@@ -386,7 +448,7 @@ aaa
 
 
 
-
+## 其他
 
 
 

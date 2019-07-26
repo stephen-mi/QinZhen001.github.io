@@ -997,6 +997,8 @@ document.addEventListener('keydown', function(event){
 
 
 
+
+
 ### 按循序执行 Promise 任务 (结合reduce)
 
 
@@ -1077,6 +1079,145 @@ arg1, arg2, ...:
 
 
 
+### 利用Promise控制异步并发流程
+
+[https://github.com/zhuanzhuanfe/articles/blob/master/wupenghe/%E5%81%A5%E5%A3%AE%E9%AB%98%E6%95%88%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E5%BD%95%E6%96%B9%E6%A1%88.md](https://github.com/zhuanzhuanfe/articles/blob/master/wupenghe/%E5%81%A5%E5%A3%AE%E9%AB%98%E6%95%88%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E5%BD%95%E6%96%B9%E6%A1%88.md)
+
+
+
+这个流程非常流弊，和我之前写的缓存resolve差不多。
+
+```javascript
+class Login {
+  static _loginSingleton = null; //正在进行的登录流程
+  
+  static async _login(){
+    //登录流程...
+  }
+  
+  //封装了免并发逻辑的登录函数
+  static async login(){
+    if (Login._loginSingleton) //若当前有登录流程正在进行，则直接使用其结果作为本次登录结果
+        return Login._loginSingleton;
+        
+    //否则触发登录流程
+    Login._loginSingleton = Login._login();
+    
+    //并在登录结束时释放并发限制
+    Login._loginSingleton.then(()=>{Login._loginSingleton = null}).catch(()=>{Login._loginSingleton = null});
+    
+    //返回登录结果      
+    return Login._loginSingleton;
+  }
+}
+```
+
+>**这里的亮点在Login._loginSingleton.then 相当于监听了这个Promise的then**
+
+
+如以上代码所示，利用Promise可以被多次then/catch的特性（亦即，一个async函数调用结果可以被await多次），可以使用一个Promise来记录当前登录流程，后续调用直接对该Promise进行监听。
+
+
+这样，就可以实现登录流程免并发了。
+
+
+### 缓存resolve控制异步并发流程
+
+global.singleton[AD_LIST_KEY] 将resolve缓存起来，这样后面的并法流程就不用发起网络请求，直接采用第一次发起网络请求拿到的响应结果。
+
+
+
+```javascript
+async function getAdListByRequest(data = {}) {
+  return new Promise(async (resolve, reject) => {
+    global.singleton = global.singleton || {};
+    global.singleton[AD_LIST_KEY + 'lock'] = global.singleton[AD_LIST_KEY + 'lock'] || false;
+    if (global.singleton[AD_LIST_KEY + 'lock']) {
+      global.singleton[AD_LIST_KEY].push(resolve);
+    } else {
+      global.singleton[AD_LIST_KEY + 'lock'] = true;
+      // console.log('singleton start', '1');
+      global.singleton[AD_LIST_KEY] = [resolve];
+      _getAdListForPure(data).then((output) => {
+        // ....
+        let func = {};
+        // eslint-disable-next-line
+        while (func = global.singleton[AD_LIST_KEY].shift()) {
+          func(output.data.data);
+          // console.log('singleton end', output);
+        }
+        global.singleton[AD_LIST_KEY + 'lock'] = false;
+      }, rej => {
+        reject(rej);
+      });
+    }
+  });
+}
+```
+
+
+
+### 利用Object.defineProperty函数赋值
+
+```javascript
+  let obj = {
+    aaa: 'aaa'
+  }
+
+
+  obj.aaa = Object.defineProperty(function () {
+      console.log('this', this)
+      console.log('aaaa')
+    },
+    'xxxx',
+    {value: true}
+  )
+
+
+  console.log(obj.aaa())  //this {aaa: ƒ}   aaaa
+
+  console.log(obj.aaa)
+  /**
+   * () => {
+   * console.log('this', this)
+   * console.log('aaaa')
+   * }
+   */
+
+
+  console.log(obj.aaa.xxxx)  //true
+```
+
+--------------------
+
+
+```javascript
+    theHost[funName] = Object.defineProperty(
+        function pluggableHookFun(...arg) {
+            const _theHost = this;
+
+            if (typeof beforeCall === 'function') beforeCall({ theHost: _theHost });
+
+            const funQueue = _theHost.getHookFunQueue(funName);
+
+            // 如果不存在，则 resolve
+            if (!funQueue || !Array.isArray(funQueue)) return Promise.resolve();
+
+            // 以 「先进先出」 的形式按顺序执行 Promise 链，未捕捉的错误，扔到 onError 去。
+            return sequenceTasks({
+                tasks: funQueue,
+                thisIns: _theHost,
+                arg,
+            }).catch((err) => {
+                if (typeof _theHost.onError === 'function') {
+                    _theHost.onError(err);
+                }
+                throw err;
+            });
+        },
+        'isPluggableHookFun', { value: true },
+    );
+```
 
 
 

@@ -143,6 +143,15 @@ ttps://www.npmjs.com/package/gulp-cache)
 
 
 
+### webpack-stream
+
+[https://www.npmjs.com/package/webpack-stream](https://www.npmjs.com/package/webpack-stream)
+
+Run webpack as a stream to conveniently integrate with gulp.
+
+
+运行webpack作为一个流，方便地与gulp集成。
+
 
 
 
