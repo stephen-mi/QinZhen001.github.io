@@ -12,6 +12,45 @@ tags:
 > “Yeah It's on. ”
 
 
+## 前文
+
+[https://www.webpackjs.com/concepts/plugins/#%E5%89%96%E6%9E%90](https://www.webpackjs.com/concepts/plugins/#%E5%89%96%E6%9E%90)
+
+
+
+插件是 webpack 的支柱功能。webpack 自身也是构建于，你在 webpack 配置中用到的相同的插件系统之上！
+
+插件目的在于解决 loader 无法实现的其他事。
+
+
+--------------------
+
+
+**剖析**
+
+webpack 插件是一个具有 apply 属性的 JavaScript 对象。apply 属性会被 webpack compiler 调用，并且 compiler 对象可在整个编译生命周期访问。
+
+```javascript
+const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+
+class ConsoleLogOnBuildWebpackPlugin {
+    apply(compiler) {
+        compiler.hooks.run.tap(pluginName, compilation => {
+            console.log("webpack 构建过程开始！");
+        });
+    }
+}
+```
+
+>compiler hook 的 tap 方法的第一个参数，应该是驼峰式命名的插件名称。建议为此使用一个常量，以便它可以在所有 hook 中复用。
+
+
+
+
+
+下面提一下，一些用过的比较重要的插件
+
+
 ## 正文
 
 ### CommonsChunkPlugin
@@ -282,7 +321,7 @@ module.exports = {
 }
 ```
 This will generate a file dist/index.html containing the following
-```css
+```html
 <!DOCTYPE html>
 <html>
   <head>
@@ -294,6 +333,54 @@ This will generate a file dist/index.html containing the following
   </body>
 </html>
 ```
+
+
+
+--------
+
+
+
+[https://www.jianshu.com/p/08a60756ffda](https://www.jianshu.com/p/08a60756ffda)
+
+```
+let srcPath = path.resolve(__dirname, '../src')
+let icoPath = path.resolve(srcPath, 'common/images/favicon.ico')
+
+
+
+
+  plugins: [
+    new HtmlWebpackPlugin({ // 打包输出HTML
+      title: 'Hello World app',
+      minify: { // 压缩HTML文件
+        removeComments: true, // 移除HTML中的注释
+        collapseWhitespace: true, // 删除空白符与换行符
+        minifyCSS: true// 压缩内联css
+      },
+      filename: 'index.html',
+      template: 'index.html',
+      favicon: icoPath
+    }),
+  ]
+```
+
+
+----------------
+
+
+ **title属性不起作用**
+ 
+ 
+ 
+[https://segmentfault.com/q/1010000004555431](https://segmentfault.com/q/1010000004555431)
+
+
+
+ 
+应该是webpack.config.js的配置文件里面加了 html-loader，加了之后会正常解析html文件作为模版，就会直接把 `<%= htmlWebpackPlugin.options.title %>`解析成字符串。如果有html-loader ,去掉就可以了
+
+
+
 
 
 
@@ -415,14 +502,38 @@ And the best thing is it supports minified bundles! It parses them to get real s
 
 
 
+### NamedModulesPlugin
+
+[https://www.jianshu.com/p/8499842defbe](https://www.jianshu.com/p/8499842defbe)
+
+当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
+
+```javascript
+new webpack.NamedModulesPlugin()
+```
+
+
+
+
+### NoEmitOnErrorsPlugin 
+
+[https://segmentfault.com/q/1010000013357755/a-1020000013363200](https://segmentfault.com/q/1010000013357755/a-1020000013363200)
+
+在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误。对于所有资源，统计资料(stat)的 emitted 标识都是 false。
 
 
 
 
 
+### webpack-dev-middleware
+
+[https://segmentfault.com/a/1190000011761306](https://segmentfault.com/a/1190000011761306)
 
 
 
+
+
+我们在使用webpack 编译文件时，每次改动文件都要去重新编译，是不是很麻烦，这时候我们就用到了webpack-dev-middleware 插件，该插件对更改的文件进行监控，编译, 一般和 webpack-hot-middleware 配合使用，实现热加载功能
 
 
 

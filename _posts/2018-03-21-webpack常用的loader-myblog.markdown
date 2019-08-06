@@ -374,6 +374,16 @@ source-map-loader extracts existing source maps from all JavaScript entries. Thi
 
 
 
+### Expose Loader
+
+[https://www.npmjs.com/package/expose-loader](https://www.npmjs.com/package/expose-loader)
+
+The expose loader adds modules to the global object. This is useful for debugging, or supporting libraries that depend on libraries in globals.
+
+
+expose加载程序将模块添加到全局对象。这对于调试或支持全局中依赖于库的库非常有用。
+
+
 
 
 
