@@ -467,9 +467,71 @@ function spawn(genF) {
 
 
 
+## 问题
+
+
+### forEach同步执行
+
+```javascript
+  function timeOut(name) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(name)
+      }, 3000)
+    })
+  }
+
+
+  let arr = ["aaa", "bbb", "ccc", "ddd"]
+
+  arr.forEach(async item => {
+    let res = await timeOut(item)
+    console.log(res)
+  })
+
+
+ 三秒后 同时输出 "aaa"  "bbb"  "ccc"  "ddd"
+
+
+ // await 没有起作用
+```
+
+
+
+------------------------------
+
+
+正确做法
+
+
+```javascript
+ function timeOut(name) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(name)
+      }, 3000)
+    })
+  }
+  
+  let arr = ["aaa", "bbb", "ccc", "ddd"]
+  
+  async function fn() {
+    for (const item of arr) {
+      let res = await timeOut(item)
+      console.log(res)
+    }
+  }
+
+
+  fn()
+```
+
+
+
+
 
 ## 补充
-```
+```javascript
 const synchronous = () => {
   const promise = Promise.resolve(0);
   console.log(promise === 0); // false
@@ -493,7 +555,7 @@ const asynchronous = async () => {
 
 
 ### 精读
-```
+```javascript
 a(() => {
   b(() => {
     c();

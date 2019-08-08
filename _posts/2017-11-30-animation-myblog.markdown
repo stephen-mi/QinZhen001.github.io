@@ -253,9 +253,24 @@ steps函数，它可以传入两个参数，第一个是一个大于0的整数�
  
  
  
+### animation-delay负值
+
+animation-delay:-2s
+
+**允许负值，-2s 使动画马上开始，但跳过 2 秒进入动画。**
+
+
+ 
+[https://www.w3school.com.cn/cssref/pr_animation-delay.asp](https://www.w3school.com.cn/cssref/pr_animation-delay.asp)
  
  
+
  
+**被设置了 animation-dealy 为负值的动画会立刻执行，开始的位置是其动画阶段中的一个阶段**
+
+ 
+ 
+[https://juejin.im/post/5d4b8707f265da03a65302bd?utm_source=gold_browser_extension](https://juejin.im/post/5d4b8707f265da03a65302bd?utm_source=gold_browser_extension) 
  
  
 
